@@ -1,10 +1,9 @@
---[[
-    Blue-Flag lua
-    Github: https://github.com/Galaxy-Studio-Code/Blue-Flag-Lua
-    Edit from 2Take1 Heist-Control-v2 lua by jhowkNx
---]]
-require_game_build(2628)
+-- Blue-Flag lua
+-- Github: https://github.com/Galaxy-Studio-Code/Blue-Flag-Lua
+-- Edit from 2Take1 Heist-Control-v2 lua by jhowkNx
+-- some features disappeared because kiddion didn't provide enough api, and it's documention is too hard to understand
 -- init
+require_game_build(2628)
 local bfmenu = menu.add_submenu("Blue-Flag Lua")
 local LUA_VER = "1.0.1"
 -- Script core function [INT]
@@ -505,7 +504,7 @@ end)
 TELEPORTCHESTS:add_action("陆地藏宝箱 (8)", function()
     localplayer:set_position(vector3(4822.828, -4322.015, 5.617))
 end)
-TELEPORTCHESTS:add_action("陆地藏宝箱 (9)",  function()
+TELEPORTCHESTS:add_action("陆地藏宝箱 (9)", function()
     localplayer:set_position(vector3(4535.064, -4702.882, 2.431))
 end)
 TELEPORTCHESTS:add_action("陆地藏宝箱 (10)", function()
@@ -663,7 +662,6 @@ do
             end
         end)
 end
-
 --- CAYO AUTOMATED PRESET SOLO
 do
     local CAYO_SOLO_AUTO_TARGET_3 =
@@ -979,7 +977,6 @@ do
         end
     end)
 end
-
 -- WEEKLY DUO
 do
     local WKLY_DUO_PANTHER =
@@ -1019,7 +1016,6 @@ do
         end
     end)
 end
-
 -- WEEKLY TRIO
 do
     local WKLY_TRIO_PANTHER =
@@ -1060,7 +1056,6 @@ do
         end
     end)
 end
-
 -- WEEKLY FOUR PLAYERS
 do
     local WKLY_FOUR_PANTHER =
@@ -1102,9 +1097,7 @@ do
         end
     end)
 end
-
 ------- ADVANCED FEATURES CAYO
-
 menu.add_feature("Custom Payout", "action", PERICO_HOST_CUT.id, function(perico_host)
     local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
     if r == 1 then
@@ -1142,9 +1135,7 @@ end)
 menu.add_feature("150 %", "action", PERICO_HOST_CUT.id, function()
     globals.set_int(1973525 + 823 + 56 + 1, 150)
 end)
-
 -- PLAYER 2 CUT MANAGER
-
 menu.add_feature("Custom Payout", "action", PERICO_P2_CUT.id, function(perico2)
     local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
     if r == 1 then
