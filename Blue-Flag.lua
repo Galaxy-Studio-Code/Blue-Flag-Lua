@@ -354,6 +354,7 @@ TELEPORT_QL:add_action("次要目标 :: 房间", function()
 end)
 TELEPORT_QL:add_action("办公室 :: 金库/保险柜", function()
     localplayer:set_position(pedmy, vector3(5010.753, -5757.639, 28.845))
+    localplayer:set_rotation(vector3(2,0,0))
 end)
 TELEPORT_QL:add_action("豪宅 :: 大门出口", function()
     localplayer:set_position(vector3(4992.854, -5718.537, 19.880))
@@ -958,24 +959,26 @@ do
         {{"PROSTITUTES_FREQUENTE", 100}, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
          {"H4CNF_BOLTCUT", 4424}, {"H4CNF_UNIFORM", 5256}, {"H4CNF_GRAPPEL", 5156}, {"H4_MISSIONS", -1},
          {"H4CNF_WEAPONS", 4}, {"H4CNF_TROJAN", 5}}
-    menu.add_feature("» Panther Statue", "toggle", WEEKLY_SOLO.id, function(WEEKLY_SOLO_v0)
-        menu.notify(
-            "Preset added to SOLO\n- Don't use any advanced options\n- Don't use bag modifier\n- Don't change the percentage set by the script\n- Fill your bag with ANY item (Just fill it out)\n\n- Leave this option enabled until you finish the Heist",
-            "Cayo Perico SOLO | Panther Statue", 7, 0x6414F0FF)
-        for i = 1, #USER_CAN_MDFY_WKLY_SOLO_PANTHER do
-            stat_set_int(USER_CAN_MDFY_WKLY_SOLO_PANTHER[i][1], true, USER_CAN_MDFY_WKLY_SOLO_PANTHER[i][2])
-        end
-        while WEEKLY_SOLO_v0.on do
-            for i = 1, #WKLY_SOLO_PANTHER do
-                stat_set_int(WKLY_SOLO_PANTHER[i][1], true, WKLY_SOLO_PANTHER[i][2])
+    WEEKLY_SOLO:add_toggle("» 猎豹雕像 (任意次要目标装满背包,不拿保险箱,抢劫结束前保持开启)",
+        function()
+            return true
+        end, function(WEEKLY_SOLO_v0)
+            for i = 1, #USER_CAN_MDFY_WKLY_SOLO_PANTHER do
+                stat_set_int(USER_CAN_MDFY_WKLY_SOLO_PANTHER[i][1], true, USER_CAN_MDFY_WKLY_SOLO_PANTHER[i][2])
             end
-            globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
-            globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
-            globals.set_int(262145 + 29395, 1800) -- Bag protection
-            globals.set_int(1973525 + 823 + 56 + 1, 100) -- Player 1 (SOLO)
-            system.yield(0)
-        end
-    end)
+            while WEEKLY_SOLO_v0 do
+                for i = 1, #WKLY_SOLO_PANTHER do
+                    stat_set_int(WKLY_SOLO_PANTHER[i][1], true, WKLY_SOLO_PANTHER[i][2])
+                end
+                globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
+                globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
+                globals.set_int(262145 + 29395, 1800) -- Bag protection
+                globals.set_int(1973525 + 823 + 56 + 1, 100) -- Player 1 (SOLO)
+                -- 防止卡住
+                system.yield(0)
+                -- system.wait(0)
+            end
+        end)
 end
 -- WEEKLY DUO
 do
@@ -994,27 +997,27 @@ do
         {{"PROSTITUTES_FREQUENTE", 100}, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
          {"H4CNF_BOLTCUT", 4424}, {"H4CNF_UNIFORM", 5256}, {"H4CNF_GRAPPEL", 5156}, {"H4_MISSIONS", -1},
          {"H4CNF_WEAPONS", 4}, {"H4CNF_TROJAN", 5}}
-    menu.add_feature("» Panther Statue", "toggle", WEEKLY_F2.id, function(WEEKLY_DUO_v0)
-        menu.notify("Estimated payout for each player:\n $4.100,000\n\nPlayers Cut (Blocked)\nBoth: 50% ",
-            "Heist Control Safety", 10, 0x64C878F0)
-        menu.notify(
-            "Preset added for 2 players\n- Don't use any advanced options\n- Don't use bag modifier\n- Don't change the percentage set by the script\n- Fill your bag with ANY item (Just fill it out)\n\n- Leave this option enabled until you finish the Heist",
-            "Cayo Perico 2 Players | Panther Statue", 7, 0x6414F0FF)
-        for i = 1, #USER_CAN_MDFY_WKLY_DUO_PANTHER do
-            stat_set_int(USER_CAN_MDFY_WKLY_DUO_PANTHER[i][1], true, USER_CAN_MDFY_WKLY_DUO_PANTHER[i][2])
-        end
-        while WEEKLY_DUO_v0.on do
-            for i = 1, #WKLY_DUO_PANTHER do
-                stat_set_int(WKLY_DUO_PANTHER[i][1], true, WKLY_DUO_PANTHER[i][2])
+    WEEKLY_F2:add_toggle("» 猎豹雕像 (任意次要目标装满背包,不拿保险箱,抢劫结束前保持开启)",
+        function()
+            return true
+        end, function(WEEKLY_DUO_v0)
+            for i = 1, #USER_CAN_MDFY_WKLY_DUO_PANTHER do
+                stat_set_int(USER_CAN_MDFY_WKLY_DUO_PANTHER[i][1], true, USER_CAN_MDFY_WKLY_DUO_PANTHER[i][2])
             end
-            globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
-            globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
-            globals.set_int(262145 + 29395, 1800) -- bag protection
-            globals.set_int(1973525 + 823 + 56 + 1, 50)
-            globals.set_int(1973525 + 823 + 56 + 2, 50)
-            system.yield(0)
-        end
-    end)
+            while WEEKLY_DUO_v0 do
+                for i = 1, #WKLY_DUO_PANTHER do
+                    stat_set_int(WKLY_DUO_PANTHER[i][1], true, WKLY_DUO_PANTHER[i][2])
+                end
+                globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
+                globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
+                globals.set_int(262145 + 29395, 1800) -- bag protection
+                globals.set_int(1973525 + 823 + 56 + 1, 50)
+                globals.set_int(1973525 + 823 + 56 + 2, 50)
+                -- 防止卡住
+                system.yield(0)
+                -- system.wait(0)
+            end
+        end)
 end
 -- WEEKLY TRIO
 do
@@ -1033,16 +1036,11 @@ do
         {{"PROSTITUTES_FREQUENTE", 100}, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
          {"H4CNF_BOLTCUT", 4424}, {"H4CNF_UNIFORM", 5256}, {"H4CNF_GRAPPEL", 5156}, {"H4_MISSIONS", -1},
          {"H4CNF_WEAPONS", 4}, {"H4CNF_TROJAN", 5}}
-    menu.add_feature("» Panther Statue", "toggle", WEEKLY_F3.id, function(WEEKLY_TRIO_v0)
-        menu.notify("Estimated payout for each player:\n $4.100,000\n\nPlayers Cut (Blocked)\nHost: 30%\nOthers: 35%",
-            "Heist Control Safety", 10, 0x64C878F0)
-        menu.notify(
-            "Preset added for 3 players\n- Don't use any advanced options\n- Don't use bag modifier\n- Don't change the percentage set by the script\n- Fill your bag with ANY item (Just fill it out)\n\n- Leave this option enabled until you finish the Heist",
-            "Cayo Perico 3 Players | Panther Statue", 7, 0x6414F0FF)
+    WEEKLY_F3:add_toggle("» 猎豹雕像 (任意次要目标装满背包,不拿保险箱,抢劫结束前保持开启)", function() return true end, function(WEEKLY_TRIO_v0)
         for i = 1, #USER_CAN_MDFY_WKLY_TRIO_PANTHER do
             stat_set_int(USER_CAN_MDFY_WKLY_TRIO_PANTHER[i][1], true, USER_CAN_MDFY_WKLY_TRIO_PANTHER[i][2])
         end
-        while WEEKLY_TRIO_v0.on do
+        while WEEKLY_TRIO_v0 do
             for i = 1, #WKLY_TRIO_PANTHER do
                 stat_set_int(WKLY_TRIO_PANTHER[i][1], true, WKLY_TRIO_PANTHER[i][2])
             end
@@ -1052,7 +1050,9 @@ do
             globals.set_int(1973525 + 823 + 56 + 1, 30)
             globals.set_int(1973525 + 823 + 56 + 2, 35)
             globals.set_int(1973525 + 823 + 56 + 3, 35)
+            -- 防止卡住
             system.yield(0)
+            -- system.wait(0)
         end
     end)
 end
@@ -1073,16 +1073,11 @@ do
         {{"PROSTITUTES_FREQUENTE", 100}, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
          {"H4CNF_BOLTCUT", 4424}, {"H4CNF_UNIFORM", 5256}, {"H4CNF_GRAPPEL", 5156}, {"H4_MISSIONS", -1},
          {"H4CNF_WEAPONS", 4}, {"H4CNF_TROJAN", 5}}
-    menu.add_feature("» Panther Statue", "toggle", WEEKLY_F4.id, function(WEEKLY_FOUR_v0)
-        menu.notify("Estimated payout for each player:\n $4.100,000\n\nPlayers Cut (Blocked)\nEveryone: 25%",
-            "Heist Control Safety", 10, 0x64C878F0)
-        menu.notify(
-            "Preset added for 4 players\n- Don't use any advanced options\n- Don't use bag modifier\n- Don't change the percentage set by the script\n- Fill your bag with ANY item (Just fill it out)\n\n- Leave this option enabled until you finish the Heist",
-            "Cayo Perico 4 Players | Panther Statue", 7, 0x6414F0FF)
+    WEEKLY_F4:add_toggle("» 猎豹雕像 (任意次要目标装满背包,不拿保险箱,抢劫结束前保持开启)", function() return true end, function(WEEKLY_FOUR_v0)
         for i = 1, #USER_CAN_MDFY_WKLY_FOUR_PANTHER do
             stat_set_int(USER_CAN_MDFY_WKLY_FOUR_PANTHER[i][1], true, USER_CAN_MDFY_WKLY_FOUR_PANTHER[i][2])
         end
-        while WEEKLY_FOUR_v0.on do
+        while WEEKLY_FOUR_v0 do
             for i = 1, #WKLY_FOUR_PANTHER do
                 stat_set_int(WKLY_FOUR_PANTHER[i][1], true, WKLY_FOUR_PANTHER[i][2])
             end
@@ -1093,203 +1088,153 @@ do
             globals.set_int(1973525 + 823 + 56 + 2, 25) -- player 2
             globals.set_int(1973525 + 823 + 56 + 3, 25) -- player 3
             globals.set_int(1973525 + 823 + 56 + 4, 25) -- player 4
+            -- 防止卡住
             system.yield(0)
+            -- system.wait(0)
         end
     end)
 end
 ------- ADVANCED FEATURES CAYO
-menu.add_feature("Custom Payout", "action", PERICO_HOST_CUT.id, function(perico_host)
-    local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
-    if r == 1 then
-        return HANDLER_CONTINUE
-    end
-    if r == 2 then
-        return HANDLER_POP
-    end
-    globals.set_int(1973525 + 823 + 56 + 1, tonumber(s))
-end)
-
-menu.add_feature("0 %", "toggle", PERICO_HOST_CUT.id, function(prio)
-    while prio.on do
+-- PERICO_HOST_CUT:add_action("自定义分红", function(perico_host)
+--     local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
+--     if r == 1 then
+--         return HANDLER_CONTINUE
+--     end
+--     if r == 2 then
+--         return HANDLER_POP
+--     end
+--     globals.set_int(1973525 + 823 + 56 + 1, tonumber(s))
+-- end)
+PERICO_HOST_CUT:add_action("0 %", function()
         globals.set_int(1973525 + 823 + 56 + 1, 0)
-        system.yield(0)
-    end
 end)
-
-menu.add_feature("50 %", "action", PERICO_HOST_CUT.id, function()
+PERICO_HOST_CUT:add_action("50 %", function()
     globals.set_int(1973525 + 823 + 56 + 1, 50)
 end)
-
-menu.add_feature("85 %", "action", PERICO_HOST_CUT.id, function()
+PERICO_HOST_CUT:add_action("85 %", function()
     globals.set_int(1973525 + 823 + 56 + 1, 85)
 end)
-
-menu.add_feature("100 %", "action", PERICO_HOST_CUT.id, function()
+PERICO_HOST_CUT:add_action("100 %", function()
     globals.set_int(1973525 + 823 + 56 + 1, 100)
 end)
-
-menu.add_feature("125 %", "action", PERICO_HOST_CUT.id, function()
+PERICO_HOST_CUT:add_action("125 %", function()
     globals.set_int(1973525 + 823 + 56 + 1, 125)
 end)
-
-menu.add_feature("150 %", "action", PERICO_HOST_CUT.id, function()
+PERICO_HOST_CUT:add_action("150 %", function()
     globals.set_int(1973525 + 823 + 56 + 1, 150)
 end)
 -- PLAYER 2 CUT MANAGER
-menu.add_feature("Custom Payout", "action", PERICO_P2_CUT.id, function(perico2)
-    local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
-    if r == 1 then
-        return HANDLER_CONTINUE
-    end
-    if r == 2 then
-        return HANDLER_POP
-    end
-    globals.set_int(1973525 + 823 + 56 + 2, tonumber(s))
-end)
-
-menu.add_feature("0 %", "action", PERICO_P2_CUT.id, function()
+-- PERICO_P2_CUT:add_action("自定义分红", function(perico2)
+--     local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
+--     if r == 1 then
+--         return HANDLER_CONTINUE
+--     end
+--     if r == 2 then
+--         return HANDLER_POP
+--     end
+--     globals.set_int(1973525 + 823 + 56 + 2, tonumber(s))
+-- end)
+PERICO_P2_CUT:add_action("0 %", function()
     globals.set_int(1973525 + 823 + 56 + 2, 0)
 end)
-
-menu.add_feature("50 %", "action", PERICO_P2_CUT.id, function()
+PERICO_P2_CUT:add_action("50 %", function()
     globals.set_int(1973525 + 823 + 56 + 2, 50)
 end)
-
-menu.add_feature("85 %", "action", PERICO_P2_CUT.id, function()
+PERICO_P2_CUT:add_action("85 %", function()
     globals.set_int(1973525 + 823 + 56 + 2, 85)
 end)
-
-menu.add_feature("100 %", "action", PERICO_P2_CUT.id, function()
+PERICO_P2_CUT:add_action("100 %", function()
     globals.set_int(1973525 + 823 + 56 + 2, 100)
 end)
-
-menu.add_feature("125 %", "action", PERICO_P2_CUT.id, function()
+PERICO_P2_CUT:add_action("125 %", function()
     globals.set_int(1973525 + 823 + 56 + 2, 125)
 end)
-
-menu.add_feature("150 %", "action", PERICO_P2_CUT.id, function()
+PERICO_P2_CUT:add_action("150 %", function()
     globals.set_int(1973525 + 823 + 56 + 2, 150)
 end)
-
 -- PLAYER 3 CUT MANAGER
-
-menu.add_feature("Custom Payout", "action", PERICO_P3_CUT.id, function(perico3)
-    local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
-    if r == 1 then
-        return HANDLER_CONTINUE
-    end
-    if r == 2 then
-        return HANDLER_POP
-    end
-    globals.set_int(1973525 + 823 + 56 + 3, tonumber(s))
-end)
-
-menu.add_feature("0 %", "action", PERICO_P3_CUT.id, function()
+-- PERICO_P3_CUT:add_action("自定义分红", function(perico3)
+--     local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
+--     if r == 1 then
+--         return HANDLER_CONTINUE
+--     end
+--     if r == 2 then
+--         return HANDLER_POP
+--     end
+--     globals.set_int(1973525 + 823 + 56 + 3, tonumber(s))
+-- end)
+PERICO_P3_CUT:add_action("0 %", function()
     globals.set_int(1973525 + 823 + 56 + 3, 0)
 end)
-
-menu.add_feature("50 %", "action", PERICO_P3_CUT.id, function()
+PERICO_P3_CUT:add_action("50 %", function()
     globals.set_int(1973525 + 823 + 56 + 3, 50)
 end)
-
-menu.add_feature("85 %", "action", PERICO_P3_CUT.id, function()
+PERICO_P3_CUT:add_action("85 %", function()
     globals.set_int(1973525 + 823 + 56 + 3, 85)
 end)
-
-menu.add_feature("100 %", "action", PERICO_P3_CUT.id, function()
+PERICO_P3_CUT:add_action("100 %", function()
     globals.set_int(1973525 + 823 + 56 + 3, 100)
 end)
-
-menu.add_feature("125 %", "action", PERICO_P3_CUT.id, function()
+PERICO_P3_CUT:add_action("125 %", function()
     globals.set_int(1973525 + 823 + 56 + 3, 125)
 end)
-
-menu.add_feature("150 %", "action", PERICO_P3_CUT.id, function()
+PERICO_P3_CUT:add_action("150 %", function()
     globals.set_int(1973525 + 823 + 56 + 3, 150)
 end)
-
 -- PLAYER 4 CUT MANAGER
-
-menu.add_feature("Custom Payout", "action", PERICO_P4_CUT.id, function(perico4)
-    local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
-    if r == 1 then
-        return HANDLER_CONTINUE
-    end
-    if r == 2 then
-        return HANDLER_POP
-    end
-    globals.set_int(1973525 + 823 + 56 + 4, tonumber(s))
-end)
-
-menu.add_feature("0 %", "action", PERICO_P4_CUT.id, function()
+-- PERICO_P4_CUT:add_action("自定义分红", function(perico4)
+--     local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
+--     if r == 1 then
+--         return HANDLER_CONTINUE
+--     end
+--     if r == 2 then
+--         return HANDLER_POP
+--     end
+--     globals.set_int(1973525 + 823 + 56 + 4, tonumber(s))
+-- end)
+PERICO_P4_CUT:add_action("0 %", function()
     globals.set_int(1973525 + 823 + 56 + 4, 0)
 end)
-
-menu.add_feature("50 %", "action", PERICO_P4_CUT.id, function()
+PERICO_P4_CUT:add_action("50 %", function()
     globals.set_int(1973525 + 823 + 56 + 4, 50)
 end)
-
-menu.add_feature("85 %", "action", PERICO_P4_CUT.id, function()
+PERICO_P4_CUT:add_action("85 %", function()
     globals.set_int(1973525 + 823 + 56 + 4, 85)
 end)
-
-menu.add_feature("100 %", "action", PERICO_P4_CUT.id, function()
+PERICO_P4_CUT:add_action("100 %", function()
     globals.set_int(1973525 + 823 + 56 + 4, 100)
 end)
-
-menu.add_feature("125 %", "action", PERICO_P4_CUT.id, function()
+PERICO_P4_CUT:add_action("125 %", function()
     globals.set_int(1973525 + 823 + 56 + 4, 125)
 end)
-
-menu.add_feature("150 %", "action", PERICO_P4_CUT.id, function()
+PERICO_P4_CUT:add_action("150 %", function()
     globals.set_int(1973525 + 823 + 56 + 4, 150)
 end)
-
-menu.add_feature("» Normal Bag Limit", "action", CAYO_BAG.id, function()
+CAYO_BAG:add_action("» 正常背包大小", function()
     globals.set_int(262145 + 29395, 1800)
-    menu.notify(
-        "* Your bag has been modified\n* This feature is not compatible with the Presets\n* Recommended to use with friends/randoms Heists",
-        "Restored Bag", 5, 0x6414F000)
 end)
-
-menu.add_feature("» Simulate Bag to 2 players", "action", CAYO_BAG.id, function()
+CAYO_BAG:add_action("» 2 倍背包大小", function()
     globals.set_int(262145 + 29395, 3600)
-    menu.notify(
-        "* Your bag has been modified\n* This feature is not compatible with the Presets\n* Recommended to use with friends/randoms Heists",
-        "2 Players Capacity", 5, 0x6414F000)
 end)
 
-menu.add_feature("» Simulate Bag to 3 players", "action", CAYO_BAG.id, function()
+CAYO_BAG:add_action("» 3 倍背包大小", function()
     globals.set_int(262145 + 29395, 5400)
-    menu.notify(
-        "* Your bag has been modified\n* This feature is not compatible with the Presets\n* Recommended to use with friends/randoms Heists",
-        "3 Players Capacity", 5, 0x6414F000)
 end)
 
-menu.add_feature("» Simulate Bag to 4 players", "action", CAYO_BAG.id, function()
+CAYO_BAG:add_action("» 4 倍背包大小", function()
     globals.set_int(262145 + 29395, 7200)
-    menu.notify(
-        "* Your bag has been modified\n* This feature is not compatible with the Presets\n* Recommended to use with friends/randoms Heists",
-        "4 Players Capacity", 5, 0x6414F000)
 end)
 
-menu.add_feature("» Infinite Bag", "action", CAYO_BAG.id, function()
+CAYO_BAG:add_action("» 无限背包大小", function()
     globals.set_int(262145 + 29395, 9999999)
-    menu.notify(
-        "* Your bag has been modified\n* This feature is not compatible with the Presets\n* Recommended to use with friends/randoms Heists",
-        "Infinite Bag", 5, 0x6414F000)
 end)
-
-menu.add_feature("» VOLTlab Manipulator", "toggle", PERICO_ADV.id, function(hax)
-    menu.notify(
-        "This function only works if you are close to the VOLTlab box on the island of Cayo Perico, otherwise you will receive an error message",
-        "", 5, yellow)
+PERICO_ADV:add_toggle("» VOLTlab Manipulator", function() return true end,function(hax)
     localplayer:set_position(vector3(4372.792, -4578.357, 4.208))
-    entity.set_entity_rotation(pedmy, vector(2))
+    localplayer:set_rotation(vector3(2,0,0))
     system.wait(1500)
-    while hax.on do
-        ResultScan = script.get_local_i(joaat("fm_mission_controller_2020"), 1777)
-        script.set_local_i(joaat("fm_mission_controller_2020"), 1776, ResultScan)
+    while hax do
+        ResultScan = script:get_int(joaat("fm_mission_controller_2020"))
+        script:set_int(joaat("fm_mission_controller_2020"), ResultScan)
         system.yield(0)
     end
 end)
