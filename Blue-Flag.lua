@@ -249,10 +249,8 @@ HI_Complete:add_action("查询完成的佩里克岛抢劫次数", function()
     end)
 end)
 local EDIT_HI = HI_a:add_submenu("» 编辑器")
--- 画个饼，延长出来省的眼瞎看不见
-EDIT_HI:add_action("在 Kiddion 支持输入数字前先别想了", function()
-end)
-EDIT_HI:add_action("有空了再换种方式编辑 (反正很不方便)", function()
+-- [unuseable]需要用户输入
+EDIT_HI:add_action("该功能暂时不可用", function()
 end)
 -- local valueToSet = EDIT_HI:add_action("修改佩里克岛抢劫次数", function()
 --     local Choose, ME = input.get("输入数字", "", 1000, 3)
@@ -354,7 +352,7 @@ TELEPORT_QL:add_action("次要目标 :: 房间", function()
 end)
 TELEPORT_QL:add_action("办公室 :: 金库/保险柜", function()
     localplayer:set_position(pedmy, vector3(5010.753, -5757.639, 28.845))
-    localplayer:set_rotation(vector3(2,0,0))
+    localplayer:set_rotation(vector3(2, 0, 0))
 end)
 TELEPORT_QL:add_action("豪宅 :: 大门出口", function()
     localplayer:set_position(vector3(4992.854, -5718.537, 19.880))
@@ -959,8 +957,8 @@ do
         {{"PROSTITUTES_FREQUENTE", 100}, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
          {"H4CNF_BOLTCUT", 4424}, {"H4CNF_UNIFORM", 5256}, {"H4CNF_GRAPPEL", 5156}, {"H4_MISSIONS", -1},
          {"H4CNF_WEAPONS", 4}, {"H4CNF_TROJAN", 5}}
-    WEEKLY_SOLO:add_toggle("» 猎豹雕像 (任意次要目标装满背包,不拿保险箱,抢劫结束前保持开启)",
-        function()
+    WEEKLY_SOLO:add_toggle(
+        "» 猎豹雕像 (任意次要目标装满背包,不拿保险箱,抢劫结束前保持开启)", function()
             return true
         end, function(WEEKLY_SOLO_v0)
             for i = 1, #USER_CAN_MDFY_WKLY_SOLO_PANTHER do
@@ -1036,25 +1034,28 @@ do
         {{"PROSTITUTES_FREQUENTE", 100}, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
          {"H4CNF_BOLTCUT", 4424}, {"H4CNF_UNIFORM", 5256}, {"H4CNF_GRAPPEL", 5156}, {"H4_MISSIONS", -1},
          {"H4CNF_WEAPONS", 4}, {"H4CNF_TROJAN", 5}}
-    WEEKLY_F3:add_toggle("» 猎豹雕像 (任意次要目标装满背包,不拿保险箱,抢劫结束前保持开启)", function() return true end, function(WEEKLY_TRIO_v0)
-        for i = 1, #USER_CAN_MDFY_WKLY_TRIO_PANTHER do
-            stat_set_int(USER_CAN_MDFY_WKLY_TRIO_PANTHER[i][1], true, USER_CAN_MDFY_WKLY_TRIO_PANTHER[i][2])
-        end
-        while WEEKLY_TRIO_v0 do
-            for i = 1, #WKLY_TRIO_PANTHER do
-                stat_set_int(WKLY_TRIO_PANTHER[i][1], true, WKLY_TRIO_PANTHER[i][2])
+    WEEKLY_F3:add_toggle("» 猎豹雕像 (任意次要目标装满背包,不拿保险箱,抢劫结束前保持开启)",
+        function()
+            return true
+        end, function(WEEKLY_TRIO_v0)
+            for i = 1, #USER_CAN_MDFY_WKLY_TRIO_PANTHER do
+                stat_set_int(USER_CAN_MDFY_WKLY_TRIO_PANTHER[i][1], true, USER_CAN_MDFY_WKLY_TRIO_PANTHER[i][2])
             end
-            globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
-            globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
-            globals.set_int(262145 + 29395, 1800) -- bag protection
-            globals.set_int(1973525 + 823 + 56 + 1, 30)
-            globals.set_int(1973525 + 823 + 56 + 2, 35)
-            globals.set_int(1973525 + 823 + 56 + 3, 35)
-            -- 防止卡住
-            system.yield(0)
-            -- system.wait(0)
-        end
-    end)
+            while WEEKLY_TRIO_v0 do
+                for i = 1, #WKLY_TRIO_PANTHER do
+                    stat_set_int(WKLY_TRIO_PANTHER[i][1], true, WKLY_TRIO_PANTHER[i][2])
+                end
+                globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
+                globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
+                globals.set_int(262145 + 29395, 1800) -- bag protection
+                globals.set_int(1973525 + 823 + 56 + 1, 30)
+                globals.set_int(1973525 + 823 + 56 + 2, 35)
+                globals.set_int(1973525 + 823 + 56 + 3, 35)
+                -- 防止卡住
+                system.yield(0)
+                -- system.wait(0)
+            end
+        end)
 end
 -- WEEKLY FOUR PLAYERS
 do
@@ -1073,28 +1074,32 @@ do
         {{"PROSTITUTES_FREQUENTE", 100}, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
          {"H4CNF_BOLTCUT", 4424}, {"H4CNF_UNIFORM", 5256}, {"H4CNF_GRAPPEL", 5156}, {"H4_MISSIONS", -1},
          {"H4CNF_WEAPONS", 4}, {"H4CNF_TROJAN", 5}}
-    WEEKLY_F4:add_toggle("» 猎豹雕像 (任意次要目标装满背包,不拿保险箱,抢劫结束前保持开启)", function() return true end, function(WEEKLY_FOUR_v0)
-        for i = 1, #USER_CAN_MDFY_WKLY_FOUR_PANTHER do
-            stat_set_int(USER_CAN_MDFY_WKLY_FOUR_PANTHER[i][1], true, USER_CAN_MDFY_WKLY_FOUR_PANTHER[i][2])
-        end
-        while WEEKLY_FOUR_v0 do
-            for i = 1, #WKLY_FOUR_PANTHER do
-                stat_set_int(WKLY_FOUR_PANTHER[i][1], true, WKLY_FOUR_PANTHER[i][2])
+    WEEKLY_F4:add_toggle("» 猎豹雕像 (任意次要目标装满背包,不拿保险箱,抢劫结束前保持开启)",
+        function()
+            return true
+        end, function(WEEKLY_FOUR_v0)
+            for i = 1, #USER_CAN_MDFY_WKLY_FOUR_PANTHER do
+                stat_set_int(USER_CAN_MDFY_WKLY_FOUR_PANTHER[i][1], true, USER_CAN_MDFY_WKLY_FOUR_PANTHER[i][2])
             end
-            globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
-            globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
-            globals.set_int(262145 + 29395, 1800) -- bag protection
-            globals.set_int(1973525 + 823 + 56 + 1, 25) -- player 1
-            globals.set_int(1973525 + 823 + 56 + 2, 25) -- player 2
-            globals.set_int(1973525 + 823 + 56 + 3, 25) -- player 3
-            globals.set_int(1973525 + 823 + 56 + 4, 25) -- player 4
-            -- 防止卡住
-            system.yield(0)
-            -- system.wait(0)
-        end
-    end)
+            while WEEKLY_FOUR_v0 do
+                for i = 1, #WKLY_FOUR_PANTHER do
+                    stat_set_int(WKLY_FOUR_PANTHER[i][1], true, WKLY_FOUR_PANTHER[i][2])
+                end
+                globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
+                globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
+                globals.set_int(262145 + 29395, 1800) -- bag protection
+                globals.set_int(1973525 + 823 + 56 + 1, 25) -- player 1
+                globals.set_int(1973525 + 823 + 56 + 2, 25) -- player 2
+                globals.set_int(1973525 + 823 + 56 + 3, 25) -- player 3
+                globals.set_int(1973525 + 823 + 56 + 4, 25) -- player 4
+                -- 防止卡住
+                system.yield(0)
+                -- system.wait(0)
+            end
+        end)
 end
 ------- ADVANCED FEATURES CAYO
+-- [unuseable]需要用户输入
 -- PERICO_HOST_CUT:add_action("自定义分红", function(perico_host)
 --     local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
 --     if r == 1 then
@@ -1106,7 +1111,7 @@ end
 --     globals.set_int(1973525 + 823 + 56 + 1, tonumber(s))
 -- end)
 PERICO_HOST_CUT:add_action("0 %", function()
-        globals.set_int(1973525 + 823 + 56 + 1, 0)
+    globals.set_int(1973525 + 823 + 56 + 1, 0)
 end)
 PERICO_HOST_CUT:add_action("50 %", function()
     globals.set_int(1973525 + 823 + 56 + 1, 50)
@@ -1124,6 +1129,7 @@ PERICO_HOST_CUT:add_action("150 %", function()
     globals.set_int(1973525 + 823 + 56 + 1, 150)
 end)
 -- PLAYER 2 CUT MANAGER
+-- [unuseable]需要用户输入
 -- PERICO_P2_CUT:add_action("自定义分红", function(perico2)
 --     local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
 --     if r == 1 then
@@ -1153,6 +1159,7 @@ PERICO_P2_CUT:add_action("150 %", function()
     globals.set_int(1973525 + 823 + 56 + 2, 150)
 end)
 -- PLAYER 3 CUT MANAGER
+-- [unuseable]需要用户输入
 -- PERICO_P3_CUT:add_action("自定义分红", function(perico3)
 --     local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
 --     if r == 1 then
@@ -1182,6 +1189,7 @@ PERICO_P3_CUT:add_action("150 %", function()
     globals.set_int(1973525 + 823 + 56 + 3, 150)
 end)
 -- PLAYER 4 CUT MANAGER
+-- [unuseable]需要用户输入
 -- PERICO_P4_CUT:add_action("自定义分红", function(perico4)
 --     local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
 --     if r == 1 then
@@ -1228,182 +1236,154 @@ end)
 CAYO_BAG:add_action("» 无限背包大小", function()
     globals.set_int(262145 + 29395, 9999999)
 end)
-PERICO_ADV:add_toggle("» VOLTlab Manipulator", function() return true end,function(hax)
+PERICO_ADV:add_toggle("» VOLTlab Manipulator", function()
+    return true
+end, function(hax)
     localplayer:set_position(vector3(4372.792, -4578.357, 4.208))
-    localplayer:set_rotation(vector3(2,0,0))
+    localplayer:set_rotation(vector3(2, 0, 0))
     system.wait(1500)
     while hax do
-        ResultScan = script:get_int(joaat("fm_mission_controller_2020"))
-        script:set_int(joaat("fm_mission_controller_2020"), ResultScan)
+        ResultScan = script(joaat("fm_mission_controller_2020")).get_int(1777)
+        script(joaat("fm_mission_controller_2020")):set_int(1776, ResultScan)
+        -- 防止卡住
         system.yield(0)
+        -- system.wait(0)
     end
 end)
-
-menu.add_feature("» Instant Plasma Cutter", "toggle", PERICO_ADV.id, function(Plasm)
-    while Plasm.on do
-        script.set_local_f(joaat("fm_mission_controller_2020"), 28269 + 3, 999)
-        system.wait(0)
+PERICO_ADV:add_toggle("» 快速等离子切割器", function()
+    return true
+end, function(Plasm)
+    while Plasm do
+        script(joaat("fm_mission_controller_2020")):set_float(28269 + 3, 999)
+        -- 防止卡住
+        system.yield(0)
+        -- system.wait(0)
     end
 end)
-
-menu.add_feature("» Remove Drainage Pipe", "action", PERICO_ADV.id, function()
-    for k, DOORs in pairs(object.get_all_objects()) do
-        local ENT_ENTRY = entity.get_entity_model_hash(DOORs)
-        local prop_chem_grill_bit = 2997331308
-
-        if ENT_ENTRY == prop_chem_grill_bit then
-            network.request_control_of_entity(DOORs)
-            local timer = utils.time_ms() + 500
-            while not network.has_control_of_entity(DOORs) and timer > utils.time_ms() do
-                system.wait(1500)
-            end
-            if network.has_control_of_entity(DOORs) then
-                -- entity.set_entity_as_mission_entity(DOORs, true, true)
-                entity.set_entity_as_no_longer_needed(DOORs)
-                entity.delete_entity(DOORs)
-            end
-        end
-    end
-    menu.notify("Drainage Pipe removed", "", 3, 0x640EF3C2)
-end)
-
+-- [unuseable]该功能需要网络事件和对实体的控制，遂阉割掉
+-- PERICO_ADV:add_action("» 移除排水管道格栅", function()
+--     for k, DOORs in pairs(object.get_all_objects()) do
+--         local ENT_ENTRY = entity.get_entity_model_hash(DOORs)
+--         local prop_chem_grill_bit = 2997331308
+--         if ENT_ENTRY == prop_chem_grill_bit then
+--             network.request_control_of_entity(DOORs)
+--             local timer = utils.time_ms() + 500
+--             while not network.has_control_of_entity(DOORs) and timer > utils.time_ms() do
+--                 system.wait(1500)
+--             end
+--             if network.has_control_of_entity(DOORs) then
+--                 -- entity.set_entity_as_mission_entity(DOORs, true, true)
+--                 entity.set_entity_as_no_longer_needed(DOORs)
+--                 entity.delete_entity(DOORs)
+--             end
+--         end
+--     end
+-- end)
 -------------------------
 do
     local CP_VEH_KA = {{"H4_MISSIONS", 65283}}
-    menu.add_feature("» Submarine KOSATKA", "action", CAYO_VEHICLES.id, function()
-        menu.notify("KOSATKA avaliable", "Heist Control", 3, 0xffef5a09)
+    CAYO_VEHICLES:add_action("» 虎鲸", function()
         for i = 1, #CP_VEH_KA do
             stat_set_int(CP_VEH_KA[i][1], true, CP_VEH_KA[i][2])
         end
     end)
 end
-
 do
     local CP_VEH_AT = {{"H4_MISSIONS", 65413}}
-    menu.add_feature("» Plane ALKONOST", "action", CAYO_VEHICLES.id, function()
-        menu.notify("ALKONOST avaliable", "Heist Control", 3, 0xffef5a09)
+    CAYO_VEHICLES:add_action("» 阿尔科诺斯特", function()
         for i = 1, #CP_VEH_AT do
             stat_set_int(CP_VEH_AT[i][1], true, CP_VEH_AT[i][2])
         end
     end)
 end
-
 do
     local CP_VEH_VM = {{"H4_MISSIONS", 65289}}
-    menu.add_feature("» Plane VELUM", "action", CAYO_VEHICLES.id, function()
-        menu.notify("VELUM avaliable", "Heist Control", 3, 0xffef5a09)
+    CAYO_VEHICLES:add_action("» 梅杜莎", function()
         for i = 1, #CP_VEH_VM do
             stat_set_int(CP_VEH_VM[i][1], true, CP_VEH_VM[i][2])
         end
     end)
 end
-
 do
     local CP_VEH_SA = {{"H4_MISSIONS", 65425}}
-    menu.add_feature("» Helicopter STEALTH ANNIHILATOR", "action", CAYO_VEHICLES.id, function()
-        menu.notify("STEALTH ANNIHILATOR avaliable", "Heist Control", 3, 0xffef5a09)
+    CAYO_VEHICLES:add_action("» 隐形歼灭者", function()
         for i = 1, #CP_VEH_SA do
             stat_set_int(CP_VEH_SA[i][1], true, CP_VEH_SA[i][2])
         end
     end)
 end
-
 do
     local CP_VEH_PB = {{"H4_MISSIONS", 65313}}
-    menu.add_feature("» Boat PATROL BOAT", "action", CAYO_VEHICLES.id, function()
-        menu.notify("PATROL BOAT avaliable", "Heist Control", 3, 0xffef5a09)
+    CAYO_VEHICLES:add_action("» 巡逻艇", function()
         for i = 1, #CP_VEH_PB do
             stat_set_int(CP_VEH_PB[i][1], true, CP_VEH_PB[i][2])
         end
     end)
 end
-
 do
     local CP_VEH_LN = {{"H4_MISSIONS", 65345}}
-    menu.add_feature("» Boat LONGFIN", "action", CAYO_VEHICLES.id, function()
-        menu.notify("LONGFIN avaliable", "Heist Control", 3, 0xffef5a09)
+    CAYO_VEHICLES:add_action("» 长崎", function()
         for i = 1, #CP_VEH_LN do
             stat_set_int(CP_VEH_LN[i][1], true, CP_VEH_LN[i][2])
         end
     end)
 end
-
 do
     local CP_VEH_ALL = {{"H4_MISSIONS", -1}}
-    menu.add_feature("» Unlock All Vehicles", "action", CAYO_VEHICLES.id, function()
-        menu.notify("All Vehicles are avaliable", "Heist Control", 3, 0xffef5a09)
+    CAYO_VEHICLES:add_action("» 解锁全部载具", function()
         for i = 1, #CP_VEH_ALL do
             stat_set_int(CP_VEH_ALL[i][1], true, CP_VEH_ALL[i][2])
         end
     end)
 end
-
 do
     local Target_SapphirePanther = {{"H4CNF_TARGET", 5}}
-    menu.add_feature("» Change to Panther Statue", "action", CAYO_PRIMARY.id, function()
-        menu.notify("Primary Target Modified to Panther Statue\n\n- $1.900,000 (Normal)\n- $2.090,000 (Hard)",
-            "Heist Control", 3, 0xffef5a09)
+    CAYO_PRIMARY:add_action("» 猎豹雕像", function()
         for i = 1, #Target_SapphirePanther do
             stat_set_int(Target_SapphirePanther[i][1], true, Target_SapphirePanther[i][2])
         end
     end)
 end
-
 do
     local Target_MadrazoF = {{"H4CNF_TARGET", 4}}
-    menu.add_feature("» Change to Madrazo Files", "action", CAYO_PRIMARY.id, function()
-        menu.notify("Primary Target Modified to Madrazo Files\n\n- $1.100,000 (Normal)\n- $1.210,000 (Hard)",
-            "Heist Control", 3, 0xffef5a09)
+    CAYO_PRIMARY:add_action("» 玛德拉索文件", function()
         for i = 1, #Target_MadrazoF do
             stat_set_int(Target_MadrazoF[i][1], true, Target_MadrazoF[i][2])
         end
     end)
 end
-
 do
     local Target_PinkDiamond = {{"H4CNF_TARGET", 3}}
-    menu.add_feature("» Change to Pink Diamond", "action", CAYO_PRIMARY.id, function()
-        menu.notify("Primary Target Modified to Pink Diamond\n\n- $1.300,000 (Normal)\n- $1.430,000 (Hard)",
-            "Heist Control", 3, 0xffef5a09)
+    CAYO_PRIMARY:add_action("» 粉钻", function()
         for i = 1, #Target_PinkDiamond do
             stat_set_int(Target_PinkDiamond[i][1], true, Target_PinkDiamond[i][2])
         end
     end)
 end
-
 do
     local Target_BearerBonds = {{"H4CNF_TARGET", 2}}
-    menu.add_feature("» Change to Bearer Bonds", "action", CAYO_PRIMARY.id, function()
-        menu.notify("Primary Target Modified to Bearer Bonds\n\n- $1.100,000 (Normal)\n- $1.210,000 (Hard)",
-            "Heist Control", 3, 0xffef5a09)
+    CAYO_PRIMARY:add_action("» 不记名债券", function()
         for i = 1, #Target_BearerBonds do
             stat_set_int(Target_BearerBonds[i][1], true, Target_BearerBonds[i][2])
         end
     end)
 end
-
 do
     local Target_Ruby = {{"H4CNF_TARGET", 1}}
-    menu.add_feature("» Change to Ruby", "action", CAYO_PRIMARY.id, function()
-        menu.notify("Primary Target Modified to Ruby\n\n- $1.000,000 (Normal)\n- $1.100,000 (Hard)", "Heist Control", 3,
-            0xffef5a09)
+    CAYO_PRIMARY:add_action("» 红宝石项链", function()
         for i = 1, #Target_Ruby do
             stat_set_int(Target_Ruby[i][1], true, Target_Ruby[i][2])
         end
     end)
 end
-
 do
     local Target_Tequila = {{"H4CNF_TARGET", 0}}
-    menu.add_feature("» Change to Tequila", "action", CAYO_PRIMARY.id, function()
-        menu.notify("Primary Target Modified to Tequila\n\n- $900,000 (Normal)\n- $990,000 (Hard)", "Heist Control", 3,
-            0xffef5a09)
+    CAYO_PRIMARY:add_action("» 西西米托龙舌兰酒", function()
         for i = 1, #Target_Tequila do
             stat_set_int(Target_Tequila[i][1], true, Target_Tequila[i][2])
         end
     end)
 end
-
 do
     local SecondaryT_RDM = {{"H4LOOT_CASH_I", 1319624}, {"H4LOOT_CASH_C", 18}, {"H4LOOT_CASH_V", 89400},
                             {"H4LOOT_WEED_I", 2639108}, {"H4LOOT_WEED_C", 36}, {"H4LOOT_WEED_V", 149000},
@@ -1414,16 +1394,12 @@ do
                             {"H4LOOT_WEED_C_SCOPED", 36}, {"H4LOOT_COKE_I_SCOPED", 4229122},
                             {"H4LOOT_COKE_C_SCOPED", 72}, {"H4LOOT_GOLD_I_SCOPED", 8589313},
                             {"H4LOOT_GOLD_C_SCOPED", 129}, {"H4LOOT_PAINT_SCOPED", 127}}
-    menu.add_feature("» Change to Mixed Loot", "action", CAYO_SECONDARY.id, function()
-        menu.notify(
-            "Secondary Target are now Mixed\n\nWhen using this method, the percentage and final payment is random!",
-            "Heist Control", 3, 0xffef5a09)
+    CAYO_SECONDARY:add_action("» 随机次要目标", function()
         for i = 1, #SecondaryT_RDM do
             stat_set_int(SecondaryT_RDM[i][1], true, SecondaryT_RDM[i][2])
         end
     end)
 end
-
 do
     local SecondaryT_FCash = {{"H4LOOT_CASH_I", -1}, {"H4LOOT_CASH_C", -1}, {"H4LOOT_CASH_V", 90000},
                               {"H4LOOT_WEED_I", 0}, {"H4LOOT_WEED_C", 0}, {"H4LOOT_WEED_V", 0}, {"H4LOOT_COKE_I", 0},
@@ -1432,16 +1408,12 @@ do
                               {"H4LOOT_CASH_I_SCOPED", -1}, {"H4LOOT_CASH_C_SCOPED", -1}, {"H4LOOT_WEED_I_SCOPED", 0},
                               {"H4LOOT_WEED_C_SCOPED", 0}, {"H4LOOT_COKE_I_SCOPED", 0}, {"H4LOOT_COKE_C_SCOPED", 0},
                               {"H4LOOT_GOLD_I_SCOPED", 0}, {"H4LOOT_GOLD_C_SCOPED", 0}, {"H4LOOT_PAINT_SCOPED", 127}}
-    menu.add_feature("» Change to full Cash", "action", CAYO_SECONDARY.id, function()
-        menu.notify(
-            "Secondary Target are full Cash (only)\n\nWhen using this method, the percentage and final payment is random!",
-            "Heist Control", 3, 0xffef5a09)
+    CAYO_SECONDARY:add_action("» 现金", function()
         for i = 1, #SecondaryT_FCash do
             stat_set_int(SecondaryT_FCash[i][1], true, SecondaryT_FCash[i][2])
         end
     end)
 end
-
 do
     local SecondaryT_FWeed = {{"H4LOOT_CASH_I", 0}, {"H4LOOT_CASH_C", 0}, {"H4LOOT_CASH_V", 0}, {"H4LOOT_WEED_I", -1},
                               {"H4LOOT_WEED_C", -1}, {"H4LOOT_WEED_V", 140000}, {"H4LOOT_COKE_I", 0},
@@ -1450,16 +1422,12 @@ do
                               {"H4LOOT_CASH_I_SCOPED", 0}, {"H4LOOT_CASH_C_SCOPED", 0}, {"H4LOOT_WEED_I_SCOPED", -1},
                               {"H4LOOT_WEED_C_SCOPED", -1}, {"H4LOOT_COKE_I_SCOPED", 0}, {"H4LOOT_COKE_C_SCOPED", 0},
                               {"H4LOOT_GOLD_I_SCOPED", 0}, {"H4LOOT_GOLD_C_SCOPED", 0}, {"H4LOOT_PAINT_SCOPED", 127}}
-    menu.add_feature("» Change to full Weed", "action", CAYO_SECONDARY.id, function()
-        menu.notify(
-            "Secondary Target are full Weed (only)\n\nWhen using this method, the percentage and final payment is random!",
-            "Heist Control", 3, 0xffef5a09)
+    CAYO_SECONDARY:add_action("» 大麻", function()
         for i = 1, #SecondaryT_FWeed do
             stat_set_int(SecondaryT_FWeed[i][1], true, SecondaryT_FWeed[i][2])
         end
     end)
 end
-
 do
     local SecondaryT_FCoke = {{"H4LOOT_CASH_I", 0}, {"H4LOOT_CASH_C", 0}, {"H4LOOT_CASH_V", 0}, {"H4LOOT_WEED_I", 0},
                               {"H4LOOT_WEED_C", 0}, {"H4LOOT_WEED_V", 0}, {"H4LOOT_COKE_I", -1}, {"H4LOOT_COKE_C", -1},
@@ -1468,16 +1436,12 @@ do
                               {"H4LOOT_CASH_I_SCOPED", 0}, {"H4LOOT_CASH_C_SCOPED", 0}, {"H4LOOT_WEED_I_SCOPED", 0},
                               {"H4LOOT_WEED_C_SCOPED", 0}, {"H4LOOT_COKE_I_SCOPED", -1}, {"H4LOOT_COKE_C_SCOPED", -1},
                               {"H4LOOT_GOLD_I_SCOPED", 0}, {"H4LOOT_GOLD_C_SCOPED", 0}, {"H4LOOT_PAINT_SCOPED", 127}}
-    menu.add_feature("» Change to full Coke", "action", CAYO_SECONDARY.id, function()
-        menu.notify(
-            "Secondary Target are full Coke (only)\n\nWhen using this method, the percentage and final payment is random!",
-            "Heist Control", 3, 0xffef5a09)
+    CAYO_SECONDARY:add_action("» 可卡因", function()
         for i = 1, #SecondaryT_FCoke do
             stat_set_int(SecondaryT_FCoke[i][1], true, SecondaryT_FCoke[i][2])
         end
     end)
 end
-
 do
     local SecondaryT_FGold = {{"H4LOOT_CASH_I", 0}, {"H4LOOT_CASH_C", 0}, {"H4LOOT_CASH_V", 0}, {"H4LOOT_WEED_I", 0},
                               {"H4LOOT_WEED_C", 0}, {"H4LOOT_WEED_V", 0}, {"H4LOOT_COKE_I", 0}, {"H4LOOT_COKE_C", 0},
@@ -1486,16 +1450,12 @@ do
                               {"H4LOOT_CASH_I_SCOPED", 0}, {"H4LOOT_CASH_C_SCOPED", 0}, {"H4LOOT_WEED_I_SCOPED", 0},
                               {"H4LOOT_WEED_C_SCOPED", 0}, {"H4LOOT_COKE_I_SCOPED", 0}, {"H4LOOT_COKE_C_SCOPED", 0},
                               {"H4LOOT_GOLD_I_SCOPED", -1}, {"H4LOOT_GOLD_C_SCOPED", -1}, {"H4LOOT_PAINT_SCOPED", -1}}
-    menu.add_feature("» Change to full Gold", "action", CAYO_SECONDARY.id, function()
-        menu.notify(
-            "Secondary Target are full Gold (only)\n\nWhen using this method, the percentage and final payment is random!",
-            "Heist Control", 3, 0xffef5a09)
+    CAYO_SECONDARY:add_action("» 黄金", function()
         for i = 1, #SecondaryT_FGold do
             stat_set_int(SecondaryT_FGold[i][1], true, SecondaryT_FGold[i][2])
         end
     end)
 end
-
 do
     local SecondaryT_Remove = {{"H4LOOT_CASH_I", 0}, {"H4LOOT_CASH_C", 0}, {"H4LOOT_CASH_V", 0}, {"H4LOOT_WEED_I", 0},
                                {"H4LOOT_WEED_C", 0}, {"H4LOOT_WEED_V", 0}, {"H4LOOT_COKE_I", 0}, {"H4LOOT_COKE_C", 0},
@@ -1504,356 +1464,295 @@ do
                                {"H4LOOT_CASH_C_SCOPED", 0}, {"H4LOOT_WEED_I_SCOPED", 0}, {"H4LOOT_WEED_C_SCOPED", 0},
                                {"H4LOOT_COKE_I_SCOPED", 0}, {"H4LOOT_COKE_C_SCOPED", 0}, {"H4LOOT_GOLD_I_SCOPED", 0},
                                {"H4LOOT_GOLD_C_SCOPED", 0}, {"H4LOOT_PAINT_SCOPED", 0}}
-    menu.add_feature("» Remove All", "action", CAYO_SECONDARY.id, function()
-        menu.notify("All Secondary targets has been removed", "Heist Control", 3, 0xffef5a09)
+    CAYO_SECONDARY:add_action("» 移除全部次要目标", function()
         for i = 1, #SecondaryT_Remove do
             stat_set_int(SecondaryT_Remove[i][1], true, SecondaryT_Remove[i][2])
         end
     end)
 end
+-- [unuseable]需要用户输入
+-- local CAH_2ND_TARGET_MDY = CAYO_SECONDARY:add_submenu("» 修改次要目标价值")
+-- local valueToSet = CAH_2ND_TARGET_MDY:add_action("修改现金价值", function()
+--     local Choose, ME = input.get("输入数字", "", 1000, 3)
+--     if Choose == 1 then
+--         return HANDLER_CONTINUE
+--     end
+--     if Choose == 2 then
+--         return HANDLER_POP
+--     end
+--     stats.set_int(joaat(PlayerMP .. "_H4LOOT_CASH_V"), tonumber(ME), true)
+-- end)
+-- local valueToSet = CAH_2ND_TARGET_MDY:add_action("修改大麻价值", function()
+--     local Choose, ME = input.get("输入数字", "", 1000, 3)
+--     if Choose == 1 then
+--         return HANDLER_CONTINUE
+--     end
+--     if Choose == 2 then
+--         return HANDLER_POP
+--     end
+--     stats.set_int(joaat(PlayerMP .. "_H4LOOT_WEED_V"), tonumber(ME), true)
+-- end)
 
-local CAH_2ND_TARGET_MDY = menu.add_feature("» Modify Loot Price", "parent", CAYO_SECONDARY.id, function()
-    menu.notify("When using this option, the Heist panel must be updated", "", 4, 0x5014F0FA)
-end)
+-- local valueToSet = CAH_2ND_TARGET_MDY:add_action("修改可卡因价值", function()
+--     local Choose, ME = input.get("输入数字", "", 1000, 3)
+--     if Choose == 1 then
+--         return HANDLER_CONTINUE
+--     end
+--     if Choose == 2 then
+--         return HANDLER_POP
+--     end
+--     stats.set_int(joaat(PlayerMP .. "_H4LOOT_COKE_V"), tonumber(ME), true)
+-- end)
+-- local valueToSet = CAH_2ND_TARGET_MDY:add_action("修改黄金价值", function()
+--     local Choose, ME = input.get("输入数字", "", 1000, 3)
+--     if Choose == 1 then
+--         return HANDLER_CONTINUE
+--     end
+--     if Choose == 2 then
+--         return HANDLER_POP
+--     end
+--     stats.set_int(joaat(PlayerMP .. "_H4LOOT_GOLD_V"), tonumber(ME), true)
+-- end)
 
-local valueToSet = menu.add_feature("Change Cash Price", "action", CAH_2ND_TARGET_MDY.id, function()
-    local Choose, ME = input.get("输入数字", "", 1000, 3)
-    if Choose == 1 then
-        return HANDLER_CONTINUE
-    end
-    if Choose == 2 then
-        return HANDLER_POP
-    end
-    stats.set_int(joaat(PlayerMP .. "_H4LOOT_CASH_V"), tonumber(ME), true)
-    menu.notify('数值成功修改为:' .. ME)
-end)
-
-local valueToSet = menu.add_feature("Change Weed Price", "action", CAH_2ND_TARGET_MDY.id, function()
-    local Choose, ME = input.get("输入数字", "", 1000, 3)
-    if Choose == 1 then
-        return HANDLER_CONTINUE
-    end
-    if Choose == 2 then
-        return HANDLER_POP
-    end
-    stats.set_int(joaat(PlayerMP .. "_H4LOOT_WEED_V"), tonumber(ME), true)
-    menu.notify('数值成功修改为:' .. ME)
-end)
-
-local valueToSet = menu.add_feature("Change Coke Price", "action", CAH_2ND_TARGET_MDY.id, function()
-    local Choose, ME = input.get("输入数字", "", 1000, 3)
-    if Choose == 1 then
-        return HANDLER_CONTINUE
-    end
-    if Choose == 2 then
-        return HANDLER_POP
-    end
-    stats.set_int(joaat(PlayerMP .. "_H4LOOT_COKE_V"), tonumber(ME), true)
-    menu.notify('数值成功修改为:' .. ME)
-end)
-
-local valueToSet = menu.add_feature("Change Gold Price", "action", CAH_2ND_TARGET_MDY.id, function()
-    local Choose, ME = input.get("输入数字", "", 1000, 3)
-    if Choose == 1 then
-        return HANDLER_CONTINUE
-    end
-    if Choose == 2 then
-        return HANDLER_POP
-    end
-    stats.set_int(joaat(PlayerMP .. "_H4LOOT_GOLD_V"), tonumber(ME), true)
-    menu.notify('数值成功修改为:' .. ME)
-end)
-
-local valueToSet = menu.add_feature("Change Paint Price", "action", CAH_2ND_TARGET_MDY.id, function()
-    local Choose, ME = input.get("输入数字", "", 1000, 3)
-    if Choose == 1 then
-        return HANDLER_CONTINUE
-    end
-    if Choose == 2 then
-        return HANDLER_POP
-    end
-    stats.set_int(joaat(PlayerMP .. "_H4LOOT_PAINT_V"), tonumber(ME), true)
-    menu.notify('数值成功修改为:' .. ME)
-end)
-
-local CAYO_COMPOUND = menu.add_feature("» Compound Loot", "parent", CAYO_SECONDARY.id)
-
+-- local valueToSet = menu.add_feature("修改画价值", function()
+--     local Choose, ME = input.get("输入数字", "", 1000, 3)
+--     if Choose == 1 then
+--         return HANDLER_CONTINUE
+--     end
+--     if Choose == 2 then
+--         return HANDLER_POP
+--     end
+--     stats.set_int(joaat(PlayerMP .. "_H4LOOT_PAINT_V"), tonumber(ME), true)
+-- end)
+local CAYO_COMPOUND = CAYO_SECONDARY:add_submenu("» 豪宅内次要目标")
 do
     local Compound_LT_MIX = {{"H4LOOT_CASH_C", 2}, {"H4LOOT_CASH_V", 474431}, {"H4LOOT_WEED_C", 17},
                              {"H4LOOT_WEED_V", 759090}, {"H4LOOT_COKE_C", 132}, {"H4LOOT_COKE_V", 948863},
                              {"H4LOOT_GOLD_C", 104}, {"H4LOOT_GOLD_V", 1265151}, {"H4LOOT_PAINT", 127},
                              {"H4LOOT_PAINT_V", 948863}, {"H4LOOT_CASH_C_SCOPED", 2}, {"H4LOOT_WEED_C_SCOPED", 17},
                              {"H4LOOT_COKE_C_SCOPED", 132}, {"H4LOOT_GOLD_C_SCOPED", 104}, {"H4LOOT_PAINT_SCOPED", 127}}
-    menu.add_feature("» Change to Mixed Loot", "action", CAYO_COMPOUND.id, function()
-        menu.notify("Compound Loot has been modified", "Heist Control", 3, 0xffef5a09)
+    CAYO_COMPOUND:add_action("» 随机次要目标", function()
         for i = 1, #Compound_LT_MIX do
             stat_set_int(Compound_LT_MIX[i][1], true, Compound_LT_MIX[i][2])
         end
     end)
 end
-
 do
     local Compound_LT_CASH = {{"H4LOOT_CASH_C", -1}, {"H4LOOT_CASH_V", 90000}, {"H4LOOT_WEED_C", 0},
                               {"H4LOOT_WEED_V", 0}, {"H4LOOT_COKE_C", 0}, {"H4LOOT_COKE_V", 0}, {"H4LOOT_GOLD_C", 0},
                               {"H4LOOT_GOLD_V", 0}, {"H4LOOT_PAINT", 127}, {"H4LOOT_PAINT_V", 190000},
                               {"H4LOOT_CASH_C_SCOPED", -1}, {"H4LOOT_WEED_C_SCOPED", 0}, {"H4LOOT_COKE_C_SCOPED", 0},
                               {"H4LOOT_GOLD_C_SCOPED", 0}, {"H4LOOT_PAINT_SCOPED", 127}}
-    menu.add_feature("» Change to full Cash", "action", CAYO_COMPOUND.id, function()
-        menu.notify("Compound Loot modified to Cash", "Heist Control", 3, 0xffef5a09)
+    CAYO_COMPOUND:add_action("» 现金", function()
         for i = 1, #Compound_LT_CASH do
             stat_set_int(Compound_LT_CASH[i][1], true, Compound_LT_CASH[i][2])
         end
     end)
 end
-
 do
     local Compound_LT_WEED = {{"H4LOOT_CASH_C", 0}, {"H4LOOT_CASH_V", 0}, {"H4LOOT_WEED_C", -1},
                               {"H4LOOT_WEED_V", 140000}, {"H4LOOT_COKE_C", 0}, {"H4LOOT_COKE_V", 0},
                               {"H4LOOT_GOLD_C", 0}, {"H4LOOT_PAINT", 127}, {"H4LOOT_PAINT_V", 190000},
                               {"H4LOOT_CASH_C_SCOPED", 0}, {"H4LOOT_WEED_C_SCOPED", -1}, {"H4LOOT_COKE_C_SCOPED", 0},
                               {"H4LOOT_GOLD_C_SCOPED", 0}, {"H4LOOT_PAINT_SCOPED", 127}}
-    menu.add_feature("» Change to full Weed", "action", CAYO_COMPOUND.id, function()
-        menu.notify("Compound Loot modified to Weed", "Heist Control", 3, 0xffef5a09)
+    CAYO_COMPOUND:add_action("» 大麻", "action", CAYO_COMPOUND.id, function()
         for i = 1, #Compound_LT_WEED do
             stat_set_int(Compound_LT_WEED[i][1], true, Compound_LT_WEED[i][2])
         end
     end)
 end
-
 do
     local Compound_LT_COKE = {{"H4LOOT_CASH_C", 0}, {"H4LOOT_CASH_V", 0}, {"H4LOOT_WEED_C", 0}, {"H4LOOT_WEED_V", 0},
                               {"H4LOOT_COKE_C", -1}, {"H4LOOT_COKE_V", 210000}, {"H4LOOT_GOLD_C", 0},
                               {"H4LOOT_PAINT", 127}, {"H4LOOT_PAINT_V", 190000}, {"H4LOOT_CASH_C_SCOPED", 0},
                               {"H4LOOT_WEED_C_SCOPED", 0}, {"H4LOOT_COKE_C_SCOPED", -1}, {"H4LOOT_GOLD_C_SCOPED", 0},
                               {"H4LOOT_PAINT_SCOPED", 127}}
-    menu.add_feature("» Change to full Coke", "action", CAYO_COMPOUND.id, function()
-        menu.notify("Compound Loot modified to Coke", "Heist Control", 3, 0xffef5a09)
+    CAYO_COMPOUND:add_action("» 可卡因",  function()
         for i = 1, #Compound_LT_COKE do
             stat_set_int(Compound_LT_COKE[i][1], true, Compound_LT_COKE[i][2])
         end
     end)
 end
-
 do
     local Compound_LT_GOLD = {{"H4LOOT_CASH_C", 0}, {"H4LOOT_CASH_V", 0}, {"H4LOOT_WEED_C", 0}, {"H4LOOT_WEED_V", 0},
                               {"H4LOOT_COKE_C", 0}, {"H4LOOT_COKE_V", 0}, {"H4LOOT_GOLD_C", -1},
                               {"H4LOOT_GOLD_V", 320000}, {"H4LOOT_PAINT", 127}, {"H4LOOT_PAINT_V", 190000},
                               {"H4LOOT_GOLD_C_SCOPED", -1}, {"H4LOOT_CASH_C_SCOPED", 0}, {"H4LOOT_WEED_C_SCOPED", 0},
                               {"H4LOOT_COKE_C_SCOPED", 0}, {"H4LOOT_PAINT_SCOPED", 127}}
-    menu.add_feature("» Change to full Gold", "action", CAYO_COMPOUND.id, function()
-        menu.notify("Compound Loot modified to Gold", "Heist Control", 3, 0xffef5a09)
+    CAYO_COMPOUND:add_action("» 黄金",  function()
         for i = 1, #Compound_LT_GOLD do
             stat_set_int(Compound_LT_GOLD[i][1], true, Compound_LT_GOLD[i][2])
         end
     end)
 end
-
 do
     local Compound_LT_PAINT = {{"H4LOOT_CASH_C", 0}, {"H4LOOT_CASH_V", 0}, {"H4LOOT_WEED_C", 0}, {"H4LOOT_WEED_V", 0},
                                {"H4LOOT_COKE_C", 0}, {"H4LOOT_COKE_V", 0}, {"H4LOOT_GOLD_C", 0}, {"H4LOOT_GOLD_V", 0},
                                {"H4LOOT_GOLD_C_SCOPED", 0}, {"H4LOOT_CASH_C_SCOPED", 0}, {"H4LOOT_WEED_C_SCOPED", 0},
                                {"H4LOOT_COKE_C_SCOPED", 0}, {"H4LOOT_PAINT", 127}, {"H4LOOT_PAINT_V", 190000},
                                {"H4LOOT_PAINT_SCOPED", 127}}
-    menu.add_feature("» Change to full Paint", "action", CAYO_COMPOUND.id, function()
-        menu.notify("Compound Loot modified to Paint", "Heist Control", 3, 0xffef5a09)
+    CAYO_COMPOUND:add_action("» 画", function()
         for i = 1, #Compound_LT_PAINT do
             stat_set_int(Compound_LT_PAINT[i][1], true, Compound_LT_PAINT[i][2])
         end
     end)
 end
-
 do
     local Remove_Compound_Paint = {{"H4LOOT_PAINT", 0}, {"H4LOOT_PAINT_V", 0}, {"H4LOOT_PAINT_SCOPED", 0}}
-    menu.add_feature("» Remove Paint (only)", "action", CAYO_COMPOUND.id, function()
-        menu.notify("Paints has been removed", "Heist Control", 3, 0xffef5a09)
+    CAYO_COMPOUND:add_action("» 移除所有画", function()
         for i = 1, #Remove_Compound_Paint do
             stat_set_int(Remove_Compound_Paint[i][1], true, Remove_Compound_Paint[i][2])
         end
     end)
 end
-
 do
     local Remove_ALL_Compound_LT = {{"H4LOOT_CASH_C", 0}, {"H4LOOT_WEED_C", 0}, {"H4LOOT_COKE_C", 0},
                                     {"H4LOOT_GOLD_C", 0}, {"H4LOOT_GOLD_C_SCOPED", 0}, {"H4LOOT_CASH_C_SCOPED", 0},
                                     {"H4LOOT_WEED_C_SCOPED", 0}, {"H4LOOT_COKE_C_SCOPED", 0}, {"H4LOOT_PAINT", 0},
                                     {"H4LOOT_PAINT_SCOPED", 0}}
-    menu.add_feature("» Remove all", "action", CAYO_COMPOUND.id, function()
-        menu.notify("All Compound loots has been removed", "Heist Control", 3, 0xffef5a09)
+    CAYO_COMPOUND:add_action("» 移除全部次要目标", function()
         for i = 1, #Remove_ALL_Compound_LT do
             stat_set_int(Remove_ALL_Compound_LT[i][1], true, Remove_ALL_Compound_LT[i][2])
         end
     end)
 end
-
 do
     local Weapon_Aggressor = {{"H4CNF_WEAPONS", 1}}
-    menu.add_feature("» Aggressor", "action", CAYO_WEAPONS.id, function()
+    CAYO_WEAPONS:add_action("» 侵略者", function()
         menu.notify("Assault SG + Machine Pistol\nMachete + Grenade", "Aggressor Loadout", 3, 0x64A0CD14)
         for i = 1, #Weapon_Aggressor do
             stat_set_int(Weapon_Aggressor[i][1], true, Weapon_Aggressor[i][2])
         end
     end)
 end
-
 do
     local Weapon_Conspirator = {{"H4CNF_WEAPONS", 2}}
-    menu.add_feature("» Conspirator", "action", CAYO_WEAPONS.id, function()
-        menu.notify("Military Rifle + AP\nKnuckles + Stickies", "Conspirator Loadout", 3, 0x64A0CD14)
+    CAYO_WEAPONS:add_action("» 阴谋者", function()
         for i = 1, #Weapon_Conspirator do
             stat_set_int(Weapon_Conspirator[i][1], true, Weapon_Conspirator[i][2])
         end
     end)
 end
-
 do
     local Weapon_Crackshot = {{"H4CNF_WEAPONS", 3}}
-    menu.add_feature("» Crackshot", "action", CAYO_WEAPONS.id, function()
-        menu.notify("Sniper + AP\nKnife + Molotov", "Crackshot Loadout", 3, 0x64A0CD14)
+    CAYO_WEAPONS:add_action("» 神枪手", function()
         for i = 1, #Weapon_Crackshot do
             stat_set_int(Weapon_Crackshot[i][1], true, Weapon_Crackshot[i][2])
         end
     end)
 end
-
 do
     local Weapon_Saboteur = {{"H4CNF_WEAPONS", 4}}
-    menu.add_feature("» Saboteur", "action", CAYO_WEAPONS.id, function()
-        menu.notify("SMG MK II + SNS Pistol\nKnife + Pipe Bomb", "Saboteur Loadout", 3, 0x64A0CD14)
+    CAYO_WEAPONS:add_action("» 破坏者", function()
         for i = 1, #Weapon_Saboteur do
             stat_set_int(Weapon_Saboteur[i][1], true, Weapon_Saboteur[i][2])
         end
     end)
 end
-
 do
     local Weapon_Marksman = {{"H4CNF_WEAPONS", 5}}
-    menu.add_feature("» Marksman", "action", CAYO_WEAPONS.id, function()
-        menu.notify("AK-47 + Pistol .50\nMachete + Pipe Bomb", "Marksman Loadout", 3, 0x64A0CD14)
+    CAYO_WEAPONS:add_action("» 神射手", function()
         for i = 1, #Weapon_Marksman do
             stat_set_int(Weapon_Marksman[i][1], true, Weapon_Marksman[i][2])
         end
     end)
 end
-
 do
     local Supress_Removal = {{"H4CNF_BS_GEN", 126975}}
-    menu.add_feature("» Remove Suppressor", "action", CAYO_WEAPONS.id, function()
-        menu.notify("Please stay away from the Submarine Heist room to update", "Suppressor Removed", 3, 0x64A0CD14)
+    local FUCK_Supressor=CAYO_WEAPONS:add_submenu("» 消音器")
+    FUCK_Supressor:add_action("买不起消音器上你妈的岛", function()
+    end)
+    CAYO_WEAPONS:add_action("» 移除消音器", function()
         for i = 1, #Supress_Removal do
             stat_set_int(Supress_Removal[i][1], true, Supress_Removal[i][2])
         end
     end)
 end
-
 do
     local CP_Item_SpawnPlace_AIR = {{"H4CNF_GRAPPEL", 2022}, {"H4CNF_UNIFORM", 12}, {"H4CNF_BOLTCUT", 4161},
                                     {"H4CNF_TROJAN", 1}}
-    menu.add_feature("» Set Equipments spawn next to Airport", "action", CAYO_EQUIPM.id, function()
-        menu.notify("Equipments will spawn next to Airport:\n\n- Grappling Hook\n- Guard Clothing\n- Bolt Cutters",
-            "Heist Control", 3, 0xffef5a09)
+    CAYO_EQUIPM:add_action("» 机场周边", function()
         for i = 1, #CP_Item_SpawnPlace_AIR do
             stat_set_int(CP_Item_SpawnPlace_AIR[i][1], true, CP_Item_SpawnPlace_AIR[i][2])
         end
     end)
 end
-
 do
     local CP_Item_SpawnPlace_DKS = {{"H4CNF_GRAPPEL", 3671}, {"H4CNF_UNIFORM", 5256}, {"H4CNF_BOLTCUT", 4424},
                                     {"H4CNF_TROJAN", 2}}
-    menu.add_feature("» Set Equipments spawn next to Docks", "action", CAYO_EQUIPM.id, function()
-        menu.notify("Equipments will spawn next to Docks:\n\n- Grappling Hook\n- Guard Clothing\n- Bolt Cutters",
-            "Heist Control", 3, 0xffef5a09)
+    CAYO_EQUIPM:add_action("» 码头周边", function()
         for i = 1, #CP_Item_SpawnPlace_DKS do
             stat_set_int(CP_Item_SpawnPlace_DKS[i][1], true, CP_Item_SpawnPlace_DKS[i][2])
         end
     end)
 end
-
 do
     local CP_Item_SpawnPlace_CP = {{"H4CNF_GRAPPEL", 85324}, {"H4CNF_UNIFORM", 61034}, {"H4CNF_BOLTCUT", 4612},
                                    {"H4CNF_TROJAN", 5}}
-    menu.add_feature("» Set Equipments spawn next to Compound", "action", CAYO_EQUIPM.id, function()
-        menu.notify("Equipments will spawn next to Compound:\n\n- Grappling Hook\n- Guard Clothing\n- Bolt Cutters",
-            "Heist Control", 3, 0xffef5a09)
+    CAYO_EQUIPM:add_action("» 豪宅周边", function()
         for i = 1, #CP_Item_SpawnPlace_CP do
             stat_set_int(CP_Item_SpawnPlace_CP[i][1], true, CP_Item_SpawnPlace_CP[i][2])
         end
     end)
 end
-
 do
     local CP_TRUCK_SPAWN_mov1 = {{"H4CNF_TROJAN", 1}}
-    menu.add_feature("» Set Supply Truck spawn to Airport", "action", CAYO_TRUCK.id, function()
-        menu.notify("Supply Truck will now spawn next to Airport", "Heist Control", 3, 0xffef5a09)
+    CAYO_TRUCK:add_action("» 机场", function()
         for i = 1, #CP_TRUCK_SPAWN_mov1 do
             stat_set_int(CP_TRUCK_SPAWN_mov1[i][1], true, CP_TRUCK_SPAWN_mov1[i][2])
         end
     end)
 end
-
 do
     local CP_TRUCK_SPAWN_mov2 = {{"H4CNF_TROJAN", 2}}
-    menu.add_feature("» Set Supply Truck spawn to North Dock", "action", CAYO_TRUCK.id, function()
-        menu.notify("Supply Truck will now spawn next to North Dock", "Heist Control", 3, 0xffef5a09)
+    CAYO_TRUCK:add_action("» 北码头", function()
         for i = 1, #CP_TRUCK_SPAWN_mov2 do
             stat_set_int(CP_TRUCK_SPAWN_mov2[i][1], true, CP_TRUCK_SPAWN_mov2[i][2])
         end
     end)
 end
-
 do
     local CP_TRUCK_SPAWN_mov3 = {{"H4CNF_TROJAN", 3}}
-    menu.add_feature("» Set Supply Truck spawn to Main Dock (East)", "action", CAYO_TRUCK.id, function()
-        menu.notify("Supply Truck will now spawn next to Main Dock - East", "Heist Control", 3, 0xffef5a09)
+    CAYO_TRUCK:add_action("» 主码头 (东)", function()
         for i = 1, #CP_TRUCK_SPAWN_mov3 do
             stat_set_int(CP_TRUCK_SPAWN_mov3[i][1], true, CP_TRUCK_SPAWN_mov3[i][2])
         end
     end)
 end
-
 do
     local CP_TRUCK_SPAWN_mov4 = {{"H4CNF_TROJAN", 4}}
-    menu.add_feature("» Set Supply Truck spawn to Main Dock (West)", "action", CAYO_TRUCK.id, function()
-        menu.notify("Supply Truck will now spawn next to Main Dock (West)", "Heist Control", 3, 0xffef5a09)
+    CAYO_TRUCK:add_action("» 主码头 (西)", function()
         for i = 1, #CP_TRUCK_SPAWN_mov4 do
             stat_set_int(CP_TRUCK_SPAWN_mov4[i][1], true, CP_TRUCK_SPAWN_mov4[i][2])
         end
     end)
 end
-
 do
     local CP_TRUCK_SPAWN_mov5 = {{"H4CNF_TROJAN", 5}}
-    menu.add_feature("» Set Supply Truck spawn next to Compound", "action", CAYO_TRUCK.id, function()
-        menu.notify("Supply Truck will now spawn next to Compound", "Heist Control", 3, 0xffef5a09)
+    CAYO_TRUCK:add_action("» 豪宅", function()
         for i = 1, #CP_TRUCK_SPAWN_mov5 do
             stat_set_int(CP_TRUCK_SPAWN_mov5[i][1], true, CP_TRUCK_SPAWN_mov5[i][2])
         end
     end)
 end
-
 do
     local CAYO_NORMAL = {{"H4_PROGRESS", 126823}}
-    menu.add_feature("» Change Difficulty to Normal", "action", CAYO_DFFCTY.id, function()
-        menu.notify("Difficulty has been changed to Normal", "Difficulty Editor", 3, 0xffef5a09)
+    CAYO_DFFCTY:add_action("» 正常模式", function()
         for i = 1, #CAYO_NORMAL do
             stat_set_int(CAYO_NORMAL[i][1], true, CAYO_NORMAL[i][2])
         end
     end)
 end
-
 do
     local CAYO_Hard = {{"H4_PROGRESS", 131055}}
-    menu.add_feature("» Change Difficulty to Hard", "action", CAYO_DFFCTY.id, function()
-        menu.notify("Difficulty has been changed to Hard", "Difficulty Editor", 3, 0xffef5a09)
+    CAYO_DFFCTY:add_action("» 困难模式", function()
         for i = 1, #CAYO_Hard do
             stat_set_int(CAYO_Hard[i][1], true, CAYO_Hard[i][2])
         end
     end)
 end
-
 do
-    menu.add_feature("» Unlock Cayo Perico Awards", "action", MORE_OPTIONS.id, function()
-
+    MORE_OPTIONS:add_action("» 解锁佩里科岛奖励", function()
         local CP_AWRD_BL = {{"AWD_INTELGATHER", true}, {"AWD_COMPOUNDINFILT", true}, {"AWD_LOOT_FINDER", true},
                             {"AWD_MAX_DISRUPT", true}, {"AWD_THE_ISLAND_HEIST", true}, {"AWD_GOING_ALONE", true},
                             {"AWD_TEAM_WORK", true}, {"AWD_MIXING_UP", true}, {"AWD_PRO_THIEF", true},
@@ -1867,7 +1766,6 @@ do
                             {"AWD_WRECK_DIVING", 1000000}, {"AWD_KEINEMUSIK", 1800000}, {"AWD_PALMS_TRAX", 1800000},
                             {"AWD_MOODYMANN", 1800000}, {"AWD_FILL_YOUR_BAGS", 1000000000}, {"AWD_WELL_PREPARED", 80},
                             {"H4_H4_DJ_MISSIONS", -1}}
-        menu.notify("Cayo Perico Awards Unlocked!", "Heist Control", 3, 0xffef5a09)
         for i = 1, #CP_AWRD_IT do
             stat_set_int(CP_AWRD_IT[i][1], true, CP_AWRD_IT[i][2])
         end
@@ -1875,48 +1773,40 @@ do
             stat_set_bool(CP_AWRD_BL[i][1], true, CP_AWRD_BL[i][2])
         end
         for i = 0, 192, 1 do
-            hash, mask = stats.get_bool_hash_and_mask("_HISLANDPSTAT_BOOL", i, CharID)
-            stats.set_bool_masked(hash, true, mask, 1, true)
+            hash, mask = stats.get_bool_masked(CharID .. "_HISLANDPSTAT_BOOL", i)
+            stats.set_bool_masked(hash, true, mask)
         end
     end)
 end
-
 do
-
     local COMPLETE_CP_MISSIONS =
         {{"PROSTITUTES_FREQUENTE", 100}, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
          {"H4_MISSIONS", -1}, {"H4CNF_APPROACH", -1}, {"H4CNF_BS_ENTR", 63}, {"H4CNF_BS_GEN", 63},
          {"H4CNF_WEP_DISRP", 3}, {"H4CNF_ARM_DISRP", 3}, {"H4CNF_HEL_DISRP", 3}}
-    menu.add_feature("» Complete all Missions only", "action", MORE_OPTIONS.id, function()
-        menu.notify("All missions are completed\n\nBe outside the sub so that the values update correctly.", "", 3,
-            0x64097300)
+         MORE_OPTIONS:add_action("» 完成全部任务", function()
         for i = 1, #COMPLETE_CP_MISSIONS do
             stat_set_int(COMPLETE_CP_MISSIONS[i][1], true, COMPLETE_CP_MISSIONS[i][2])
         end
     end)
 end
-
 do
     local CP_RST = {{"H4_MISSIONS", 0}, {"H4_PROGRESS", 0}, {"H4CNF_APPROACH", 0}, {"H4CNF_BS_ENTR", 0},
                     {"H4CNF_BS_GEN", 0}, {"H4_PLAYTHROUGH_STATUS", 2}}
-    menu.add_feature("» Reset Heist to Default", "action", MORE_OPTIONS.id, function()
-        menu.notify("Cayo Perico Settings has been reseted", "", 3, 0x64FF78B4)
+    MORE_OPTIONS:add_action("» 重置抢劫", function()
         for i = 1, #CP_RST do
             stat_set_int(CP_RST[i][1], true, CP_RST[i][2])
         end
     end)
 end
-
+-- 名钻赌场抢劫
 do
     local RunOnce = {{"H3_COMPLETEDPOSIX", -1}, {"H3OPT_MASKS", 4}, {"H3OPT_WEAPS", 1}, {"H3OPT_VEHS", 3}}
-
     local CAH_SILENT_SNEAKY_PRESET_ID_DMND = {{"CAS_HEIST_FLOW", -1}, {"H3_LAST_APPROACH", 0}, {"H3OPT_APPROACH", 1},
                                               {"H3_HARD_APPROACH", 0}, {"H3OPT_TARGET", 3}, {"H3OPT_POI", 1023},
                                               {"H3OPT_ACCESSPOINTS", 2047}, {"H3OPT_CREWWEAP", 4},
                                               {"H3OPT_CREWDRIVER", 3}, {"H3OPT_CREWHACKER", 4},
                                               {"H3OPT_DISRUPTSHIP", 3}, {"H3OPT_BODYARMORLVL", -1},
                                               {"H3OPT_KEYLEVELS", 2}, {"H3OPT_BITSET1", 127}, {"H3OPT_BITSET0", 262270}}
-
     menu.add_feature("» Silent & Sneaky", "toggle", CAH_DIA_TARGET.id, function(DMND_1)
         menu.notify(
             "ALWAYS choose >> Low Level Buyer <<\n\nThe percentage of members, including yours, is already set to the highest payout [3.500,000]\n\n\tYour Heist is ready to start!",
