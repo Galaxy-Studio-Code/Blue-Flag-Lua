@@ -1,7 +1,7 @@
 -- Blue-Flag lua
 -- Github: https://github.com/Galaxy-Studio-Code/Blue-Flag-Lua
 -- Edit from 2Take1 Heist-Control-v2 lua by jhowkNx
--- some features disappeared because kiddion didn't provide enough api, and it's documention is too hard to understand
+-- some features was deleted because kiddion didn't provide enough api
 -- init
 require_game_build(2628)
 local bfmenu = menu.add_submenu("Blue-Flag Lua")
