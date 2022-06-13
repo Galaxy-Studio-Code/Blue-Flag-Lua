@@ -5,7 +5,7 @@
 -- init
 require_game_build(2628)
 local bfmenu = menu.add_submenu("Blue-Flag Lua")
-local LUA_VER = "1.0.7"
+local LUA_VER = "1.0.8"
 -- Script core function [INT]
 local function stat_set_int(hash, prefix, value, save)
     save = save or true
