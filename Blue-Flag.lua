@@ -16,12 +16,12 @@ local function stat_set_int(hash, prefix, value, save)
         hash1 = joaat(hash1)
     end
     hash0 = joaat(hash0)
-    local value0, e = stats.get_int(hash0)
+    local value0 = stats.get_int(hash0)
     if value0 ~= value then
         stats.set_int(hash0, value)
     end
     if prefix then
-        local value1, e = stats.get_int(hash1)
+        local value1 = stats.get_int(hash1)
         if value1 ~= value then
             stats.set_int(hash1, value)
         end
@@ -37,12 +37,12 @@ local function stat_set_bool(hash, prefix, value, save)
         hash1 = joaat(hash1)
     end
     hash0 = joaat(hash0)
-    local value0, e = stats.get_bool(hash0)
+    local value0 = stats.get_bool(hash0)
     if value0 ~= value then
         stats.set_bool(hash0, value)
     end
     if prefix then
-        local value1, e = stats.get_bool(hash1)
+        local value1 = stats.get_bool(hash1)
         if value1 ~= value then
             stats.set_bool(hash1, value)
         end
@@ -54,6 +54,9 @@ local mask
 --
 function GTAO_USER_MP()
     MP_ = stats.get_int(joaat("MPPLY_LAST_MP_CHAR"))
+    if not MP_ then
+        MP_ = 1
+    end
     return tostring(MP_)
 end
 local CharID = "" .. GTAO_USER_MP()
@@ -62,7 +65,10 @@ function CurrentMP(stat)
     local text = stat
     local hash = joaat("MPPLY_LAST_MP_CHAR")
     local MP = stats.get_int(hash)
-    return (string.format("MP" .. MP .. "_" .. text))
+    if not MP then
+        MP = 1
+    end
+    return ("MP" .. MP .. "_" .. text)
 end
 --
 function GTA_MP()
@@ -169,26 +175,44 @@ HI_Vehicle:add_action("查询最常使用的接近载具", function()
     local stat = CurrentMP(KOS)
     local stat_hash = joaat(stat)
     local stat_result = stats.get_int(stat_hash)
+    if not stat_result then
+        stat_result = 0
+    end
     --
     local stat = CurrentMP(STB)
     local stat_hash = joaat(stat)
     local stat_result_0 = stats.get_int(stat_hash)
+    if not stat_result_0 then
+        stat_result_0 = 0
+    end
     --
     local stat = CurrentMP(SMG)
     local stat_hash = joaat(stat)
     local stat_result_1 = stats.get_int(stat_hash)
+    if not stat_result_1 then
+        stat_result_1 = 0
+    end
     --
     local stat = CurrentMP(STE)
     local stat_hash = joaat(stat)
     local stat_result_2 = stats.get_int(stat_hash)
+    if not stat_result_2 then
+        stat_result_2 = 0
+    end
     --
     local stat = CurrentMP(KTT)
     local stat_hash = joaat(stat)
     local stat_result_3 = stats.get_int(stat_hash)
+    if not stat_result_3 then
+        stat_result_3 = 0
+    end
     --
     local stat = CurrentMP(LNG)
     local stat_hash = joaat(stat)
     local stat_result_4 = stats.get_int(stat_hash)
+    if not stat_result_4 then
+        stat_result_4 = 0
+    end
     HI_Vehicle:add_action("你选择了" .. SUB .. stat_result .. URL, function()
     end)
     HI_Vehicle:add_action("你选择了" .. AKT .. stat_result_0 .. URL, function()
@@ -207,26 +231,44 @@ HI_PRIMARY:add_action("查询抢劫的主要目标次数", function()
     local stat = CurrentMP(PAN_)
     local stat_hash = joaat(stat)
     local Answer_0 = stats.get_int(stat_hash)
+    if not Answer_0 then
+        Answer_0 = 0
+    end
     --
     local stat = CurrentMP(MAZ_)
     local stat_hash = joaat(stat)
     local Answer_1 = stats.get_int(stat_hash)
+    if not Answer_1 then
+        Answer_1 = 0
+    end
     --
     local stat = CurrentMP(PDD_)
     local stat_hash = joaat(stat)
     local Answer_2 = stats.get_int(stat_hash)
+    if not Answer_2 then
+        Answer_2 = 0
+    end
     --
     local stat = CurrentMP(BON_)
     local stat_hash = joaat(stat)
     local Answer_3 = stats.get_int(stat_hash)
+    if not Answer_3 then
+        Answer_3 = 0
+    end
     --
     local stat = CurrentMP(NCK_)
     local stat_hash = joaat(stat)
     local Answer_4 = stats.get_int(stat_hash)
+    if not Answer_4 then
+        Answer_4 = 0
+    end
     --
     local stat = CurrentMP(TQL_)
     local stat_hash = joaat(stat)
     local Answer_5 = stats.get_int(stat_hash)
+    if not Answer_5 then
+        Answer_5 = 0
+    end
     HI_PRIMARY:add_action("你选择了" .. PAN .. Answer_0 .. URL, function()
     end)
     HI_PRIMARY:add_action("你选择了" .. MAZ .. Answer_1 .. URL, function()
@@ -245,6 +287,9 @@ HI_Complete:add_action("查询完成的佩里克岛抢劫次数", function()
     local stat = CurrentMP(CPL)
     local stat_hash = joaat(stat)
     local stat_result_5 = stats.get_int(stat_hash)
+    if not stat_result_5 then
+        stat_result_5 = 0
+    end
     HI_Complete:add_action('你完成了佩里克岛抢劫' .. stat_result_5 .. URL, function()
     end)
 end)
@@ -351,7 +396,7 @@ TELEPORT_QL:add_action("次要目标 :: 房间", function()
     localplayer:set_position(vector3(5003.467, -5749.352, 14.840))
 end)
 TELEPORT_QL:add_action("办公室 :: 金库/保险柜", function()
-    localplayer:set_position(pedmy, vector3(5010.753, -5757.639, 28.845))
+    localplayer:set_position(vector3(5010.753, -5757.639, 28.845))
     localplayer:set_rotation(vector3(2, 0, 0))
 end)
 TELEPORT_QL:add_action("豪宅 :: 大门出口", function()
@@ -371,13 +416,13 @@ end)
 TELEPORTMANSIONO:add_action("豪宅外部大门入口", function()
     localplayer:set_position(vector3(4972.337, -5701.617, 19.887))
 end)
-TELEPORTMANSIONO:add_action("豪宅外部北投放点", function()
+TELEPORTMANSIONO:add_action("豪宅外部北墙", function()
     localplayer:set_position(vector3(5041.111, -5675.523, 19.292))
 end)
 TELEPORTMANSIONO:add_action("豪宅外部北大门入口", function()
     localplayer:set_position(vector3(5086.59, -5730.8, 15.773))
 end)
-TELEPORTMANSIONO:add_action("豪宅外部南投放点", function()
+TELEPORTMANSIONO:add_action("豪宅外部南墙", function()
     localplayer:set_position(vector3(4987.32, -5819.869, 19.548))
 end)
 TELEPORTMANSIONO:add_action("豪宅外部南大门入口", function()
@@ -551,7 +596,7 @@ do
     HE_about_info:add_action("By : Blue-Flag", function()
     end)
     HE_about_info:add_action("Version : " .. LUA_VER, function()
-    end)    
+    end)
 end
 ---- AUTO (ALL PLAYERS) NO SECONDARY TARGET
 do
@@ -1236,29 +1281,15 @@ end)
 CAYO_BAG:add_action("» 无限背包大小", function()
     globals.set_int(262145 + 29395, 9999999)
 end)
-PERICO_ADV:add_toggle("» VOLTlab Manipulator", function()
-    return true
-end, function(hax)
+PERICO_ADV:add_action("» VOLTlab (关闭防空系统)", function()
     localplayer:set_position(vector3(4372.792, -4578.357, 4.208))
     localplayer:set_rotation(vector3(2, 0, 0))
-    system.wait(1500)
-    while hax do
-        ResultScan = script(joaat("fm_mission_controller_2020")).get_int(1777)
-        script(joaat("fm_mission_controller_2020")):set_int(1776, ResultScan)
-        -- 防止卡住
-        system.yield(0)
-        -- system.wait(0)
-    end
+    sleep(3)
+    ResultScan = script(joaat("fm_mission_controller_2020")):get_int(1777)
+    script(joaat("fm_mission_controller_2020")):set_int(1776, ResultScan)
 end)
-PERICO_ADV:add_toggle("» 快速等离子切割器", function()
-    return true
-end, function(Plasm)
-    while Plasm do
-        script(joaat("fm_mission_controller_2020")):set_float(28269 + 3, 999)
-        -- 防止卡住
-        system.yield(0)
-        -- system.wait(0)
-    end
+PERICO_ADV:add_action("» 快速等离子切割器", function()
+    script(joaat("fm_mission_controller_2020")):set_float(28269 + 3, 999)
 end)
 -- [unuseable]该功能需要网络事件和对实体的控制，遂阉割掉
 -- PERICO_ADV:add_action("» 移除排水管道格栅", function()
@@ -1555,7 +1586,7 @@ do
                               {"H4LOOT_GOLD_C", 0}, {"H4LOOT_PAINT", 127}, {"H4LOOT_PAINT_V", 190000},
                               {"H4LOOT_CASH_C_SCOPED", 0}, {"H4LOOT_WEED_C_SCOPED", -1}, {"H4LOOT_COKE_C_SCOPED", 0},
                               {"H4LOOT_GOLD_C_SCOPED", 0}, {"H4LOOT_PAINT_SCOPED", 127}}
-    CAYO_COMPOUND:add_action("» 大麻", "action", CAYO_COMPOUND.id, function()
+    CAYO_COMPOUND:add_action("» 大麻", function()
         for i = 1, #Compound_LT_WEED do
             stat_set_int(Compound_LT_WEED[i][1], true, Compound_LT_WEED[i][2])
         end
@@ -1567,7 +1598,7 @@ do
                               {"H4LOOT_PAINT", 127}, {"H4LOOT_PAINT_V", 190000}, {"H4LOOT_CASH_C_SCOPED", 0},
                               {"H4LOOT_WEED_C_SCOPED", 0}, {"H4LOOT_COKE_C_SCOPED", -1}, {"H4LOOT_GOLD_C_SCOPED", 0},
                               {"H4LOOT_PAINT_SCOPED", 127}}
-    CAYO_COMPOUND:add_action("» 可卡因",  function()
+    CAYO_COMPOUND:add_action("» 可卡因", function()
         for i = 1, #Compound_LT_COKE do
             stat_set_int(Compound_LT_COKE[i][1], true, Compound_LT_COKE[i][2])
         end
@@ -1579,7 +1610,7 @@ do
                               {"H4LOOT_GOLD_V", 320000}, {"H4LOOT_PAINT", 127}, {"H4LOOT_PAINT_V", 190000},
                               {"H4LOOT_GOLD_C_SCOPED", -1}, {"H4LOOT_CASH_C_SCOPED", 0}, {"H4LOOT_WEED_C_SCOPED", 0},
                               {"H4LOOT_COKE_C_SCOPED", 0}, {"H4LOOT_PAINT_SCOPED", 127}}
-    CAYO_COMPOUND:add_action("» 黄金",  function()
+    CAYO_COMPOUND:add_action("» 黄金", function()
         for i = 1, #Compound_LT_GOLD do
             stat_set_int(Compound_LT_GOLD[i][1], true, Compound_LT_GOLD[i][2])
         end
@@ -1659,7 +1690,7 @@ do
 end
 do
     local Supress_Removal = {{"H4CNF_BS_GEN", 126975}}
-    local FUCK_Supressor=CAYO_WEAPONS:add_submenu("» 消音器")
+    local FUCK_Supressor = CAYO_WEAPONS:add_submenu("» 消音器")
     FUCK_Supressor:add_action("买不起消音器上你妈的岛", function()
     end)
     CAYO_WEAPONS:add_action("» 移除消音器", function()
@@ -1773,8 +1804,8 @@ do
             stat_set_bool(CP_AWRD_BL[i][1], true, CP_AWRD_BL[i][2])
         end
         for i = 0, 192, 1 do
-            hash, mask = stats.get_bool_masked(CharID .. "_HISLANDPSTAT_BOOL", i)
-            stats.set_bool_masked(hash, true, mask)
+            hash = joaat(CharID .. "_HISLANDPSTAT_BOOL")
+            stats.set_bool_masked(hash, true, i)
         end
     end)
 end
@@ -1783,7 +1814,7 @@ do
         {{"PROSTITUTES_FREQUENTE", 100}, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
          {"H4_MISSIONS", -1}, {"H4CNF_APPROACH", -1}, {"H4CNF_BS_ENTR", 63}, {"H4CNF_BS_GEN", 63},
          {"H4CNF_WEP_DISRP", 3}, {"H4CNF_ARM_DISRP", 3}, {"H4CNF_HEL_DISRP", 3}}
-         MORE_OPTIONS:add_action("» 完成全部任务", function()
+    MORE_OPTIONS:add_action("» 完成全部任务", function()
         for i = 1, #COMPLETE_CP_MISSIONS do
             stat_set_int(COMPLETE_CP_MISSIONS[i][1], true, COMPLETE_CP_MISSIONS[i][2])
         end
