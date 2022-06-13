@@ -5,7 +5,7 @@
 -- init
 require_game_build(2628)
 local bfmenu = menu.add_submenu("Blue-Flag Lua")
-local LUA_VER = "1.0.6"
+local LUA_VER = "1.0.7"
 -- Script core function [INT]
 local function stat_set_int(hash, prefix, value, save)
     save = save or true
@@ -13,9 +13,7 @@ local function stat_set_int(hash, prefix, value, save)
     if prefix then
         hash0 = "MP0_" .. hash
         hash1 = "MP1_" .. hash
-        hash1 = joaat(hash1)
     end
-    hash0 = joaat(hash0)
     local value0 = stats.get_int(hash0)
     if value0 ~= value then
         stats.set_int(hash0, value)
@@ -34,9 +32,7 @@ local function stat_set_bool(hash, prefix, value, save)
     if prefix then
         hash0 = "MP0_" .. hash
         hash1 = "MP1_" .. hash
-        hash1 = joaat(hash1)
     end
-    hash0 = joaat(hash0)
     local value0 = stats.get_bool(hash0)
     if value0 ~= value then
         stats.set_bool(hash0, value)
@@ -53,7 +49,7 @@ local hash
 local mask
 --
 function GTAO_USER_MP()
-    MP_ = stats.get_int(joaat("MPPLY_LAST_MP_CHAR"))
+    MP_ = stats.get_int("MPPLY_LAST_MP_CHAR")
     if not MP_ then
         MP_ = 1
     end
@@ -63,8 +59,7 @@ local CharID = "" .. GTAO_USER_MP()
 --
 function CurrentMP(stat)
     local text = stat
-    local hash = joaat("MPPLY_LAST_MP_CHAR")
-    local MP = stats.get_int(hash)
+    local MP = stats.get_int(stat)
     if not MP then
         MP = 1
     end
@@ -72,7 +67,10 @@ function CurrentMP(stat)
 end
 --
 function GTA_MP()
-    MPx_ = stats.get_int(joaat("MPPLY_LAST_MP_CHAR"))
+    MPx_ = stats.get_int("MPPLY_LAST_MP_CHAR")
+    if not MP_ then
+        MP_ = 1
+    end
     return tostring(MPx_)
 end
 local PlayerMP = "MP" .. GTA_MP()
@@ -81,18 +79,18 @@ local Heist_Control = bfmenu:add_submenu("» Blue-Flag Heist Control")
 local PERICO_HEIST = Heist_Control:add_submenu("» 佩里科岛")
 local CAYO_AUTO_PRST = PERICO_HEIST:add_submenu(
     "» 预设 (请在潜水艇外/主甲板运行，在抢劫结束前请不要关闭)")
-local NON_EVENT = CAYO_AUTO_PRST:add_submenu("» 标准预设[ 收入$250w]")
-local AUTOMATED_SOLO = NON_EVENT:add_submenu("» 单人  $240w")
-local AUTOMATED_2P = NON_EVENT:add_submenu("» 双人  $240w")
-local AUTOMATED_3P = NON_EVENT:add_submenu("» 三人  $240w")
-local AUTOMATED_4P = NON_EVENT:add_submenu("» 四人  $240w")
-local QUICK_PRST = NON_EVENT:add_submenu("» 1-4人  $250w")
+local NON_EVENT = CAYO_AUTO_PRST:add_submenu("» 标准预设 [收入$250w]")
+local AUTOMATED_SOLO = NON_EVENT:add_submenu("» 单人 $240w")
+local AUTOMATED_2P = NON_EVENT:add_submenu("» 双人 $240w")
+local AUTOMATED_3P = NON_EVENT:add_submenu("» 三人 $240w")
+local AUTOMATED_4P = NON_EVENT:add_submenu("» 四人 $240w")
+local QUICK_PRST = NON_EVENT:add_submenu("» 1-4人 $250w")
 local WEEKLY_PRESET = CAYO_AUTO_PRST:add_submenu(
     "» 活动周预设 [收入$410w] (重要！必须在有佩里科岛活动时使用)")
-local WEEKLY_SOLO = WEEKLY_PRESET:add_submenu("» 单人  $410w")
-local WEEKLY_F2 = WEEKLY_PRESET:add_submenu("» 双人  $410w")
-local WEEKLY_F3 = WEEKLY_PRESET:add_submenu("» 三人  $410w")
-local WEEKLY_F4 = WEEKLY_PRESET:add_submenu("» 四人  $410w")
+local WEEKLY_SOLO = WEEKLY_PRESET:add_submenu("» 单人 $410w")
+local WEEKLY_F2 = WEEKLY_PRESET:add_submenu("» 双人 $410w")
+local WEEKLY_F3 = WEEKLY_PRESET:add_submenu("» 三人 $410w")
+local WEEKLY_F4 = WEEKLY_PRESET:add_submenu("» 四人 $410w")
 local TELEPORT = PERICO_HEIST:add_submenu("» 传送地点")
 local TELEPORT_QL = TELEPORT:add_submenu("» 快速传送")
 local TELEPORTLOOT = TELEPORT:add_submenu("» 小岛地点")
@@ -173,43 +171,37 @@ local HI_a = Heist_Inspector:add_submenu("» 佩里科岛抢劫检测器")
 local HI_Vehicle = HI_a:add_submenu("» 最常使用的接近载具")
 HI_Vehicle:add_action("查询最常使用的接近载具", function()
     local stat = CurrentMP(KOS)
-    local stat_hash = joaat(stat)
-    local stat_result = stats.get_int(stat_hash)
+    local stat_result = stats.get_int(stat)
     if not stat_result then
         stat_result = 0
     end
     --
     local stat = CurrentMP(STB)
-    local stat_hash = joaat(stat)
-    local stat_result_0 = stats.get_int(stat_hash)
+    local stat_result_0 = stats.get_int(stat)
     if not stat_result_0 then
         stat_result_0 = 0
     end
     --
     local stat = CurrentMP(SMG)
-    local stat_hash = joaat(stat)
-    local stat_result_1 = stats.get_int(stat_hash)
+    local stat_result_1 = stats.get_int(stat)
     if not stat_result_1 then
         stat_result_1 = 0
     end
     --
     local stat = CurrentMP(STE)
-    local stat_hash = joaat(stat)
-    local stat_result_2 = stats.get_int(stat_hash)
+    local stat_result_2 = stats.get_int(stat)
     if not stat_result_2 then
         stat_result_2 = 0
     end
     --
     local stat = CurrentMP(KTT)
-    local stat_hash = joaat(stat)
-    local stat_result_3 = stats.get_int(stat_hash)
+    local stat_result_3 = stats.get_int(stat)
     if not stat_result_3 then
         stat_result_3 = 0
     end
     --
     local stat = CurrentMP(LNG)
-    local stat_hash = joaat(stat)
-    local stat_result_4 = stats.get_int(stat_hash)
+    local stat_result_4 = stats.get_int(stat)
     if not stat_result_4 then
         stat_result_4 = 0
     end
@@ -229,43 +221,37 @@ end)
 local HI_PRIMARY = HI_a:add_submenu("» 抢劫的主要目标次数")
 HI_PRIMARY:add_action("查询抢劫的主要目标次数", function()
     local stat = CurrentMP(PAN_)
-    local stat_hash = joaat(stat)
-    local Answer_0 = stats.get_int(stat_hash)
+    local Answer_0 = stats.get_int(stat)
     if not Answer_0 then
         Answer_0 = 0
     end
     --
     local stat = CurrentMP(MAZ_)
-    local stat_hash = joaat(stat)
-    local Answer_1 = stats.get_int(stat_hash)
+    local Answer_1 = stats.get_int(stat)
     if not Answer_1 then
         Answer_1 = 0
     end
     --
     local stat = CurrentMP(PDD_)
-    local stat_hash = joaat(stat)
-    local Answer_2 = stats.get_int(stat_hash)
+    local Answer_2 = stats.get_int(stat)
     if not Answer_2 then
         Answer_2 = 0
     end
     --
     local stat = CurrentMP(BON_)
-    local stat_hash = joaat(stat)
-    local Answer_3 = stats.get_int(stat_hash)
+    local Answer_3 = stats.get_int(stat)
     if not Answer_3 then
         Answer_3 = 0
     end
     --
     local stat = CurrentMP(NCK_)
-    local stat_hash = joaat(stat)
-    local Answer_4 = stats.get_int(stat_hash)
+    local Answer_4 = stats.get_int(stat)
     if not Answer_4 then
         Answer_4 = 0
     end
     --
     local stat = CurrentMP(TQL_)
-    local stat_hash = joaat(stat)
-    local Answer_5 = stats.get_int(stat_hash)
+    local Answer_5 = stats.get_int(stat)
     if not Answer_5 then
         Answer_5 = 0
     end
@@ -285,8 +271,7 @@ end)
 local HI_Complete = HI_a:add_submenu("» 完成的佩里克岛抢劫次数")
 HI_Complete:add_action("查询完成的佩里克岛抢劫次数", function()
     local stat = CurrentMP(CPL)
-    local stat_hash = joaat(stat)
-    local stat_result_5 = stats.get_int(stat_hash)
+    local stat_result_5 = stats.get_int(stat)
     if not stat_result_5 then
         stat_result_5 = 0
     end
@@ -301,79 +286,79 @@ end)
 --     local Choose, ME = input.get("输入数字", "", 1000, 3)
 --     if Choose == 1 then return HANDLER_CONTINUE end
 --     if Choose == 2 then return HANDLER_POP end
---     stats.set_int(joaat(PlayerMP .. "_H4_PLAYTHROUGH_STATUS"), tonumber(ME))
+--     stats.set_int(PlayerMP .. "_H4_PLAYTHROUGH_STATUS", tonumber(ME))
 -- end)
 -- local valueToSet = EDIT_HI:add_action("修改虎鲸次数", function()
 --     local Choose, ME = input.get("输入数字", "", 1000, 3)
 --     if Choose == 1 then return HANDLER_CONTINUE end
 --     if Choose == 2 then return HANDLER_POP end
---     stats.set_int(joaat(PlayerMP .. "_CR_SUBMARINE"), tonumber(ME))
+--     stats.set_int(PlayerMP .. "_CR_SUBMARINE", tonumber(ME))
 -- end)
 -- local valueToSet = EDIT_HI:add_action("修改阿尔科诺斯特次数", function()
 --     local Choose, ME = input.get("输入数字", "", 1000, 3)
 --     if Choose == 1 then return HANDLER_CONTINUE end
 --     if Choose == 2 then return HANDLER_POP end
---     stats.set_int(joaat(PlayerMP .. "_CR_STRATEGIC_BOMBER"), tonumber(ME))
+--     stats.set_int(PlayerMP .. "_CR_STRATEGIC_BOMBER", tonumber(ME))
 -- end)
 -- local valueToSet = EDIT_HI:add_action("修改梅杜莎次数", function()
 --     local Choose, ME = input.get("输入数字", "", 1000, 3)
 --     if Choose == 1 then return HANDLER_CONTINUE end
 --     if Choose == 2 then return HANDLER_POP end
---     stats.set_int(joaat(PlayerMP .. "_CR_SMUGGLER_PLANE"), tonumber(ME))
+--     stats.set_int(PlayerMP .. "_CR_SMUGGLER_PLANE", tonumber(ME))
 -- end)
 -- local valueToSet = EDIT_HI:add_action("修改隐型直升机次数", function()
 --     local Choose, ME = input.get("输入数字", "", 1000, 3)
 --     if Choose == 1 then return HANDLER_CONTINUE end
 --     if Choose == 2 then return HANDLER_POP end
---     stats.set_int(joaat(PlayerMP .. "_CR_STEALTH_HELI"), tonumber(ME))
+--     stats.set_int(PlayerMP .. "_CR_STEALTH_HELI", tonumber(ME))
 -- end)
 -- local valueToSet = EDIT_HI:add_action("修改巡逻艇次数", function()
 --     local Choose, ME = input.get("输入数字", "", 1000, 3)
 --     if Choose == 1 then return HANDLER_CONTINUE end
 --     if Choose == 2 then return HANDLER_POP end
---     stats.set_int(joaat(PlayerMP .. "_CR_PATROL_BOAT"), tonumber(ME))
+--     stats.set_int(PlayerMP .. "_CR_PATROL_BOAT", tonumber(ME))
 -- end)
 -- local valueToSet = EDIT_HI:add_action("修改长崎次数", function()
 --     local Choose, ME = input.get("输入数字", "", 1000, 3)
 --     if Choose == 1 then return HANDLER_CONTINUE end
 --     if Choose == 2 then return HANDLER_POP end
---     stats.set_int(joaat(PlayerMP .. "_CR_SMUGGLER_BOAT"), tonumber(ME))
+--     stats.set_int(PlayerMP .. "_CR_SMUGGLER_BOAT", tonumber(ME))
 -- end)
 -- local valueToSet = EDIT_HI:add_action("修改猎豹雕像次数", function()
 --     local Choose, ME = input.get("输入数字", "", 1000, 3)
 --     if Choose == 1 then return HANDLER_CONTINUE end
 --     if Choose == 2 then return HANDLER_POP end
---     stats.set_int(joaat(PlayerMP .. "_CR_SAPHIREPANSTAT"), tonumber(ME))
+--     stats.set_int(PlayerMP .. "_CR_SAPHIREPANSTAT", tonumber(ME))
 -- end)
 -- local valueToSet = EDIT_HI:add_action("修改玛德拉索文件次数", function()
 --         local Choose, ME = input.get("输入数字", "", 1000, 3)
 --         if Choose == 1 then return HANDLER_CONTINUE end
 --         if Choose == 2 then return HANDLER_POP end
---         stats.set_int(joaat(PlayerMP .. "_CR_MADRAZO_FILES"), tonumber(ME))
+--         stats.set_int(PlayerMP .. "_CR_MADRAZO_FILES", tonumber(ME))
 --     end)
 -- local valueToSet = EDIT_HI:add_action("修改粉钻次数", function()
 --         local Choose, ME = input.get("输入数字", "", 1000, 3)
 --         if Choose == 1 then return HANDLER_CONTINUE end
 --         if Choose == 2 then return HANDLER_POP end
---         stats.set_int(joaat(PlayerMP .. "_CR_PINK_DIAMOND"), tonumber(ME))
+--         stats.set_int(PlayerMP .. "_CR_PINK_DIAMOND", tonumber(ME))
 --     end)
 -- local valueToSet = EDIT_HI:add_action("修改不记名债券次数", function()
 --         local Choose, ME = input.get("输入数字", "", 1000, 3)
 --         if Choose == 1 then return HANDLER_CONTINUE end
 --         if Choose == 2 then return HANDLER_POP end
---         stats.set_int(joaat(PlayerMP .. "_CR_BEARER_BONDS"), tonumber(ME))
+--         stats.set_int(PlayerMP .. "_CR_BEARER_BONDS", tonumber(ME))
 --     end)
 -- local valueToSet = EDIT_HI:add_action("修改红宝石项链次数", function()
 --         local Choose, ME = input.get("输入数字", "", 1000, 3)
 --         if Choose == 1 then return HANDLER_CONTINUE end
 --         if Choose == 2 then return HANDLER_POP end
---         stats.set_int(joaat(PlayerMP .. "_CR_PEARL_NECKLACE"), tonumber(ME))
+--         stats.set_int(PlayerMP .. "_CR_PEARL_NECKLACE", tonumber(ME))
 --     end)
 -- local valueToSet = EDIT_HI:add_action("修改西西米托龙舌兰酒次数", function()
 --     local Choose, ME = input.get("输入数字", "", 1000, 3)
 --     if Choose == 1 then return HANDLER_CONTINUE end
 --     if Choose == 2 then return HANDLER_POP end
---     stats.set_int(joaat(PlayerMP .. "_CR_TEQUILA"), tonumber(ME))
+--     stats.set_int(PlayerMP .. "_CR_TEQUILA", tonumber(ME))
 -- end)
 -- CAYO CUSTOM TELEPORT
 TELEPORT_QL:add_action("虎鲸 :: 内部面板 [请先呼叫虎鲸]", function()
@@ -1270,11 +1255,11 @@ PERICO_ADV:add_action("» VOLTlab (关闭防空系统)", function()
     localplayer:set_position(vector3(4372.792, -4578.357, 4.208))
     localplayer:set_rotation(vector3(2, 0, 0))
     sleep(3)
-    ResultScan = script(joaat("fm_mission_controller_2020")):get_int(1777)
-    script(joaat("fm_mission_controller_2020")):set_int(1776, ResultScan)
+    ResultScan = script("fm_mission_controller_2020"):get_int(1777)
+    script("fm_mission_controller_2020"):set_int(1776, ResultScan)
 end)
 PERICO_ADV:add_action("» 快速等离子切割器", function()
-    script(joaat("fm_mission_controller_2020")):set_float(28269 + 3, 999)
+    script("fm_mission_controller_2020"):set_float(28269 + 3, 999)
 end)
 -- [unuseable]该功能需要网络事件和对实体的控制，遂阉割掉
 -- PERICO_ADV:add_action("» 移除排水管道格栅", function()
@@ -1496,7 +1481,7 @@ end
 --     if Choose == 2 then
 --         return HANDLER_POP
 --     end
---     stats.set_int(joaat(PlayerMP .. "_H4LOOT_CASH_V"), tonumber(ME), true)
+--     stats.set_int(PlayerMP .. "_H4LOOT_CASH_V", tonumber(ME), true)
 -- end)
 -- local valueToSet = CAH_2ND_TARGET_MDY:add_action("修改大麻价值", function()
 --     local Choose, ME = input.get("输入数字", "", 1000, 3)
@@ -1506,7 +1491,7 @@ end
 --     if Choose == 2 then
 --         return HANDLER_POP
 --     end
---     stats.set_int(joaat(PlayerMP .. "_H4LOOT_WEED_V"), tonumber(ME), true)
+--     stats.set_int(PlayerMP .. "_H4LOOT_WEED_V", tonumber(ME), true)
 -- end)
 
 -- local valueToSet = CAH_2ND_TARGET_MDY:add_action("修改可卡因价值", function()
@@ -1517,7 +1502,7 @@ end
 --     if Choose == 2 then
 --         return HANDLER_POP
 --     end
---     stats.set_int(joaat(PlayerMP .. "_H4LOOT_COKE_V"), tonumber(ME), true)
+--     stats.set_int(PlayerMP .. "_H4LOOT_COKE_V", tonumber(ME), true)
 -- end)
 -- local valueToSet = CAH_2ND_TARGET_MDY:add_action("修改黄金价值", function()
 --     local Choose, ME = input.get("输入数字", "", 1000, 3)
@@ -1527,7 +1512,7 @@ end
 --     if Choose == 2 then
 --         return HANDLER_POP
 --     end
---     stats.set_int(joaat(PlayerMP .. "_H4LOOT_GOLD_V"), tonumber(ME), true)
+--     stats.set_int(PlayerMP .. "_H4LOOT_GOLD_V", tonumber(ME), true)
 -- end)
 
 -- local valueToSet = CAH_2ND_TARGET_MDY:add_action("修改画价值", function()
@@ -1538,7 +1523,7 @@ end
 --     if Choose == 2 then
 --         return HANDLER_POP
 --     end
---     stats.set_int(joaat(PlayerMP .. "_H4LOOT_PAINT_V"), tonumber(ME), true)
+--     stats.set_int(PlayerMP .. "_H4LOOT_PAINT_V", tonumber(ME), true)
 -- end)
 local CAYO_COMPOUND = CAYO_SECONDARY:add_submenu("» 豪宅内次要目标")
 do
@@ -1788,7 +1773,7 @@ do
             stat_set_bool(CP_AWRD_BL[i][1], true, CP_AWRD_BL[i][2])
         end
         for i = 0, 192, 1 do
-            hash = joaat(CharID .. "_HISLANDPSTAT_BOOL")
+            hash = CharID .. "_HISLANDPSTAT_BOOL"
             stats.set_bool_masked(hash, true, i)
         end
     end)
@@ -2344,7 +2329,7 @@ do
 end
 do
     local CH_DRV_MAN_RND = {{"H3OPT_CREWDRIVER", 1, 5, 1, 5}}
-    CASINO_DRIVER_TEAM:add_action("» 随机车手", function()
+    CASINO_DRIVER_TEAM:add_action("» 随机车手 (??%)", function()
         for i = 1, #CH_DRV_MAN_RND do
             stat_set_int(CH_DRV_MAN_RND[i][1], true, math.random(CH_DRV_MAN_RND[i][4], CH_DRV_MAN_RND[i][5]))
         end
@@ -2443,7 +2428,7 @@ do
 end
 do
     local CH_HCK_MAN_RND = {{"H3OPT_CREWHACKER", 0, 5, 1, 5}}
-    CASINO_HACKERs:add_action("» 随机黑客", function()
+    CASINO_HACKERs:add_action("» 随机黑客  (??%)", function()
         for i = 1, #CH_HCK_MAN_RND do
             stat_set_int(CH_HCK_MAN_RND[i][1], true, math.random(CH_HCK_MAN_RND[i][4], CH_HCK_MAN_RND[i][5]))
         end
@@ -2651,19 +2636,18 @@ do
             stat_set_bool(CH_AWRD_BL[i][1], true, CH_AWRD_BL[i][2])
         end
         for i = 0, 128, 1 do -- 28483 - 28355 = 128
-            hash, mask = stats.get_bool_hash_and_mask("_HEIST3TATTOOSTAT_BOOL", i, CharID)
-            stats.set_bool_masked(hash, true, mask, 1, true)
+            hash = CharID .. "_HEIST3TATTOOSTAT_BOOL"
+            stats.set_bool_masked(hash, true, i)
         end
         for i = 0, 256, 1 do -- 28354 - 28098 = 256
-            hash, mask = stats.get_bool_hash_and_mask("_CASINOHSTPSTAT_BOOL", i, CharID)
-            stats.set_bool_masked(hash, true, mask, 1, true)
+            hash = CharID .. "_CASINOHSTPSTAT_BOOL"
+            stats.set_bool_masked(hash, true, i)
         end
 
         for i = 0, 448, 1 do -- 27258 - 26810 = 448
-            hash, mask = stats.get_bool_hash_and_mask("_CASINOPSTAT_BOOL", i, CharID)
-            stats.set_bool_masked(hash, true, mask, 1, true)
+            hash = CharID .. "_CASINOPSTAT_BOOL"
+            stats.set_bool_masked(hash, true, i)
         end
-
     end)
 end
 do
@@ -3643,8 +3627,8 @@ do
                          {"AWD_SHORTLAMAR_3", true}}
 
     menu.add_feature("» Unlock Awards + Clothes", "action", TH_CONTRACT.id, function()
-        local BL0 = joaat(PlayerMP .. "_FIXERPSTAT_BOOL0")
-        local BL1 = joaat(PlayerMP .. "_FIXERPSTAT_BOOL1")
+        local BL0 = PlayerMP .. "_FIXERPSTAT_BOOL0"
+        local BL1 = PlayerMP .. "_FIXERPSTAT_BOOL1"
         for i = 0, 128, 1 do
             stats.set_bool_masked(BL0, true, i, 1, true) -- True
             stats.set_bool_masked(BL1, true, i, 1, true) -- True
