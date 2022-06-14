@@ -1,48 +1,55 @@
 -- Blue-Flag lua
 -- Github: https://github.com/Galaxy-Studio-Code/Blue-Flag-Lua
--- Edit from 2Take1 Heist-Control-v2 lua by jhowkNx
--- some features was deleted because kiddion didn't provide enough api
 -- init
 require_game_build(2628)
-local bfmenu = menu.add_submenu('Blue-Flag Lua')
-local LUA_VER = '1.0.9'
+local LUA_VER = '1.0.10B'
+local bfmenu = menu.add_submenu('Blue-Flag\'s Lua')
 -- Script core function [INT]
 local function stat_set_int(hash, prefix, value, save)
-	save = save or true
-	local hash0, hash1 = hash
+	save = true
+	local hash0, hash1 = hash, hash
 	if prefix then
 		hash0 = 'MP0_' .. hash
 		hash1 = 'MP1_' .. hash
 	end
 	local value0 = stats.get_int(hash0)
-	if value0 ~= value then stats.set_int(hash0, value) end
+	if value0 ~= value then
+		stats.set_int(hash0, value)
+	end
 	if prefix then
 		local value1 = stats.get_int(hash1)
-		if value1 ~= value then stats.set_int(hash1, value) end
+		if value1 ~= value then
+			stats.set_int(hash1, value)
+		end
 	end
 end
 -- BOOL
 local function stat_set_bool(hash, prefix, value, save)
-	save = save or true
-	local hash0, hash1 = hash
+	save = true
+	local hash0, hash1 = hash, hash
 	if prefix then
 		hash0 = 'MP0_' .. hash
 		hash1 = 'MP1_' .. hash
 	end
 	local value0 = stats.get_bool(hash0)
-	if value0 ~= value then stats.set_bool(hash0, value) end
+	if value0 ~= value then
+		stats.set_bool(hash0, value)
+	end
 	if prefix then
 		local value1 = stats.get_bool(hash1)
-		if value1 ~= value then stats.set_bool(hash1, value) end
+		if value1 ~= value then
+			stats.set_bool(hash1, value)
+		end
 	end
 end
 --
 local hash
-local mask
 --
 function GTAO_USER_MP()
 	MP_ = stats.get_int('MPPLY_LAST_MP_CHAR')
-	if not MP_ then MP_ = 0 end
+	if not MP_ then
+		MP_ = 0
+	end
 	return tostring(MP_)
 end
 local CharID = '' .. GTAO_USER_MP()
@@ -50,27 +57,387 @@ local CharID = '' .. GTAO_USER_MP()
 function CurrentMP(stat)
 	local text = stat
 	local MP = stats.get_int(stat)
-	if not MP then MP = 0 end
+	if not MP then
+		MP = 0
+	end
 	return ('MP' .. MP .. '_' .. text)
 end
 --
 function GTA_MP()
 	MPx_ = stats.get_int('MPPLY_LAST_MP_CHAR')
-	if not MP_ then MP_ = 0 end
+	if not MP_ then
+		MP_ = 0
+	end
 	return tostring(MPx_)
 end
 local PlayerMP = 'MP' .. GTA_MP()
---
-local Heist_Control = bfmenu:add_submenu('» Blue-Flag\'s Heist Control')
+-- Player Function
+local Player_Function = bfmenu.add_submenu('玩家功能')
+local toggled = false
+Player_Function:add_toggle('半无敌', function()
+	return toggled
+end, function(hgod)
+	while hgod do
+		toggled = hgod
+		local cur_health = localplayer:get_health()
+		local max_health = localplayer:get_max_health()
+		if cur_health < max_health then
+			localplayer:set_health(max_health)
+		end
+	end
+	toggled = false
+end)
+Player_Function:add_action('补满零食', function()
+	local items = { { 'NO_BOUGHT_YUM_SNACKS', 30 }, { 'NO_BOUGHT_HEALTH_SNACKS', 15 }, { 'NO_BOUGHT_EPIC_SNACKS', 5 }, { 'NUMBER_OF_ORANGE_BOUGHT', 10 },
+                 { 'NUMBER_OF_BOURGE_BOUGHT', 10 }, { 'NUMBER_OF_CHAMP_BOUGHT', 5 }, { 'CIGARETTES_BOUGHT', 20 } }
+	for i = 1, #items do
+		stat_set_int(items[i][1], true, items[i][2])
+	end
+end)
+-- [unuseable]需要对通知的操作
+-- local toggled = false
+-- Player_Function:add_toggle('» 静音模式', function()
+-- 	return toggled
+-- end, function(quiet)
+-- 	while quiet do
+-- 		toggled = quiet
+-- 		menu.clear_all_notifications()
+-- 		-- 防止卡住
+-- 		sleep(0)
+-- 	end
+-- 	toggled = false
+-- end)
+-- Player_Function:add_action('» 清除通知', function()
+-- 	menu.clear_visible_notifications()
+-- end)
+-- Weapon Function
+local Weapon_Function = bfmenu.add_submenu('武器功能')
+Weapon_Function:add_action('Fill Armor', function()
+	local items = { { 'MP_CHAR_ARMOUR_1_COUNT', 10 }, { 'MP_CHAR_ARMOUR_2_COUNT', 10 }, { 'MP_CHAR_ARMOUR_3_COUNT', 10 },
+                 { 'MP_CHAR_ARMOUR_4_COUNT', 10 }, { 'MP_CHAR_ARMOUR_5_COUNT', 10 } }
+	for i = 1, #items do
+		stat_set_int(items[i][1], true, items[i][2])
+	end
+end)
+-- Vehicle Function
+local Vehicle_Function = bfmenu.add_submenu('载具功能')
+-- Vehicle Speed From Zeromenu
+-- [unuseable]需要用户输入
+-- Vehicle_Function:add_action('» 修改载具极速', function()
+-- 	local veh = ped.get_vehicle_ped_is_using(player.get_player_ped(player.player_id()))
+-- 	local r, s = input.get('Enter a new Speed', '', 9999999, 3)
+-- 	if r == 1 then
+-- 		return HANDLER_CONTINUE
+-- 	end
+-- 	if r == 2 then
+-- 		return HANDLER_POP
+-- 	end
+-- 	speed = s
+-- 	if veh ~= nil then
+-- 		if not network.has_control_of_entity(veh) then
+-- 			network.request_control_of_entity(veh)
+-- 		end
+-- 		entity.set_entity_max_speed(veh, speed * 1000)
+-- 		vehicle.modify_vehicle_top_speed(veh, speed)
+-- 		vehicle.set_vehicle_engine_torque_multiplier_this_frame(veh, speed)
+-- 		entity.get_entity_model_hash(ped.get_vehicle_ped_is_using(player.get_player_ped(player.player_id())))
+-- 	end
+-- end)
+-- World Function
+local World_Function = bfmenu.add_submenu('世界功能')
+World_Function:add_action('» 允许非公开战局任务', 'toggle', TOOLS.id, function()
+	globals.set_int(2714635 + 744, 0) -- NETWORK::NETWORK_SESSION_GET_PRIVATE_SLOTS
+end)
+local toggled = false
+World_Function:add_toggle('移除CEO板条箱冷却', function()
+	return toggled
+end, function(e)
+	toggled = e
+	if e then
+		script.set_global_i(262145 + 15361, 0)
+		script.set_global_i(262145 + 15362, 0)
+	end
+	if not e then
+		script.set_global_i(262145 + 15361, 300000) -- Buy
+		script.set_global_i(262145 + 15362, 1800000) -- Sell
+	end
+end)
+local toggled = false
+World_Function:add_toggle('移除CEO载具货物冷却', function()
+	return toggled
+end, function(e)
+	toggled = e
+	if e then
+		script.set_global_i(262145 + 19477, 0)
+		script.set_global_i(262145 + 19478, 0)
+		script.set_global_i(262145 + 19479, 0)
+		script.set_global_i(262145 + 19480, 0)
+	end
+	if not e then
+		script.set_global_i(262145 + 19477, 1200000) -- 1 Vehicle
+		script.set_global_i(262145 + 19478, 1680000) -- 2 Vehicles
+		script.set_global_i(262145 + 19479, 2340000) -- 3 Vehicles
+		script.set_global_i(262145 + 19480, 2880000) -- 4 Vehicles
+	end
+end)
+local toggled = false
+World_Function:add_toggle('移除空运货物冷却', function()
+	return toggled
+end, function(e)
+	toggled = e
+	if e then
+		script.set_global_i(262145 + 22522, 0)
+		script.set_global_i(262145 + 22523, 0)
+		script.set_global_i(262145 + 22524, 0)
+		script.set_global_i(262145 + 22525, 0)
+		script.set_global_i(262145 + 22561, 0)
+	end
+	if not e then
+		script.set_global_i(262145 + 22522, 120000) -- Tobacco, Counterfeit Goods
+		script.set_global_i(262145 + 22523, 180000) -- Animal Materials, Art, Jewelry
+		script.set_global_i(262145 + 22524, 240000) -- Narcotics, Chemicals, Medical Supplies
+		script.set_global_i(262145 + 22525, 60000) -- Additional Time per Player
+		script.set_global_i(262145 + 22561, 180000) -- Sale
+	end
+end)
+local toggled = false
+World_Function:add_toggle('移除恐霸任务冷却', function()
+	return toggled
+end, function(e)
+	toggle = e
+	if e then
+		script.set_global_i(262145 + 24304, 0)
+		script.set_global_i(262145 + 24305, 0)
+		script.set_global_i(262145 + 24306, 0)
+		script.set_global_i(262145 + 24307, 0)
+		script.set_global_i(262145 + 24308, 0)
+	end
+	if not e then
+		script.set_global_i(262145 + 24304, 300000) -- Between Jobs
+		script.set_global_i(262145 + 24305, 1800000) -- Robbery in Progress
+		script.set_global_i(262145 + 24306, 1800000) -- Data Sweep
+		script.set_global_i(262145 + 24307, 1800000) -- Targeted Data
+		script.set_global_i(262145 + 24308, 1800000) -- Diamond Shopping
+	end
+end)
+World_Function:add_action('摩托帮一辆车出货', function()
+	local scriptHash = script('gb_biker_contraband_sell')
+	if scriptHash:get_int(692 + 17) ~= 0 then
+		scriptHash:set_int(692 + 17, 0) -- vehicle variable
+	end
+end)
+-- [unuseable]需要ped判断
+-- World_Function:add_action('» Weaken all NPCs', function()
+-- 	for k, PedIA in pairs(ped.get_all_peds()) do
+-- 		if not ped.is_ped_a_player(PedIA) then
+-- 			weapon.remove_all_ped_weapons(PedIA)
+-- 			ped.set_ped_combat_movement(PedIA
+-- 		end
+-- 	end
+-- end)
+-- [unuseable]需要操作实体
+-- This is a concept, works well, but depends in many things
+-- World_Function("» 移除直升机/船", function()
+-- 	for k, DOORs in pairs(vehicle.get_all_vehicles()) do
+-- 		local ENT_ENTRY = entity.get_entity_model_hash(DOORs) or vehicle.get_all_vehicle_model_hashes(DOORs)
+-- 		local AVG = 2047212121
+-- 		local heliA = 2623428164
+-- 		local heliB = 745926877
+-- 		local boatA = 1448677353
+-- 		local truck = 1747439474
+-- 		if ENT_ENTRY == AVG or ENT_ENTRY == heliA or ENT_ENTRY == heliB or ENT_ENTRY == boatA or ENT_ENTRY == truck then
+-- 			network.request_control_of_entity(DOORs)
+-- 			local timer = utils.time_ms() + 500
+-- 			while not network.has_control_of_entity(DOORs) and timer > utils.time_ms() do
+-- 				system.wait(1500)
+-- 			end
+-- 			if network.has_control_of_entity(DOORs) then
+-- 				entity.set_entity_coords_no_offset(DOORs,vector(671.389,7613.515,-109.629))
+-- 			end
+-- 		end
+-- 	end
+-- end)
+-- [unuseable]需要对时间的操作
+-- do
+-- 	World_Function:add_action('» 离开战局', function()
+-- 		local time = utils.time_ms() + 8500
+-- 		while time > utils.time_ms() do
+-- 		end
+-- 	end)
+-- end
+-- Teleport Function
+local Teleport_Function = bfmenu.add_submenu('传送功能')
+local HU_JING_TELE = Teleport_Function:add_submenu('虎鲸内传送点')
+HU_JING_TELE:add_action('驾驶座位', function()
+	localplayer:set_position(vector3(1560.303, 381.718, -49.685))
+end)
+HU_JING_TELE:add_action('导弹控制座位', function()
+	localplayer:set_position(vector3(1559.726, 388.009, -49.685))
+end)
+HU_JING_TELE:add_action('麻雀停机坪 (主甲板)', function()
+	localplayer:set_position(vector3(1563.830, 409.712, -49.667))
+end)
+HU_JING_TELE:add_action('个人空间', function()
+	localplayer:set_position(vector3(1558.518, 383.137, -53.284))
+end)
+HU_JING_TELE:add_action('武器工作室', function()
+	localplayer:set_position(vector3(1561.609, 381.089, -56.088))
+end)
+HU_JING_TELE:add_action('出口 1', function()
+	localplayer:set_position(vector3(1563.479, 371.470, -49.685))
+end)
+HU_JING_TELE:add_action('出口 2', function()
+	localplayer:set_position(vector3(1561.433, 391.197, -49.685))
+end)
+HU_JING_TELE:add_action('出口 3', function()
+	localplayer:set_position(vector3(1564.593, 447.083, -53.129))
+end)
+local LSC_DLC_TELE = Teleport_Function:add_submenu('洛圣都车友会')
+LSC_DLC_TELE:add_action('车友会入口', function()
+	localplayer:set_position(vector3(782.597, -1867.812, 29.253))
+end)
+LSC_DLC_TELE:add_action('车友会内部', function()
+	localplayer:set_position(vector3(-2148.729, 1137.968, -24.371))
+end)
+LSC_DLC_TELE:add_action('测试赛道', function()
+	localplayer:set_position(vector3(-2025.252, 1115.701, -27.761))
+end)
+LSC_BANG = Teleport_Function:add_submenu('媒体记忆棒')
+LSC_BANG:add_action('赌场楼顶露台', function()
+	localplayer:set_position(vector3(955.550, 50.059, 112.553))
+end)
+LSC_BANG:add_action('车友会角落', function()
+	localplayer:set_position(vector3(-2172.616, 1159.674, -24.372))
+end)
+LSC_BANG:add_action('夜总会办公室', function()
+	localplayer:set_position(vector3(-1619.068, -3010.602, -75.205))
+end)
+LSC_BANG:add_action('游戏厅吧台', function()
+	localplayer:set_position(vector3(2727.082, -387.540, -48.993))
+end)
+local UKN_HELPSRKL = Teleport_Function:add_submenu('连环杀手')
+UKN_HELPSRKL:add_action('线索 1 - 血手印', function()
+	localplayer:set_position(vector3(-678.9984, 5797.6851, 17.3309))
+end)
+UKN_HELPSRKL:add_action('线索 2 - 砍刀', function()
+	localplayer:set_position(vector3(1901.4042, 4911.5479, 48.6951))
+end)
+UKN_HELPSRKL:add_action('线索 3 - 断手', function()
+	localplayer:set_position(vector3(1111.7750, 3142.0457, 38.4241))
+end)
+UKN_HELPSRKL:add_action('线索 4 -信件', function()
+	localplayer:set_position(vector3(-136.5509, 1912.8038, 197.2982))
+end)
+local UKN_HELPSRKLC = UKN_HELPSRKL:add_submenu('线索 5 - 黑色面包车')
+UKN_HELPSRKLC:add_action('线索5 - 地点 1', function()
+	localplayer:set_position(vector3(2576.0391, 1251.7494, 43.6099))
+end)
+UKN_HELPSRKLC:add_action('线索5 - 地点 2', function()
+	localplayer:set_position(vector3(2903.4150, 3644.0413, 43.8774))
+end)
+UKN_HELPSRKLC:add_action('线索5 - 地点 3', function()
+	localplayer:set_position(vector3(2432.3904, 5846.0757, 58.8891))
+end)
+UKN_HELPSRKLC:add_action('线索5 - 地点 4', function()
+	localplayer:set_position(vector3(-1567.880, 4424.6104, 7.2154))
+end)
+UKN_HELPSRKLC:add_action('线索5 - 地点 5', function()
+	localplayer:set_position(vector3(-1715.793, 2618.7686, 2.9409))
+end)
+local UKN_KBBL_TELE = Teleport_Function:add_submenu('Kenny\'s Backyard Boogie 专辑')
+UKN_KBBL_TELE:add_action('Kenny\'s Backyard Boogie - 地点 1', function()
+	localplayer:set_position(vector3(-2163.025, 1083.473, -24.362))
+end)
+UKN_KBBL_TELE:add_action('Kenny\'s Backyard Boogie - 地点 2', function()
+	localplayer:set_position(vector3(-2180.532, 1082.276, -24.367))
+end)
+UKN_KBBL_TELE:add_action('Kenny\'s Backyard Boogie - 地点 3', function()
+	localplayer:set_position(vector3(-2162.992, 1089.790, -24.363))
+end)
+UKN_KBBL_TELE:add_action('Kenny\'s Backyard Boogie - 地点 4', function()
+	localplayer:set_position(vector3(-2162.770, 1115.913, -24.371))
+end)
+-- Recovery Function
+local Recovery_Function = bfmenu.add_submenu('恢复功能')
+Recovery_Function:add_action('» 清除被杀记录', function()
+	stat_set_int('MP0_ARCHENEMY_KILLS', true, 0)
+	stat_set_int('MP1_ARCHENEMY_KILLS', true, 0)
+	stat_set_int('MP0_DEATHS', true, 0)
+	stat_set_int('MP1_DEATHS', true, 0)
+	stat_set_int('MP0_DIED_IN_EXPLOSION', true, 0)
+	stat_set_int('MP1_DIED_IN_EXPLOSION', true, 0)
+	stat_set_int('MP0_DIED_IN_FALL', true, 0)
+	stat_set_int('MP1_DIED_IN_FALL', true, 0)
+	stat_set_int('MP0_DIED_IN_FIRE', true, 0)
+	stat_set_int('MP1_DIED_IN_FIRE', true, 0)
+	stat_set_int('MP0_DIED_IN_ROAD', true, 0)
+	stat_set_int('MP1_DIED_IN_ROAD', true, 0)
+	stat_set_int('MP0_DIED_IN_DROWNING', true, 0)
+	stat_set_int('MP1_DIED_IN_DROWNING', true, 0)
+end)
+Recovery_Function:add_action('移除赌场筹码冷却', function()
+	if stats.get_int('MPPLY_CASINO_CHIPS_PUR_GD') ~= 0 then
+		stat_set_int('MPPLY_CASINO_CHIPS_PUR_GD', true, 0)
+	end
+end)
+Recovery_Function:add_action('移除收支差', function()
+	local a = stats.get_int('MP0_MONEY_SPENT_WEAPON_ARMOR')
+	a = a + stats.get_int('MP1_MONEY_SPENT_WEAPON_ARMOR')
+	a = a + stats.get_int('MP0_MONEY_SPENT_VEH_MAINTENANCE')
+	a = a + stats.get_int('MP1_MONEY_SPENT_VEH_MAINTENANCE')
+	a = a + stats.get_int('MP0_MONEY_SPENT_STYLE_ENT')
+	a = a + stats.get_int('MP1_MONEY_SPENT_STYLE_ENT')
+	a = a + stats.get_int('MP0_MONEY_SPENT_PROPERTY_UTIL')
+	a = a + stats.get_int('MP1_MONEY_SPENT_PROPERTY_UTIL')
+	a = a + stats.get_int('MP0_MONEY_SPENT_JOB_ACTIVITY')
+	a = a + stats.get_int('MP1_MONEY_SPENT_JOB_ACTIVITY')
+	a = a + stats.get_int('MP0_MONEY_SPENT_CONTACT_SERVICE')
+	a = a + stats.get_int('MP1_MONEY_SPENT_CONTACT_SERVICE')
+	a = a + stats.get_int('MP0_MONEY_SPENT_HEALTHCARE')
+	a = a + stats.get_int('MP1_MONEY_SPENT_HEALTHCARE')
+	a = a + stats.get_int('MP0_MONEY_SPENT_DROPPED_STOLEN')
+	a = a + stats.get_int('MP1_MONEY_SPENT_DROPPED_STOLEN')
+	a = a + stats.get_int('MP0_MONEY_SPENT_SHARED')
+	a = a + stats.get_int('MP1_MONEY_SPENT_SHARED')
+	a = a + stats.get_int('MP0_MONEY_SPENT_JOBSHARED')
+	a = a + stats.get_int('MP1_MONEY_SPENT_JOBSHARED')
+	local b = stats.get_int('MP0_MONEY_EARN_JOBS')
+	b = b + stats.get_int('MP1_MONEY_EARN_JOBS')
+	b = b + stats.get_int('MP0_MONEY_EARN_SELLING_VEH')
+	b = b + stats.get_int('MP1_MONEY_EARN_SELLING_VEH')
+	b = b + stats.get_int('MP0_MONEY_EARN_BETTING')
+	b = b + stats.get_int('MP1_MONEY_EARN_BETTING')
+	b = b + stats.get_int('MP0_MONEY_EARN_GOOD_SPORT')
+	b = b + stats.get_int('MP1_MONEY_EARN_GOOD_SPORT')
+	b = b + stats.get_int('MP0_MONEY_EARN_PICKED_UP')
+	b = b + stats.get_int('MP1_MONEY_EARN_PICKED_UP')
+	b = b + stats.get_int('MP0_MONEY_EARN_SHARED')
+	b = b + stats.get_int('MP1_MONEY_EARN_SHARED')
+	b = b + stats.get_int('MP0_MONEY_EARN_JOBSHARED')
+	b = b + stats.get_int('MP1_MONEY_EARN_JOBSHARED')
+	if a > b then
+		local m = a - b
+		stat_set_int('MP0_MONEY_EARN_JOBSHARED', true, stats.get_int('MP0_MONEY_EARN_JOBSHARED') + m)
+	end
+end)
+-- Misc Function
+local Misc_Function = bfmenu.add_submenu('杂项功能')
+local SCENE_CUT = Misc_Function:add_submenu('过场动画')
+SCENE_CUT:add_action('跳过过场动画', function()
+	menu.end_cutscene()
+end)
+-- Heist Control
+-- Edit from 2Take1 Heist-Control-v2 lua by jhowkNx
+local Heist_Control = bfmenu:add_submenu('» 任务控制功能')
 local PERICO_HEIST = Heist_Control:add_submenu('» 佩里科岛')
-local CAYO_AUTO_PRST = PERICO_HEIST:add_submenu('» 预设 (请在潜水艇外/主甲板运行，在抢劫结束前请不要关闭)')
+local CAYO_AUTO_PRST = PERICO_HEIST:add_submenu('» 预设')
 local NON_EVENT = CAYO_AUTO_PRST:add_submenu('» 标准预设 $250w')
 local AUTOMATED_SOLO = NON_EVENT:add_submenu('» 单人 $240w')
 local AUTOMATED_2P = NON_EVENT:add_submenu('» 双人 $240w')
 local AUTOMATED_3P = NON_EVENT:add_submenu('» 三人 $240w')
 local AUTOMATED_4P = NON_EVENT:add_submenu('» 四人 $240w')
 local QUICK_PRST = NON_EVENT:add_submenu('» 1-4人 $250w')
-local WEEKLY_PRESET = CAYO_AUTO_PRST:add_submenu('» 活动周预设 $410w (必须在有佩里科岛活动时使用)')
+local WEEKLY_PRESET = CAYO_AUTO_PRST:add_submenu('» 活动周预设 $410w')
 local WEEKLY_SOLO = WEEKLY_PRESET:add_submenu('» 单人 $410w')
 local WEEKLY_F2 = WEEKLY_PRESET:add_submenu('» 双人 $410w')
 local WEEKLY_F3 = WEEKLY_PRESET:add_submenu('» 三人 $410w')
@@ -103,7 +470,7 @@ local CAH_DIA_TARGET = CASINO_PRESETS:add_submenu('» 钻石 $350w 1-4 人')
 local CAH_GOLD_TARGET = CASINO_PRESETS:add_submenu('» 黄金 $350w 1-4 人')
 local CAH_ADVCED = CASINO_HEIST:add_submenu('» 高级功能')
 local CASINO_BOARD1 = CASINO_HEIST:add_submenu('» 抢劫计划板 (第一块)')
-local BOARD1_APPROACH = CASINO_BOARD1:add_submenu('» 选择抢劫方式 & 难度')
+local BOARD1_APPROACH = CASINO_BOARD1:add_submenu('» 选择抢劫方式和难度')
 local CASINO_TARGET = CASINO_BOARD1:add_submenu('» 选择主要目标')
 local CASINO_BOARD2 = CASINO_HEIST:add_submenu('» 抢劫计划板 (第二块)')
 local CASINO_BOARD3 = CASINO_HEIST:add_submenu('» 抢劫计划板 (第三块)')
@@ -156,27 +523,39 @@ local HI_Vehicle = HI_a:add_submenu('» 最常使用的接近载具')
 HI_Vehicle:add_action('查询最常使用的接近载具', function()
 	local stat = CurrentMP(KOS)
 	local stat_result = stats.get_int(stat)
-	if not stat_result then stat_result = 0 end
+	if not stat_result then
+		stat_result = 0
+	end
 	--
 	local stat = CurrentMP(STB)
 	local stat_result_0 = stats.get_int(stat)
-	if not stat_result_0 then stat_result_0 = 0 end
+	if not stat_result_0 then
+		stat_result_0 = 0
+	end
 	--
 	local stat = CurrentMP(SMG)
 	local stat_result_1 = stats.get_int(stat)
-	if not stat_result_1 then stat_result_1 = 0 end
+	if not stat_result_1 then
+		stat_result_1 = 0
+	end
 	--
 	local stat = CurrentMP(STE)
 	local stat_result_2 = stats.get_int(stat)
-	if not stat_result_2 then stat_result_2 = 0 end
+	if not stat_result_2 then
+		stat_result_2 = 0
+	end
 	--
 	local stat = CurrentMP(KTT)
 	local stat_result_3 = stats.get_int(stat)
-	if not stat_result_3 then stat_result_3 = 0 end
+	if not stat_result_3 then
+		stat_result_3 = 0
+	end
 	--
 	local stat = CurrentMP(LNG)
 	local stat_result_4 = stats.get_int(stat)
-	if not stat_result_4 then stat_result_4 = 0 end
+	if not stat_result_4 then
+		stat_result_4 = 0
+	end
 	HI_Vehicle:add_action('你选择了' .. SUB .. stat_result .. URL, function()
 	end)
 	HI_Vehicle:add_action('你选择了' .. AKT .. stat_result_0 .. URL, function()
@@ -194,27 +573,39 @@ local HI_PRIMARY = HI_a:add_submenu('» 抢劫的主要目标次数')
 HI_PRIMARY:add_action('查询抢劫的主要目标次数', function()
 	local stat = CurrentMP(PAN_)
 	local Answer_0 = stats.get_int(stat)
-	if not Answer_0 then Answer_0 = 0 end
+	if not Answer_0 then
+		Answer_0 = 0
+	end
 	--
 	local stat = CurrentMP(MAZ_)
 	local Answer_1 = stats.get_int(stat)
-	if not Answer_1 then Answer_1 = 0 end
+	if not Answer_1 then
+		Answer_1 = 0
+	end
 	--
 	local stat = CurrentMP(PDD_)
 	local Answer_2 = stats.get_int(stat)
-	if not Answer_2 then Answer_2 = 0 end
+	if not Answer_2 then
+		Answer_2 = 0
+	end
 	--
 	local stat = CurrentMP(BON_)
 	local Answer_3 = stats.get_int(stat)
-	if not Answer_3 then Answer_3 = 0 end
+	if not Answer_3 then
+		Answer_3 = 0
+	end
 	--
 	local stat = CurrentMP(NCK_)
 	local Answer_4 = stats.get_int(stat)
-	if not Answer_4 then Answer_4 = 0 end
+	if not Answer_4 then
+		Answer_4 = 0
+	end
 	--
 	local stat = CurrentMP(TQL_)
 	local Answer_5 = stats.get_int(stat)
-	if not Answer_5 then Answer_5 = 0 end
+	if not Answer_5 then
+		Answer_5 = 0
+	end
 	HI_PRIMARY:add_action('你选择了' .. PAN .. Answer_0 .. URL, function()
 	end)
 	HI_PRIMARY:add_action('你选择了' .. MAZ .. Answer_1 .. URL, function()
@@ -232,7 +623,9 @@ local HI_Complete = HI_a:add_submenu('» 完成的佩里克岛抢劫次数')
 HI_Complete:add_action('查询完成的佩里克岛抢劫次数', function()
 	local stat = CurrentMP(CPL)
 	local stat_result_5 = stats.get_int(stat)
-	if not stat_result_5 then stat_result_5 = 0 end
+	if not stat_result_5 then
+		stat_result_5 = 0
+	end
 	HI_Complete:add_action('你完成了佩里克岛抢劫' .. stat_result_5 .. URL, function()
 	end)
 end)
@@ -553,7 +946,9 @@ do
        { 'H4LOOT_GOLD_C_SCOPED', 0 }, { 'H4LOOT_PAINT_SCOPED', 0 }, { 'H4CNF_TARGET', 5 }, { 'H4CNF_WEAPONS', 5 }, { 'H4_MISSIONS', -1 },
        { 'H4_PROGRESS', 126823 } }
 	QUICK_PRST:add_action('» 加载快速预设 (不拿次要目标,可拿保险箱)', function()
-		for i = 1, #QUICK_SET_ANY do stat_set_int(QUICK_SET_ANY[i][1], true, QUICK_SET_ANY[i][2]) end
+		for i = 1, #QUICK_SET_ANY do
+			stat_set_int(QUICK_SET_ANY[i][1], true, QUICK_SET_ANY[i][2])
+		end
 		globals.set_int(1973525 + 823 + 56 + 1, 145) -- original version 1710289 + 823 + 56 + 1
 		globals.set_int(1973525 + 823 + 56 + 2, 145) -- original version 1710289 + 823 + 56 + 2
 		globals.set_int(1973525 + 823 + 56 + 3, 145) -- original version 1710289 + 823 + 56 + 3
@@ -576,7 +971,9 @@ do
        { 'H4LOOT_GOLD_C_SCOPED', 0 }, { 'H4LOOT_PAINT_SCOPED', 0 }, { 'H4CNF_TARGET', 5 }, { 'H4CNF_WEAPONS', 4 }, { 'H4_MISSIONS', -1 },
        { 'H4_PROGRESS', 126823 } }
 	WEEKLY_PRESET:add_action('» 加载活动周快速预设 (不拿次要目标,可拿保险箱)', function()
-		for i = 1, #WEAKLY_QUICK do stat_set_int(WEAKLY_QUICK[i][1], true, WEAKLY_QUICK[i][2]) end
+		for i = 1, #WEAKLY_QUICK do
+			stat_set_int(WEAKLY_QUICK[i][1], true, WEAKLY_QUICK[i][2])
+		end
 		globals.set_int(1973525 + 823 + 56 + 1, 100) -- original version 1710289 + 823 + 56 + 1
 		globals.set_int(1973525 + 823 + 56 + 2, 145) -- original version 1710289 + 823 + 56 + 2
 		globals.set_int(1973525 + 823 + 56 + 3, 145) -- original version 1710289 + 823 + 56 + 3
@@ -603,8 +1000,12 @@ do
 					{ 'H4CNF_BOLTCUT', 4424 }, { 'H4CNF_UNIFORM', 5256 }, { 'H4CNF_GRAPPEL', 5156 }, { 'H4_MISSIONS', -1 }, { 'H4CNF_WEAPONS', 4 },
        { 'H4CNF_TROJAN', 5 } }
 	AUTOMATED_SOLO:add_action('» 猎豹雕像 (任意次要目标装满背包,不拿保险箱)', function()
-		for i = 1, #AUTOMATED_1P_TARGET_5_A do stat_set_int(AUTOMATED_1P_TARGET_5_A[i][1], true, AUTOMATED_1P_TARGET_5_A[i][2]) end
-		for i = 1, #AUTOMATED_1P_TARGET_5 do stat_set_int(AUTOMATED_1P_TARGET_5[i][1], true, AUTOMATED_1P_TARGET_5[i][2]) end
+		for i = 1, #AUTOMATED_1P_TARGET_5_A do
+			stat_set_int(AUTOMATED_1P_TARGET_5_A[i][1], true, AUTOMATED_1P_TARGET_5_A[i][2])
+		end
+		for i = 1, #AUTOMATED_1P_TARGET_5 do
+			stat_set_int(AUTOMATED_1P_TARGET_5[i][1], true, AUTOMATED_1P_TARGET_5[i][2])
+		end
 		globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
 		globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
 		globals.set_int(262145 + 29395, 1800) -- bag protection
@@ -631,7 +1032,9 @@ do
 		for i = 1, #USER_CAN_MDFY_PRESET_AUTO_SOLO_T3 do
 			stat_set_int(USER_CAN_MDFY_PRESET_AUTO_SOLO_T3[i][1], true, USER_CAN_MDFY_PRESET_AUTO_SOLO_T3[i][2])
 		end
-		for i = 2, #CAYO_SOLO_AUTO_TARGET_3 do stat_set_int(CAYO_SOLO_AUTO_TARGET_3[i][1], true, CAYO_SOLO_AUTO_TARGET_3[i][2]) end
+		for i = 2, #CAYO_SOLO_AUTO_TARGET_3 do
+			stat_set_int(CAYO_SOLO_AUTO_TARGET_3[i][1], true, CAYO_SOLO_AUTO_TARGET_3[i][2])
+		end
 		globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
 		globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
 		globals.set_int(262145 + 29395, 1800) -- bag protection
@@ -655,8 +1058,12 @@ do
 					{ 'H4CNF_BOLTCUT', 4424 }, { 'H4CNF_UNIFORM', 5256 }, { 'H4CNF_GRAPPEL', 5156 }, { 'H4_MISSIONS', -1 }, { 'H4CNF_WEAPONS', 4 },
        { 'H4CNF_TROJAN', 5 } }
 	AUTOMATED_2P:add_action('» 猎豹雕像 (任意次要目标装满背包,不拿保险箱)', function()
-		for i = 1, #AUTOMATED_2P_TARGET_5_A do stat_set_int(AUTOMATED_2P_TARGET_5_A[i][1], true, AUTOMATED_2P_TARGET_5_A[i][2]) end
-		for i = 1, #AUTOMATED_2P_TARGET_5 do stat_set_int(AUTOMATED_2P_TARGET_5[i][1], true, AUTOMATED_2P_TARGET_5[i][2]) end
+		for i = 1, #AUTOMATED_2P_TARGET_5_A do
+			stat_set_int(AUTOMATED_2P_TARGET_5_A[i][1], true, AUTOMATED_2P_TARGET_5_A[i][2])
+		end
+		for i = 1, #AUTOMATED_2P_TARGET_5 do
+			stat_set_int(AUTOMATED_2P_TARGET_5[i][1], true, AUTOMATED_2P_TARGET_5[i][2])
+		end
 		globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
 		globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
 		globals.set_int(262145 + 29395, 1800) -- bag protection
@@ -680,8 +1087,12 @@ do
 					{ 'H4CNF_BOLTCUT', 4424 }, { 'H4CNF_UNIFORM', 5256 }, { 'H4CNF_GRAPPEL', 5156 }, { 'H4_MISSIONS', -1 }, { 'H4CNF_WEAPONS', 4 },
        { 'H4CNF_TROJAN', 5 } }
 	AUTOMATED_2P:add_action('» 粉钻 (任意次要目标装满背包,不拿保险箱)', function()
-		for i = 1, #AUTOMATED_2_TARGET_3_A do stat_set_int(AUTOMATED_2_TARGET_3_A[i][1], true, AUTOMATED_2_TARGET_3_A[i][2]) end
-		for i = 1, #AUTOMATED_2_TARGET_3 do stat_set_int(AUTOMATED_2_TARGET_3[i][1], true, AUTOMATED_2_TARGET_3[i][2]) end
+		for i = 1, #AUTOMATED_2_TARGET_3_A do
+			stat_set_int(AUTOMATED_2_TARGET_3_A[i][1], true, AUTOMATED_2_TARGET_3_A[i][2])
+		end
+		for i = 1, #AUTOMATED_2_TARGET_3 do
+			stat_set_int(AUTOMATED_2_TARGET_3[i][1], true, AUTOMATED_2_TARGET_3[i][2])
+		end
 		globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
 		globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
 		globals.set_int(262145 + 29395, 1800) -- bag protection
@@ -706,8 +1117,12 @@ do
 					{ 'H4CNF_BOLTCUT', 4424 }, { 'H4CNF_UNIFORM', 5256 }, { 'H4CNF_GRAPPEL', 5156 }, { 'H4_MISSIONS', -1 }, { 'H4CNF_WEAPONS', 4 },
        { 'H4CNF_TROJAN', 5 } }
 	AUTOMATED_3P:add_action('» 猎豹雕像 (任意次要目标装满背包,不拿保险箱)', function()
-		for i = 1, #AUTOMATED_3P_TARGET_5_A do stat_set_int(AUTOMATED_3P_TARGET_5_A[i][1], true, AUTOMATED_3P_TARGET_5_A[i][2]) end
-		for i = 1, #AUTOMATED_3P_TARGET_5 do stat_set_int(AUTOMATED_3P_TARGET_5[i][1], true, AUTOMATED_3P_TARGET_5[i][2]) end
+		for i = 1, #AUTOMATED_3P_TARGET_5_A do
+			stat_set_int(AUTOMATED_3P_TARGET_5_A[i][1], true, AUTOMATED_3P_TARGET_5_A[i][2])
+		end
+		for i = 1, #AUTOMATED_3P_TARGET_5 do
+			stat_set_int(AUTOMATED_3P_TARGET_5[i][1], true, AUTOMATED_3P_TARGET_5[i][2])
+		end
 		globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
 		globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
 		globals.set_int(262145 + 29395, 1800) -- bag protection
@@ -733,8 +1148,12 @@ do
 					{ 'H4CNF_BOLTCUT', 4424 }, { 'H4CNF_UNIFORM', 5256 }, { 'H4CNF_GRAPPEL', 5156 }, { 'H4_MISSIONS', -1 }, { 'H4CNF_WEAPONS', 4 },
        { 'H4CNF_TROJAN', 5 } }
 	AUTOMATED_3P:add_action('» 粉钻 (任意次要目标装满背包,不拿保险箱)', function()
-		for i = 1, #AUTOMATED_3P_TARGET_3_A do stat_set_int(AUTOMATED_3P_TARGET_3_A[i][1], true, AUTOMATED_3P_TARGET_3_A[i][2]) end
-		for i = 2, #AUTOMATED_3P_TARGET_3 do stat_set_int(AUTOMATED_3P_TARGET_3[i][1], true, AUTOMATED_3P_TARGET_3[i][2]) end
+		for i = 1, #AUTOMATED_3P_TARGET_3_A do
+			stat_set_int(AUTOMATED_3P_TARGET_3_A[i][1], true, AUTOMATED_3P_TARGET_3_A[i][2])
+		end
+		for i = 2, #AUTOMATED_3P_TARGET_3 do
+			stat_set_int(AUTOMATED_3P_TARGET_3[i][1], true, AUTOMATED_3P_TARGET_3[i][2])
+		end
 		globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
 		globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
 		globals.set_int(262145 + 29395, 1800) -- bag protection
@@ -760,8 +1179,12 @@ do
 					{ 'H4CNF_BOLTCUT', 4424 }, { 'H4CNF_UNIFORM', 5256 }, { 'H4CNF_GRAPPEL', 5156 }, { 'H4_MISSIONS', -1 }, { 'H4CNF_WEAPONS', 4 },
        { 'H4CNF_TROJAN', 5 } }
 	AUTOMATED_4P:add_action('» 猎豹雕像 (任意次要目标装满背包,不拿保险箱)', function()
-		for i = 1, #AUTOMATED_4P_TARGET_5_A do stat_set_int(AUTOMATED_4P_TARGET_5_A[i][1], true, AUTOMATED_4P_TARGET_5_A[i][2]) end
-		for i = 1, #AUTOMATED_4P_TARGET_5 do stat_set_int(AUTOMATED_4P_TARGET_5[i][1], true, AUTOMATED_4P_TARGET_5[i][2]) end
+		for i = 1, #AUTOMATED_4P_TARGET_5_A do
+			stat_set_int(AUTOMATED_4P_TARGET_5_A[i][1], true, AUTOMATED_4P_TARGET_5_A[i][2])
+		end
+		for i = 1, #AUTOMATED_4P_TARGET_5 do
+			stat_set_int(AUTOMATED_4P_TARGET_5[i][1], true, AUTOMATED_4P_TARGET_5[i][2])
+		end
 		globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
 		globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
 		globals.set_int(262145 + 29395, 1800) -- bag protection
@@ -788,8 +1211,12 @@ do
 					{ 'H4CNF_BOLTCUT', 4424 }, { 'H4CNF_UNIFORM', 5256 }, { 'H4CNF_GRAPPEL', 5156 }, { 'H4_MISSIONS', -1 }, { 'H4CNF_WEAPONS', 4 },
        { 'H4CNF_TROJAN', 5 } }
 	AUTOMATED_4P:add_action('» 粉钻 (任意次要目标装满背包,不拿保险箱)', function()
-		for i = 1, #AUTOMATED_4P_TARGET_3_A do stat_set_int(AUTOMATED_4P_TARGET_3_A[i][1], true, AUTOMATED_4P_TARGET_3_A[i][2]) end
-		for i = 1, #AUTOMATED_4P_TARGET_3 do stat_set_int(AUTOMATED_4P_TARGET_3[i][1], true, AUTOMATED_4P_TARGET_3[i][2]) end
+		for i = 1, #AUTOMATED_4P_TARGET_3_A do
+			stat_set_int(AUTOMATED_4P_TARGET_3_A[i][1], true, AUTOMATED_4P_TARGET_3_A[i][2])
+		end
+		for i = 1, #AUTOMATED_4P_TARGET_3 do
+			stat_set_int(AUTOMATED_4P_TARGET_3[i][1], true, AUTOMATED_4P_TARGET_3[i][2])
+		end
 		globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
 		globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
 		globals.set_int(262145 + 29395, 1800) -- bag protection
@@ -817,8 +1244,12 @@ do
 					{ 'H4CNF_BOLTCUT', 4424 }, { 'H4CNF_UNIFORM', 5256 }, { 'H4CNF_GRAPPEL', 5156 }, { 'H4_MISSIONS', -1 }, { 'H4CNF_WEAPONS', 4 },
        { 'H4CNF_TROJAN', 5 } }
 	WEEKLY_SOLO:add_action('» 猎豹雕像 (任意次要目标装满背包,不拿保险箱)', function()
-		for i = 1, #USER_CAN_MDFY_WKLY_SOLO_PANTHER do stat_set_int(USER_CAN_MDFY_WKLY_SOLO_PANTHER[i][1], true, USER_CAN_MDFY_WKLY_SOLO_PANTHER[i][2]) end
-		for i = 1, #WKLY_SOLO_PANTHER do stat_set_int(WKLY_SOLO_PANTHER[i][1], true, WKLY_SOLO_PANTHER[i][2]) end
+		for i = 1, #USER_CAN_MDFY_WKLY_SOLO_PANTHER do
+			stat_set_int(USER_CAN_MDFY_WKLY_SOLO_PANTHER[i][1], true, USER_CAN_MDFY_WKLY_SOLO_PANTHER[i][2])
+		end
+		for i = 1, #WKLY_SOLO_PANTHER do
+			stat_set_int(WKLY_SOLO_PANTHER[i][1], true, WKLY_SOLO_PANTHER[i][2])
+		end
 		globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
 		globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
 		globals.set_int(262145 + 29395, 1800) -- Bag protection
@@ -842,8 +1273,12 @@ do
 					{ 'H4CNF_BOLTCUT', 4424 }, { 'H4CNF_UNIFORM', 5256 }, { 'H4CNF_GRAPPEL', 5156 }, { 'H4_MISSIONS', -1 }, { 'H4CNF_WEAPONS', 4 },
        { 'H4CNF_TROJAN', 5 } }
 	WEEKLY_F2:add_action('» 猎豹雕像 (任意次要目标装满背包,不拿保险箱)', function()
-		for i = 1, #USER_CAN_MDFY_WKLY_DUO_PANTHER do stat_set_int(USER_CAN_MDFY_WKLY_DUO_PANTHER[i][1], true, USER_CAN_MDFY_WKLY_DUO_PANTHER[i][2]) end
-		for i = 1, #WKLY_DUO_PANTHER do stat_set_int(WKLY_DUO_PANTHER[i][1], true, WKLY_DUO_PANTHER[i][2]) end
+		for i = 1, #USER_CAN_MDFY_WKLY_DUO_PANTHER do
+			stat_set_int(USER_CAN_MDFY_WKLY_DUO_PANTHER[i][1], true, USER_CAN_MDFY_WKLY_DUO_PANTHER[i][2])
+		end
+		for i = 1, #WKLY_DUO_PANTHER do
+			stat_set_int(WKLY_DUO_PANTHER[i][1], true, WKLY_DUO_PANTHER[i][2])
+		end
 		globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
 		globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
 		globals.set_int(262145 + 29395, 1800) -- bag protection
@@ -868,8 +1303,12 @@ do
 					{ 'H4CNF_BOLTCUT', 4424 }, { 'H4CNF_UNIFORM', 5256 }, { 'H4CNF_GRAPPEL', 5156 }, { 'H4_MISSIONS', -1 }, { 'H4CNF_WEAPONS', 4 },
        { 'H4CNF_TROJAN', 5 } }
 	WEEKLY_F3:add_action('» 猎豹雕像 (任意次要目标装满背包,不拿保险箱)', function()
-		for i = 1, #USER_CAN_MDFY_WKLY_TRIO_PANTHER do stat_set_int(USER_CAN_MDFY_WKLY_TRIO_PANTHER[i][1], true, USER_CAN_MDFY_WKLY_TRIO_PANTHER[i][2]) end
-		for i = 1, #WKLY_TRIO_PANTHER do stat_set_int(WKLY_TRIO_PANTHER[i][1], true, WKLY_TRIO_PANTHER[i][2]) end
+		for i = 1, #USER_CAN_MDFY_WKLY_TRIO_PANTHER do
+			stat_set_int(USER_CAN_MDFY_WKLY_TRIO_PANTHER[i][1], true, USER_CAN_MDFY_WKLY_TRIO_PANTHER[i][2])
+		end
+		for i = 1, #WKLY_TRIO_PANTHER do
+			stat_set_int(WKLY_TRIO_PANTHER[i][1], true, WKLY_TRIO_PANTHER[i][2])
+		end
 		globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
 		globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
 		globals.set_int(262145 + 29395, 1800) -- bag protection
@@ -895,8 +1334,12 @@ do
 					{ 'H4CNF_BOLTCUT', 4424 }, { 'H4CNF_UNIFORM', 5256 }, { 'H4CNF_GRAPPEL', 5156 }, { 'H4_MISSIONS', -1 }, { 'H4CNF_WEAPONS', 4 },
        { 'H4CNF_TROJAN', 5 } }
 	WEEKLY_F4:add_action('» 猎豹雕像 (任意次要目标装满背包,不拿保险箱)', function()
-		for i = 1, #USER_CAN_MDFY_WKLY_FOUR_PANTHER do stat_set_int(USER_CAN_MDFY_WKLY_FOUR_PANTHER[i][1], true, USER_CAN_MDFY_WKLY_FOUR_PANTHER[i][2]) end
-		for i = 1, #WKLY_FOUR_PANTHER do stat_set_int(WKLY_FOUR_PANTHER[i][1], true, WKLY_FOUR_PANTHER[i][2]) end
+		for i = 1, #USER_CAN_MDFY_WKLY_FOUR_PANTHER do
+			stat_set_int(USER_CAN_MDFY_WKLY_FOUR_PANTHER[i][1], true, USER_CAN_MDFY_WKLY_FOUR_PANTHER[i][2])
+		end
+		for i = 1, #WKLY_FOUR_PANTHER do
+			stat_set_int(WKLY_FOUR_PANTHER[i][1], true, WKLY_FOUR_PANTHER[i][2])
+		end
 		globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
 		globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
 		globals.set_int(262145 + 29395, 1800) -- bag protection
@@ -1074,79 +1517,105 @@ end)
 do
 	local CP_VEH_KA = { { 'H4_MISSIONS', 65283 } }
 	CAYO_VEHICLES:add_action('» 虎鲸', function()
-		for i = 1, #CP_VEH_KA do stat_set_int(CP_VEH_KA[i][1], true, CP_VEH_KA[i][2]) end
+		for i = 1, #CP_VEH_KA do
+			stat_set_int(CP_VEH_KA[i][1], true, CP_VEH_KA[i][2])
+		end
 	end)
 end
 do
 	local CP_VEH_AT = { { 'H4_MISSIONS', 65413 } }
 	CAYO_VEHICLES:add_action('» 阿尔科诺斯特', function()
-		for i = 1, #CP_VEH_AT do stat_set_int(CP_VEH_AT[i][1], true, CP_VEH_AT[i][2]) end
+		for i = 1, #CP_VEH_AT do
+			stat_set_int(CP_VEH_AT[i][1], true, CP_VEH_AT[i][2])
+		end
 	end)
 end
 do
 	local CP_VEH_VM = { { 'H4_MISSIONS', 65289 } }
 	CAYO_VEHICLES:add_action('» 梅杜莎', function()
-		for i = 1, #CP_VEH_VM do stat_set_int(CP_VEH_VM[i][1], true, CP_VEH_VM[i][2]) end
+		for i = 1, #CP_VEH_VM do
+			stat_set_int(CP_VEH_VM[i][1], true, CP_VEH_VM[i][2])
+		end
 	end)
 end
 do
 	local CP_VEH_SA = { { 'H4_MISSIONS', 65425 } }
 	CAYO_VEHICLES:add_action('» 隐形歼灭者', function()
-		for i = 1, #CP_VEH_SA do stat_set_int(CP_VEH_SA[i][1], true, CP_VEH_SA[i][2]) end
+		for i = 1, #CP_VEH_SA do
+			stat_set_int(CP_VEH_SA[i][1], true, CP_VEH_SA[i][2])
+		end
 	end)
 end
 do
 	local CP_VEH_PB = { { 'H4_MISSIONS', 65313 } }
 	CAYO_VEHICLES:add_action('» 巡逻艇', function()
-		for i = 1, #CP_VEH_PB do stat_set_int(CP_VEH_PB[i][1], true, CP_VEH_PB[i][2]) end
+		for i = 1, #CP_VEH_PB do
+			stat_set_int(CP_VEH_PB[i][1], true, CP_VEH_PB[i][2])
+		end
 	end)
 end
 do
 	local CP_VEH_LN = { { 'H4_MISSIONS', 65345 } }
 	CAYO_VEHICLES:add_action('» 长崎', function()
-		for i = 1, #CP_VEH_LN do stat_set_int(CP_VEH_LN[i][1], true, CP_VEH_LN[i][2]) end
+		for i = 1, #CP_VEH_LN do
+			stat_set_int(CP_VEH_LN[i][1], true, CP_VEH_LN[i][2])
+		end
 	end)
 end
 do
 	local CP_VEH_ALL = { { 'H4_MISSIONS', -1 } }
 	CAYO_VEHICLES:add_action('» 解锁全部载具', function()
-		for i = 1, #CP_VEH_ALL do stat_set_int(CP_VEH_ALL[i][1], true, CP_VEH_ALL[i][2]) end
+		for i = 1, #CP_VEH_ALL do
+			stat_set_int(CP_VEH_ALL[i][1], true, CP_VEH_ALL[i][2])
+		end
 	end)
 end
 do
 	local Target_SapphirePanther = { { 'H4CNF_TARGET', 5 } }
 	CAYO_PRIMARY:add_action('» 猎豹雕像', function()
-		for i = 1, #Target_SapphirePanther do stat_set_int(Target_SapphirePanther[i][1], true, Target_SapphirePanther[i][2]) end
+		for i = 1, #Target_SapphirePanther do
+			stat_set_int(Target_SapphirePanther[i][1], true, Target_SapphirePanther[i][2])
+		end
 	end)
 end
 do
 	local Target_MadrazoF = { { 'H4CNF_TARGET', 4 } }
 	CAYO_PRIMARY:add_action('» 玛德拉索文件', function()
-		for i = 1, #Target_MadrazoF do stat_set_int(Target_MadrazoF[i][1], true, Target_MadrazoF[i][2]) end
+		for i = 1, #Target_MadrazoF do
+			stat_set_int(Target_MadrazoF[i][1], true, Target_MadrazoF[i][2])
+		end
 	end)
 end
 do
 	local Target_PinkDiamond = { { 'H4CNF_TARGET', 3 } }
 	CAYO_PRIMARY:add_action('» 粉钻', function()
-		for i = 1, #Target_PinkDiamond do stat_set_int(Target_PinkDiamond[i][1], true, Target_PinkDiamond[i][2]) end
+		for i = 1, #Target_PinkDiamond do
+			stat_set_int(Target_PinkDiamond[i][1], true, Target_PinkDiamond[i][2])
+		end
 	end)
 end
 do
 	local Target_BearerBonds = { { 'H4CNF_TARGET', 2 } }
 	CAYO_PRIMARY:add_action('» 不记名债券', function()
-		for i = 1, #Target_BearerBonds do stat_set_int(Target_BearerBonds[i][1], true, Target_BearerBonds[i][2]) end
+		for i = 1, #Target_BearerBonds do
+			stat_set_int(Target_BearerBonds[i][1], true, Target_BearerBonds[i][2])
+		end
 	end)
 end
 do
 	local Target_Ruby = { { 'H4CNF_TARGET', 1 } }
 	CAYO_PRIMARY:add_action('» 红宝石项链', function()
-		for i = 1, #Target_Ruby do stat_set_int(Target_Ruby[i][1], true, Target_Ruby[i][2]) end
+		for i = 1, #Target_Ruby do
+			stat_set_int(Target_Ruby[i][1], true, Target_Ruby[i][2])
+		end
 	end)
 end
 do
 	local Target_Tequila = { { 'H4CNF_TARGET', 0 } }
 	CAYO_PRIMARY:add_action('» 西西米托龙舌兰酒', function()
-		for i = 1, #Target_Tequila do stat_set_int(Target_Tequila[i][1], true, Target_Tequila[i][2]) end
+		for i = 1, #Target_Tequila do
+			stat_set_int(Target_Tequila[i][1], true, Target_Tequila[i][2])
+		end
 	end)
 end
 do
@@ -1158,7 +1627,9 @@ do
                           { 'H4LOOT_COKE_C_SCOPED', 72 }, { 'H4LOOT_GOLD_I_SCOPED', 8589313 }, { 'H4LOOT_GOLD_C_SCOPED', 129 },
                           { 'H4LOOT_PAINT_SCOPED', 127 } }
 	CAYO_SECONDARY:add_action('» 随机次要目标', function()
-		for i = 1, #SecondaryT_RDM do stat_set_int(SecondaryT_RDM[i][1], true, SecondaryT_RDM[i][2]) end
+		for i = 1, #SecondaryT_RDM do
+			stat_set_int(SecondaryT_RDM[i][1], true, SecondaryT_RDM[i][2])
+		end
 	end)
 end
 do
@@ -1170,7 +1641,9 @@ do
                             { 'H4LOOT_COKE_C_SCOPED', 0 }, { 'H4LOOT_GOLD_I_SCOPED', 0 }, { 'H4LOOT_GOLD_C_SCOPED', 0 },
                             { 'H4LOOT_PAINT_SCOPED', 127 } }
 	CAYO_SECONDARY:add_action('» 现金', function()
-		for i = 1, #SecondaryT_FCash do stat_set_int(SecondaryT_FCash[i][1], true, SecondaryT_FCash[i][2]) end
+		for i = 1, #SecondaryT_FCash do
+			stat_set_int(SecondaryT_FCash[i][1], true, SecondaryT_FCash[i][2])
+		end
 	end)
 end
 do
@@ -1182,7 +1655,9 @@ do
                             { 'H4LOOT_COKE_C_SCOPED', 0 }, { 'H4LOOT_GOLD_I_SCOPED', 0 }, { 'H4LOOT_GOLD_C_SCOPED', 0 },
                             { 'H4LOOT_PAINT_SCOPED', 127 } }
 	CAYO_SECONDARY:add_action('» 大麻', function()
-		for i = 1, #SecondaryT_FWeed do stat_set_int(SecondaryT_FWeed[i][1], true, SecondaryT_FWeed[i][2]) end
+		for i = 1, #SecondaryT_FWeed do
+			stat_set_int(SecondaryT_FWeed[i][1], true, SecondaryT_FWeed[i][2])
+		end
 	end)
 end
 do
@@ -1193,7 +1668,9 @@ do
                             { 'H4LOOT_WEED_C_SCOPED', 0 }, { 'H4LOOT_COKE_I_SCOPED', -1 }, { 'H4LOOT_COKE_C_SCOPED', -1 },
                             { 'H4LOOT_GOLD_I_SCOPED', 0 }, { 'H4LOOT_GOLD_C_SCOPED', 0 }, { 'H4LOOT_PAINT_SCOPED', 127 } }
 	CAYO_SECONDARY:add_action('» 可卡因', function()
-		for i = 1, #SecondaryT_FCoke do stat_set_int(SecondaryT_FCoke[i][1], true, SecondaryT_FCoke[i][2]) end
+		for i = 1, #SecondaryT_FCoke do
+			stat_set_int(SecondaryT_FCoke[i][1], true, SecondaryT_FCoke[i][2])
+		end
 	end)
 end
 do
@@ -1204,7 +1681,9 @@ do
                             { 'H4LOOT_WEED_C_SCOPED', 0 }, { 'H4LOOT_COKE_I_SCOPED', 0 }, { 'H4LOOT_COKE_C_SCOPED', 0 },
                             { 'H4LOOT_GOLD_I_SCOPED', -1 }, { 'H4LOOT_GOLD_C_SCOPED', -1 }, { 'H4LOOT_PAINT_SCOPED', -1 } }
 	CAYO_SECONDARY:add_action('» 黄金', function()
-		for i = 1, #SecondaryT_FGold do stat_set_int(SecondaryT_FGold[i][1], true, SecondaryT_FGold[i][2]) end
+		for i = 1, #SecondaryT_FGold do
+			stat_set_int(SecondaryT_FGold[i][1], true, SecondaryT_FGold[i][2])
+		end
 	end)
 end
 do
@@ -1215,7 +1694,9 @@ do
                              { 'H4LOOT_WEED_C_SCOPED', 0 }, { 'H4LOOT_COKE_I_SCOPED', 0 }, { 'H4LOOT_COKE_C_SCOPED', 0 },
                              { 'H4LOOT_GOLD_I_SCOPED', 0 }, { 'H4LOOT_GOLD_C_SCOPED', 0 }, { 'H4LOOT_PAINT_SCOPED', 0 } }
 	CAYO_SECONDARY:add_action('» 移除全部次要目标', function()
-		for i = 1, #SecondaryT_Remove do stat_set_int(SecondaryT_Remove[i][1], true, SecondaryT_Remove[i][2]) end
+		for i = 1, #SecondaryT_Remove do
+			stat_set_int(SecondaryT_Remove[i][1], true, SecondaryT_Remove[i][2])
+		end
 	end)
 end
 -- [unuseable]需要用户输入
@@ -1277,7 +1758,9 @@ do
                            { 'H4LOOT_PAINT', 127 }, { 'H4LOOT_PAINT_V', 948863 }, { 'H4LOOT_CASH_C_SCOPED', 2 }, { 'H4LOOT_WEED_C_SCOPED', 17 },
                            { 'H4LOOT_COKE_C_SCOPED', 132 }, { 'H4LOOT_GOLD_C_SCOPED', 104 }, { 'H4LOOT_PAINT_SCOPED', 127 } }
 	CAYO_COMPOUND:add_action('» 随机次要目标', function()
-		for i = 1, #Compound_LT_MIX do stat_set_int(Compound_LT_MIX[i][1], true, Compound_LT_MIX[i][2]) end
+		for i = 1, #Compound_LT_MIX do
+			stat_set_int(Compound_LT_MIX[i][1], true, Compound_LT_MIX[i][2])
+		end
 	end)
 end
 do
@@ -1286,7 +1769,9 @@ do
                             { 'H4LOOT_PAINT_V', 190000 }, { 'H4LOOT_CASH_C_SCOPED', -1 }, { 'H4LOOT_WEED_C_SCOPED', 0 },
                             { 'H4LOOT_COKE_C_SCOPED', 0 }, { 'H4LOOT_GOLD_C_SCOPED', 0 }, { 'H4LOOT_PAINT_SCOPED', 127 } }
 	CAYO_COMPOUND:add_action('» 现金', function()
-		for i = 1, #Compound_LT_CASH do stat_set_int(Compound_LT_CASH[i][1], true, Compound_LT_CASH[i][2]) end
+		for i = 1, #Compound_LT_CASH do
+			stat_set_int(Compound_LT_CASH[i][1], true, Compound_LT_CASH[i][2])
+		end
 	end)
 end
 do
@@ -1295,7 +1780,9 @@ do
                             { 'H4LOOT_PAINT_V', 190000 }, { 'H4LOOT_CASH_C_SCOPED', 0 }, { 'H4LOOT_WEED_C_SCOPED', -1 },
                             { 'H4LOOT_COKE_C_SCOPED', 0 }, { 'H4LOOT_GOLD_C_SCOPED', 0 }, { 'H4LOOT_PAINT_SCOPED', 127 } }
 	CAYO_COMPOUND:add_action('» 大麻', function()
-		for i = 1, #Compound_LT_WEED do stat_set_int(Compound_LT_WEED[i][1], true, Compound_LT_WEED[i][2]) end
+		for i = 1, #Compound_LT_WEED do
+			stat_set_int(Compound_LT_WEED[i][1], true, Compound_LT_WEED[i][2])
+		end
 	end)
 end
 do
@@ -1304,7 +1791,9 @@ do
                             { 'H4LOOT_CASH_C_SCOPED', 0 }, { 'H4LOOT_WEED_C_SCOPED', 0 }, { 'H4LOOT_COKE_C_SCOPED', -1 },
                             { 'H4LOOT_GOLD_C_SCOPED', 0 }, { 'H4LOOT_PAINT_SCOPED', 127 } }
 	CAYO_COMPOUND:add_action('» 可卡因', function()
-		for i = 1, #Compound_LT_COKE do stat_set_int(Compound_LT_COKE[i][1], true, Compound_LT_COKE[i][2]) end
+		for i = 1, #Compound_LT_COKE do
+			stat_set_int(Compound_LT_COKE[i][1], true, Compound_LT_COKE[i][2])
+		end
 	end)
 end
 do
@@ -1313,7 +1802,9 @@ do
                             { 'H4LOOT_PAINT_V', 190000 }, { 'H4LOOT_GOLD_C_SCOPED', -1 }, { 'H4LOOT_CASH_C_SCOPED', 0 },
                             { 'H4LOOT_WEED_C_SCOPED', 0 }, { 'H4LOOT_COKE_C_SCOPED', 0 }, { 'H4LOOT_PAINT_SCOPED', 127 } }
 	CAYO_COMPOUND:add_action('» 黄金', function()
-		for i = 1, #Compound_LT_GOLD do stat_set_int(Compound_LT_GOLD[i][1], true, Compound_LT_GOLD[i][2]) end
+		for i = 1, #Compound_LT_GOLD do
+			stat_set_int(Compound_LT_GOLD[i][1], true, Compound_LT_GOLD[i][2])
+		end
 	end)
 end
 do
@@ -1322,13 +1813,17 @@ do
                              { 'H4LOOT_CASH_C_SCOPED', 0 }, { 'H4LOOT_WEED_C_SCOPED', 0 }, { 'H4LOOT_COKE_C_SCOPED', 0 }, { 'H4LOOT_PAINT', 127 },
                              { 'H4LOOT_PAINT_V', 190000 }, { 'H4LOOT_PAINT_SCOPED', 127 } }
 	CAYO_COMPOUND:add_action('» 画', function()
-		for i = 1, #Compound_LT_PAINT do stat_set_int(Compound_LT_PAINT[i][1], true, Compound_LT_PAINT[i][2]) end
+		for i = 1, #Compound_LT_PAINT do
+			stat_set_int(Compound_LT_PAINT[i][1], true, Compound_LT_PAINT[i][2])
+		end
 	end)
 end
 do
 	local Remove_Compound_Paint = { { 'H4LOOT_PAINT', 0 }, { 'H4LOOT_PAINT_V', 0 }, { 'H4LOOT_PAINT_SCOPED', 0 } }
 	CAYO_COMPOUND:add_action('» 移除全部画', function()
-		for i = 1, #Remove_Compound_Paint do stat_set_int(Remove_Compound_Paint[i][1], true, Remove_Compound_Paint[i][2]) end
+		for i = 1, #Remove_Compound_Paint do
+			stat_set_int(Remove_Compound_Paint[i][1], true, Remove_Compound_Paint[i][2])
+		end
 	end)
 end
 do
@@ -1336,37 +1831,49 @@ do
                                   { 'H4LOOT_GOLD_C_SCOPED', 0 }, { 'H4LOOT_CASH_C_SCOPED', 0 }, { 'H4LOOT_WEED_C_SCOPED', 0 },
                                   { 'H4LOOT_COKE_C_SCOPED', 0 }, { 'H4LOOT_PAINT', 0 }, { 'H4LOOT_PAINT_SCOPED', 0 } }
 	CAYO_COMPOUND:add_action('» 移除全部次要目标', function()
-		for i = 1, #Remove_ALL_Compound_LT do stat_set_int(Remove_ALL_Compound_LT[i][1], true, Remove_ALL_Compound_LT[i][2]) end
+		for i = 1, #Remove_ALL_Compound_LT do
+			stat_set_int(Remove_ALL_Compound_LT[i][1], true, Remove_ALL_Compound_LT[i][2])
+		end
 	end)
 end
 do
 	local Weapon_Aggressor = { { 'H4CNF_WEAPONS', 1 } }
 	CAYO_WEAPONS:add_action('» 侵略者', function()
-		for i = 1, #Weapon_Aggressor do stat_set_int(Weapon_Aggressor[i][1], true, Weapon_Aggressor[i][2]) end
+		for i = 1, #Weapon_Aggressor do
+			stat_set_int(Weapon_Aggressor[i][1], true, Weapon_Aggressor[i][2])
+		end
 	end)
 end
 do
 	local Weapon_Conspirator = { { 'H4CNF_WEAPONS', 2 } }
 	CAYO_WEAPONS:add_action('» 阴谋者', function()
-		for i = 1, #Weapon_Conspirator do stat_set_int(Weapon_Conspirator[i][1], true, Weapon_Conspirator[i][2]) end
+		for i = 1, #Weapon_Conspirator do
+			stat_set_int(Weapon_Conspirator[i][1], true, Weapon_Conspirator[i][2])
+		end
 	end)
 end
 do
 	local Weapon_Crackshot = { { 'H4CNF_WEAPONS', 3 } }
 	CAYO_WEAPONS:add_action('» 神枪手', function()
-		for i = 1, #Weapon_Crackshot do stat_set_int(Weapon_Crackshot[i][1], true, Weapon_Crackshot[i][2]) end
+		for i = 1, #Weapon_Crackshot do
+			stat_set_int(Weapon_Crackshot[i][1], true, Weapon_Crackshot[i][2])
+		end
 	end)
 end
 do
 	local Weapon_Saboteur = { { 'H4CNF_WEAPONS', 4 } }
 	CAYO_WEAPONS:add_action('» 破坏者', function()
-		for i = 1, #Weapon_Saboteur do stat_set_int(Weapon_Saboteur[i][1], true, Weapon_Saboteur[i][2]) end
+		for i = 1, #Weapon_Saboteur do
+			stat_set_int(Weapon_Saboteur[i][1], true, Weapon_Saboteur[i][2])
+		end
 	end)
 end
 do
 	local Weapon_Marksman = { { 'H4CNF_WEAPONS', 5 } }
 	CAYO_WEAPONS:add_action('» 神射手', function()
-		for i = 1, #Weapon_Marksman do stat_set_int(Weapon_Marksman[i][1], true, Weapon_Marksman[i][2]) end
+		for i = 1, #Weapon_Marksman do
+			stat_set_int(Weapon_Marksman[i][1], true, Weapon_Marksman[i][2])
+		end
 	end)
 end
 do
@@ -1375,67 +1882,89 @@ do
 	FUCK_Supressor:add_action('买不起消音器上你妈的岛', function()
 	end)
 	CAYO_WEAPONS:add_action('» 移除消音器', function()
-		for i = 1, #Supress_Removal do stat_set_int(Supress_Removal[i][1], true, Supress_Removal[i][2]) end
+		for i = 1, #Supress_Removal do
+			stat_set_int(Supress_Removal[i][1], true, Supress_Removal[i][2])
+		end
 	end)
 end
 do
 	local CP_Item_SpawnPlace_AIR = { { 'H4CNF_GRAPPEL', 2022 }, { 'H4CNF_UNIFORM', 12 }, { 'H4CNF_BOLTCUT', 4161 }, { 'H4CNF_TROJAN', 1 } }
 	CAYO_EQUIPM:add_action('» 机场周边', function()
-		for i = 1, #CP_Item_SpawnPlace_AIR do stat_set_int(CP_Item_SpawnPlace_AIR[i][1], true, CP_Item_SpawnPlace_AIR[i][2]) end
+		for i = 1, #CP_Item_SpawnPlace_AIR do
+			stat_set_int(CP_Item_SpawnPlace_AIR[i][1], true, CP_Item_SpawnPlace_AIR[i][2])
+		end
 	end)
 end
 do
 	local CP_Item_SpawnPlace_DKS = { { 'H4CNF_GRAPPEL', 3671 }, { 'H4CNF_UNIFORM', 5256 }, { 'H4CNF_BOLTCUT', 4424 }, { 'H4CNF_TROJAN', 2 } }
 	CAYO_EQUIPM:add_action('» 码头周边', function()
-		for i = 1, #CP_Item_SpawnPlace_DKS do stat_set_int(CP_Item_SpawnPlace_DKS[i][1], true, CP_Item_SpawnPlace_DKS[i][2]) end
+		for i = 1, #CP_Item_SpawnPlace_DKS do
+			stat_set_int(CP_Item_SpawnPlace_DKS[i][1], true, CP_Item_SpawnPlace_DKS[i][2])
+		end
 	end)
 end
 do
 	local CP_Item_SpawnPlace_CP = { { 'H4CNF_GRAPPEL', 85324 }, { 'H4CNF_UNIFORM', 61034 }, { 'H4CNF_BOLTCUT', 4612 }, { 'H4CNF_TROJAN', 5 } }
 	CAYO_EQUIPM:add_action('» 豪宅周边', function()
-		for i = 1, #CP_Item_SpawnPlace_CP do stat_set_int(CP_Item_SpawnPlace_CP[i][1], true, CP_Item_SpawnPlace_CP[i][2]) end
+		for i = 1, #CP_Item_SpawnPlace_CP do
+			stat_set_int(CP_Item_SpawnPlace_CP[i][1], true, CP_Item_SpawnPlace_CP[i][2])
+		end
 	end)
 end
 do
 	local CP_TRUCK_SPAWN_mov1 = { { 'H4CNF_TROJAN', 1 } }
 	CAYO_TRUCK:add_action('» 机场', function()
-		for i = 1, #CP_TRUCK_SPAWN_mov1 do stat_set_int(CP_TRUCK_SPAWN_mov1[i][1], true, CP_TRUCK_SPAWN_mov1[i][2]) end
+		for i = 1, #CP_TRUCK_SPAWN_mov1 do
+			stat_set_int(CP_TRUCK_SPAWN_mov1[i][1], true, CP_TRUCK_SPAWN_mov1[i][2])
+		end
 	end)
 end
 do
 	local CP_TRUCK_SPAWN_mov2 = { { 'H4CNF_TROJAN', 2 } }
 	CAYO_TRUCK:add_action('» 北码头', function()
-		for i = 1, #CP_TRUCK_SPAWN_mov2 do stat_set_int(CP_TRUCK_SPAWN_mov2[i][1], true, CP_TRUCK_SPAWN_mov2[i][2]) end
+		for i = 1, #CP_TRUCK_SPAWN_mov2 do
+			stat_set_int(CP_TRUCK_SPAWN_mov2[i][1], true, CP_TRUCK_SPAWN_mov2[i][2])
+		end
 	end)
 end
 do
 	local CP_TRUCK_SPAWN_mov3 = { { 'H4CNF_TROJAN', 3 } }
 	CAYO_TRUCK:add_action('» 主码头 (东)', function()
-		for i = 1, #CP_TRUCK_SPAWN_mov3 do stat_set_int(CP_TRUCK_SPAWN_mov3[i][1], true, CP_TRUCK_SPAWN_mov3[i][2]) end
+		for i = 1, #CP_TRUCK_SPAWN_mov3 do
+			stat_set_int(CP_TRUCK_SPAWN_mov3[i][1], true, CP_TRUCK_SPAWN_mov3[i][2])
+		end
 	end)
 end
 do
 	local CP_TRUCK_SPAWN_mov4 = { { 'H4CNF_TROJAN', 4 } }
 	CAYO_TRUCK:add_action('» 主码头 (西)', function()
-		for i = 1, #CP_TRUCK_SPAWN_mov4 do stat_set_int(CP_TRUCK_SPAWN_mov4[i][1], true, CP_TRUCK_SPAWN_mov4[i][2]) end
+		for i = 1, #CP_TRUCK_SPAWN_mov4 do
+			stat_set_int(CP_TRUCK_SPAWN_mov4[i][1], true, CP_TRUCK_SPAWN_mov4[i][2])
+		end
 	end)
 end
 do
 	local CP_TRUCK_SPAWN_mov5 = { { 'H4CNF_TROJAN', 5 } }
 	CAYO_TRUCK:add_action('» 豪宅', function()
-		for i = 1, #CP_TRUCK_SPAWN_mov5 do stat_set_int(CP_TRUCK_SPAWN_mov5[i][1], true, CP_TRUCK_SPAWN_mov5[i][2]) end
+		for i = 1, #CP_TRUCK_SPAWN_mov5 do
+			stat_set_int(CP_TRUCK_SPAWN_mov5[i][1], true, CP_TRUCK_SPAWN_mov5[i][2])
+		end
 	end)
 end
 do
 	local CAYO_NORMAL = { { 'H4_PROGRESS', 126823 } }
 	CAYO_DFFCTY:add_action('» 正常模式', function()
-		for i = 1, #CAYO_NORMAL do stat_set_int(CAYO_NORMAL[i][1], true, CAYO_NORMAL[i][2]) end
+		for i = 1, #CAYO_NORMAL do
+			stat_set_int(CAYO_NORMAL[i][1], true, CAYO_NORMAL[i][2])
+		end
 	end)
 end
 do
 	local CAYO_Hard = { { 'H4_PROGRESS', 131055 } }
 	CAYO_DFFCTY:add_action('» 困难模式', function()
-		for i = 1, #CAYO_Hard do stat_set_int(CAYO_Hard[i][1], true, CAYO_Hard[i][2]) end
+		for i = 1, #CAYO_Hard do
+			stat_set_int(CAYO_Hard[i][1], true, CAYO_Hard[i][2])
+		end
 	end)
 end
 do
@@ -1450,8 +1979,12 @@ do
 		local CP_AWRD_IT = { { 'AWD_LOSTANDFOUND', 500000 }, { 'AWD_SUNSET', 1800000 }, { 'AWD_TREASURE_HUNTER', 1000000 }, { 'AWD_WRECK_DIVING', 1000000 },
                        { 'AWD_KEINEMUSIK', 1800000 }, { 'AWD_PALMS_TRAX', 1800000 }, { 'AWD_MOODYMANN', 1800000 },
                        { 'AWD_FILL_YOUR_BAGS', 1000000000 }, { 'AWD_WELL_PREPARED', 80 }, { 'H4_H4_DJ_MISSIONS', -1 } }
-		for i = 1, #CP_AWRD_IT do stat_set_int(CP_AWRD_IT[i][1], true, CP_AWRD_IT[i][2]) end
-		for i = 1, #CP_AWRD_BL do stat_set_bool(CP_AWRD_BL[i][1], true, CP_AWRD_BL[i][2]) end
+		for i = 1, #CP_AWRD_IT do
+			stat_set_int(CP_AWRD_IT[i][1], true, CP_AWRD_IT[i][2])
+		end
+		for i = 1, #CP_AWRD_BL do
+			stat_set_bool(CP_AWRD_BL[i][1], true, CP_AWRD_BL[i][2])
+		end
 		for i = 0, 192, 1 do
 			hash = CharID .. '_HISLANDPSTAT_BOOL'
 			stats.set_bool_masked(hash, true, i)
@@ -1464,14 +1997,18 @@ do
 					{ 'H4_MISSIONS', -1 }, { 'H4CNF_APPROACH', -1 }, { 'H4CNF_BS_ENTR', 63 }, { 'H4CNF_BS_GEN', 63 }, { 'H4CNF_WEP_DISRP', 3 },
        { 'H4CNF_ARM_DISRP', 3 }, { 'H4CNF_HEL_DISRP', 3 } }
 	MORE_OPTIONS:add_action('» 完成全部任务', function()
-		for i = 1, #COMPLETE_CP_MISSIONS do stat_set_int(COMPLETE_CP_MISSIONS[i][1], true, COMPLETE_CP_MISSIONS[i][2]) end
+		for i = 1, #COMPLETE_CP_MISSIONS do
+			stat_set_int(COMPLETE_CP_MISSIONS[i][1], true, COMPLETE_CP_MISSIONS[i][2])
+		end
 	end)
 end
 do
 	local CP_RST = { { 'H4_MISSIONS', 0 }, { 'H4_PROGRESS', 0 }, { 'H4CNF_APPROACH', 0 }, { 'H4CNF_BS_ENTR', 0 }, { 'H4CNF_BS_GEN', 0 },
                   { 'H4_PLAYTHROUGH_STATUS', 2 } }
 	MORE_OPTIONS:add_action('» 重置抢劫', function()
-		for i = 1, #CP_RST do stat_set_int(CP_RST[i][1], true, CP_RST[i][2]) end
+		for i = 1, #CP_RST do
+			stat_set_int(CP_RST[i][1], true, CP_RST[i][2])
+		end
 	end)
 end
 -- 名钻赌场抢劫
@@ -1483,8 +2020,12 @@ do
                                             { 'H3OPT_BODYARMORLVL', -1 }, { 'H3OPT_KEYLEVELS', 2 }, { 'H3OPT_BITSET1', 127 },
                                             { 'H3OPT_BITSET0', 262270 } }
 	CAH_DIA_TARGET:add_action('» 隐迹潜踪 (钻石,请选择低级买家)', function()
-		for i = 1, #RunOnce do stat_set_int(RunOnce[i][1], true, RunOnce[i][2]) end
-		for i = 1, #CAH_SILENT_SNEAKY_PRESET_ID_DMND do stat_set_int(CAH_SILENT_SNEAKY_PRESET_ID_DMND[i][1], true, CAH_SILENT_SNEAKY_PRESET_ID_DMND[i][2]) end
+		for i = 1, #RunOnce do
+			stat_set_int(RunOnce[i][1], true, RunOnce[i][2])
+		end
+		for i = 1, #CAH_SILENT_SNEAKY_PRESET_ID_DMND do
+			stat_set_int(CAH_SILENT_SNEAKY_PRESET_ID_DMND[i][1], true, CAH_SILENT_SNEAKY_PRESET_ID_DMND[i][2])
+		end
 		globals.set_int(1966739 + 2326, 60) -- [Diamond] 60% Low | 57 Medium | High 54
 		globals.set_int(1966739 + 2326 + 1, 147) -- Low Buyer: 147 | Medium: 140 | High Buyer: 133
 		globals.set_int(1966739 + 2326 + 2, 147)
@@ -1499,8 +2040,12 @@ do
                                      { 'H3OPT_CREWDRIVER', 3 }, { 'H3OPT_CREWHACKER', 4 }, { 'H3OPT_DISRUPTSHIP', 3 }, { 'H3OPT_BODYARMORLVL', -1 },
                                      { 'H3OPT_KEYLEVELS', 2 }, { 'H3OPT_BITSET1', 159 }, { 'H3OPT_BITSET0', 524118 } }
 	CAH_DIA_TARGET:add_action('» 兵不厌诈 (钻石,请选择低级买家)', function()
-		for i = 1, #RunOnce do stat_set_int(RunOnce[i][1], true, RunOnce[i][2]) end
-		for i = 1, #CAH_BIGCON_PRESET_ID_DMND do stat_set_int(CAH_BIGCON_PRESET_ID_DMND[i][1], true, CAH_BIGCON_PRESET_ID_DMND[i][2]) end
+		for i = 1, #RunOnce do
+			stat_set_int(RunOnce[i][1], true, RunOnce[i][2])
+		end
+		for i = 1, #CAH_BIGCON_PRESET_ID_DMND do
+			stat_set_int(CAH_BIGCON_PRESET_ID_DMND[i][1], true, CAH_BIGCON_PRESET_ID_DMND[i][2])
+		end
 		globals.set_int(1966739 + 2326, 60) -- [Diamond] 60% Low | 57 Medium | High 54
 		globals.set_int(1966739 + 2326 + 1, 147) -- Low Buyer: 147 | Medium: 140 | High Buyer: 133
 		globals.set_int(1966739 + 2326 + 2, 147)
@@ -1515,8 +2060,12 @@ do
                                       { 'H3OPT_CREWDRIVER', 3 }, { 'H3OPT_CREWHACKER', 4 }, { 'H3OPT_DISRUPTSHIP', 3 }, { 'H3OPT_BODYARMORLVL', -1 },
                                       { 'H3OPT_KEYLEVELS', 2 }, { 'H3OPT_BITSET1', 799 }, { 'H3OPT_BITSET0', 3670102 } }
 	CAH_DIA_TARGET:add_action('» 气势汹汹 (钻石,请选择低级买家)', function()
-		for i = 1, #RunOnce do stat_set_int(RunOnce[i][1], true, RunOnce[i][2]) end
-		for i = 1, #CAH_AGGRESS_PRESET_ID_DMND do stat_set_int(CAH_AGGRESS_PRESET_ID_DMND[i][1], true, CAH_AGGRESS_PRESET_ID_DMND[i][2]) end
+		for i = 1, #RunOnce do
+			stat_set_int(RunOnce[i][1], true, RunOnce[i][2])
+		end
+		for i = 1, #CAH_AGGRESS_PRESET_ID_DMND do
+			stat_set_int(CAH_AGGRESS_PRESET_ID_DMND[i][1], true, CAH_AGGRESS_PRESET_ID_DMND[i][2])
+		end
 		globals.set_int(1966739 + 2326, 60) -- [Diamond] 60% Low | 57 Medium | High 54
 		globals.set_int(1966739 + 2326 + 1, 147) -- Low Buyer: 147 | Medium: 140 | High Buyer: 133
 		globals.set_int(1966739 + 2326 + 2, 147)
@@ -1531,8 +2080,12 @@ do
                                   { 'H3OPT_CREWDRIVER', 3 }, { 'H3OPT_CREWHACKER', 4 }, { 'H3OPT_DISRUPTSHIP', 3 }, { 'H3OPT_BODYARMORLVL', -1 },
                                   { 'H3OPT_KEYLEVELS', 2 }, { 'H3OPT_BITSET1', 127 }, { 'H3OPT_BITSET0', 262270 } }
 	CAH_GOLD_TARGET:add_action('» 隐迹潜踪 (黄金,请选择低级买家)', function()
-		for i = 1, #RunOnce do stat_set_int(RunOnce[i][1], true, RunOnce[i][2]) end
-		for i = 1, #CAH_SILENT_GOLD_PRESET do stat_set_int(CAH_SILENT_GOLD_PRESET[i][1], true, CAH_SILENT_GOLD_PRESET[i][2]) end
+		for i = 1, #RunOnce do
+			stat_set_int(RunOnce[i][1], true, RunOnce[i][2])
+		end
+		for i = 1, #CAH_SILENT_GOLD_PRESET do
+			stat_set_int(CAH_SILENT_GOLD_PRESET[i][1], true, CAH_SILENT_GOLD_PRESET[i][2])
+		end
 		globals.set_int(1966739 + 2326, 60) -- [Gold] 60% Low | 57 Medium | High 54
 		globals.set_int(1966739 + 2326 + 1, 178) -- -- [Gold] 178% Low | 169 Medium | 161 High
 		globals.set_int(1966739 + 2326 + 2, 178)
@@ -1547,8 +2100,12 @@ do
                                   { 'H3OPT_CREWDRIVER', 3 }, { 'H3OPT_CREWHACKER', 4 }, { 'H3OPT_DISRUPTSHIP', 3 }, { 'H3OPT_BODYARMORLVL', -1 },
                                   { 'H3OPT_KEYLEVELS', 2 }, { 'H3OPT_BITSET1', 159 }, { 'H3OPT_BITSET0', 524118 } }
 	CAH_GOLD_TARGET:add_action('» 兵不厌诈 (黄金,请选择低级买家)', function()
-		for i = 1, #RunOnce do stat_set_int(RunOnce[i][1], true, RunOnce[i][2]) end
-		for i = 1, #CAH_BIGCON_GOLD_PRESET do stat_set_int(CAH_BIGCON_GOLD_PRESET[i][1], true, CAH_BIGCON_GOLD_PRESET[i][2]) end
+		for i = 1, #RunOnce do
+			stat_set_int(RunOnce[i][1], true, RunOnce[i][2])
+		end
+		for i = 1, #CAH_BIGCON_GOLD_PRESET do
+			stat_set_int(CAH_BIGCON_GOLD_PRESET[i][1], true, CAH_BIGCON_GOLD_PRESET[i][2])
+		end
 		globals.set_int(1966739 + 2326, 60) -- [Gold] 60% Low | 57 Medium | High 54
 		globals.set_int(1966739 + 2326 + 1, 178) -- [Gold] 178% Low | 169 Medium | 161 High
 		globals.set_int(1966739 + 2326 + 2, 178)
@@ -1563,8 +2120,12 @@ do
                                      { 'H3OPT_KEYLEVELS', 2 }, { 'H3OPT_CREWWEAP', 4 }, { 'H3OPT_CREWDRIVER', 3 }, { 'H3OPT_CREWHACKER', 4 },
                                      { 'H3OPT_BITSET1', 799 }, { 'H3OPT_BITSET0', 3670102 }, { 'H3_LAST_APPROACH', 0 }, { 'H3_HARD_APPROACH', 0 } }
 	CAH_GOLD_TARGET:add_action('» 气势汹汹 (黄金,请选择低级买家)', function()
-		for i = 1, #RunOnce do stat_set_int(RunOnce[i][1], true, RunOnce[i][2]) end
-		for i = 1, #CAH_AGGRESSIV_GOLD_PRESET do stat_set_int(CAH_AGGRESSIV_GOLD_PRESET[i][1], true, CAH_AGGRESSIV_GOLD_PRESET[i][2]) end
+		for i = 1, #RunOnce do
+			stat_set_int(RunOnce[i][1], true, RunOnce[i][2])
+		end
+		for i = 1, #CAH_AGGRESSIV_GOLD_PRESET do
+			stat_set_int(CAH_AGGRESSIV_GOLD_PRESET[i][1], true, CAH_AGGRESSIV_GOLD_PRESET[i][2])
+		end
 		globals.set_int(1966739 + 2326, 60) -- [Gold] 60% Low | 57 Medium | High 54
 		globals.set_int(1966739 + 2326 + 1, 178) -- [Gold] 178% Low | 169 Medium | 161 High
 		globals.set_int(1966739 + 2326 + 2, 178)
@@ -1574,32 +2135,42 @@ do
 end
 do
 	local CH_UNLCK_PT = { { 'H3OPT_POI', -1 }, { 'H3OPT_ACCESSPOINTS', -1 } }
-	CASINO_BOARD1:add_action('» 解锁全部出入口 & 兴趣点', function()
-		for i = 1, #CH_UNLCK_PT do stat_set_int(CH_UNLCK_PT[i][1], true, CH_UNLCK_PT[i][2]) end
+	CASINO_BOARD1:add_action('» 解锁全部出入口和兴趣点', function()
+		for i = 1, #CH_UNLCK_PT do
+			stat_set_int(CH_UNLCK_PT[i][1], true, CH_UNLCK_PT[i][2])
+		end
 	end)
 end
 do
 	local CH_Target_Diamond = { { 'H3OPT_TARGET', 3 } }
 	CASINO_TARGET:add_action('» 钻石', function()
-		for i = 1, #CH_Target_Diamond do stat_set_int(CH_Target_Diamond[i][1], true, CH_Target_Diamond[i][2]) end
+		for i = 1, #CH_Target_Diamond do
+			stat_set_int(CH_Target_Diamond[i][1], true, CH_Target_Diamond[i][2])
+		end
 	end)
 end
 do
 	local CH_Target_Gold = { { 'H3OPT_TARGET', 1 } }
 	CASINO_TARGET:add_action('» 黄金', function()
-		for i = 1, #CH_Target_Gold do stat_set_int(CH_Target_Gold[i][1], true, CH_Target_Gold[i][2]) end
+		for i = 1, #CH_Target_Gold do
+			stat_set_int(CH_Target_Gold[i][1], true, CH_Target_Gold[i][2])
+		end
 	end)
 end
 do
 	local CH_Target_Artwork = { { 'H3OPT_TARGET', 2 } }
 	CASINO_TARGET:add_action('» 艺术品', function()
-		for i = 1, #CH_Target_Artwork do stat_set_int(CH_Target_Artwork[i][1], true, CH_Target_Artwork[i][2]) end
+		for i = 1, #CH_Target_Artwork do
+			stat_set_int(CH_Target_Artwork[i][1], true, CH_Target_Artwork[i][2])
+		end
 	end)
 end
 do
 	local CH_Target_Cash = { { 'H3OPT_TARGET', 0 } }
 	CASINO_TARGET:add_action('» 现金', function()
-		for i = 1, #CH_Target_Cash do stat_set_int(CH_Target_Cash[i][1], true, CH_Target_Cash[i][2]) end
+		for i = 1, #CH_Target_Cash do
+			stat_set_int(CH_Target_Cash[i][1], true, CH_Target_Cash[i][2])
+		end
 	end)
 end
 ---- CASINO ADVANCED
@@ -1768,319 +2339,425 @@ end
 do
 	local CH_Diff_Hard1 = { { 'H3_LAST_APPROACH', 0 }, { 'H3OPT_APPROACH', 1 }, { 'H3_HARD_APPROACH', 1 } }
 	BOARD1_APPROACH:add_action('» 隐迹潜踪 : 困难模式', function()
-		for i = 1, #CH_Diff_Hard1 do stat_set_int(CH_Diff_Hard1[i][1], true, CH_Diff_Hard1[i][2]) end
+		for i = 1, #CH_Diff_Hard1 do
+			stat_set_int(CH_Diff_Hard1[i][1], true, CH_Diff_Hard1[i][2])
+		end
 	end)
 end
 do
 	local CH_Diff_Normal1 = { { 'H3_LAST_APPROACH', 0 }, { 'H3OPT_APPROACH', 1 }, { 'H3_HARD_APPROACH', 0 } }
 	BOARD1_APPROACH:add_action('» 隐迹潜踪 : 正常模式', function()
-		for i = 1, #CH_Diff_Normal1 do stat_set_int(CH_Diff_Normal1[i][1], true, CH_Diff_Normal1[i][2]) end
+		for i = 1, #CH_Diff_Normal1 do
+			stat_set_int(CH_Diff_Normal1[i][1], true, CH_Diff_Normal1[i][2])
+		end
 	end)
 end
 do
 	local CH_Diff_Hard2 = { { 'H3_LAST_APPROACH', 0 }, { 'H3OPT_APPROACH', 2 }, { 'H3_HARD_APPROACH', 2 } }
 	BOARD1_APPROACH:add_action('» 兵不厌诈 : 困难模式', function()
-		for i = 1, #CH_Diff_Hard2 do stat_set_int(CH_Diff_Hard2[i][1], true, CH_Diff_Hard2[i][2]) end
+		for i = 1, #CH_Diff_Hard2 do
+			stat_set_int(CH_Diff_Hard2[i][1], true, CH_Diff_Hard2[i][2])
+		end
 	end)
 end
 do
 	local CH_Diff_Normal2 = { { 'H3_LAST_APPROACH', 0 }, { 'H3OPT_APPROACH', 2 }, { 'H3_HARD_APPROACH', 0 } }
 	BOARD1_APPROACH:add_action('» 兵不厌诈 : 正常模式', function()
-		for i = 1, #CH_Diff_Normal2 do stat_set_int(CH_Diff_Normal2[i][1], true, CH_Diff_Normal2[i][2]) end
+		for i = 1, #CH_Diff_Normal2 do
+			stat_set_int(CH_Diff_Normal2[i][1], true, CH_Diff_Normal2[i][2])
+		end
 	end)
 end
 do
 	local CH_Diff_Hard3 = { { 'H3_LAST_APPROACH', 0 }, { 'H3OPT_APPROACH', 3 }, { 'H3_HARD_APPROACH', 0 } }
 	BOARD1_APPROACH:add_action('» 气势汹汹 : 困难模式', function()
-		for i = 1, #CH_Diff_Hard3 do stat_set_int(CH_Diff_Hard3[i][1], true, CH_Diff_Hard3[i][2]) end
+		for i = 1, #CH_Diff_Hard3 do
+			stat_set_int(CH_Diff_Hard3[i][1], true, CH_Diff_Hard3[i][2])
+		end
 	end)
 end
 do
 	local CH_Diff_Normal3 = { { 'H3_LAST_APPROACH', 0 }, { 'H3OPT_APPROACH', 3 }, { 'H3_HARD_APPROACH', 0 } }
 	BOARD1_APPROACH:add_action('» 气势汹汹 : 正常模式', function()
-		for i = 1, #CH_Diff_Normal3 do stat_set_int(CH_Diff_Normal3[i][1], true, CH_Diff_Normal3[i][2]) end
+		for i = 1, #CH_Diff_Normal3 do
+			stat_set_int(CH_Diff_Normal3[i][1], true, CH_Diff_Normal3[i][2])
+		end
 	end)
 end
 local CASINO_GUNMAN = CASINO_BOARD2:add_submenu('» 选择枪手')
 do
 	local CH_GUNMAN_05 = { { 'H3OPT_CREWWEAP', 4 } }
 	CASINO_GUNMAN:add_action('» 切斯特·麦考伊 (10%)', function()
-		for i = 1, #CH_GUNMAN_05 do stat_set_int(CH_GUNMAN_05[i][1], true, CH_GUNMAN_05[i][2]) end
+		for i = 1, #CH_GUNMAN_05 do
+			stat_set_int(CH_GUNMAN_05[i][1], true, CH_GUNMAN_05[i][2])
+		end
 	end)
 end
 do
 	local CH_GUNMAN_04 = { { 'H3OPT_CREWWEAP', 2 } }
 	CASINO_GUNMAN:add_action('» 古斯塔沃·莫塔 (9%)', function()
-		for i = 1, #CH_GUNMAN_04 do stat_set_int(CH_GUNMAN_04[i][1], true, CH_GUNMAN_04[i][2]) end
+		for i = 1, #CH_GUNMAN_04 do
+			stat_set_int(CH_GUNMAN_04[i][1], true, CH_GUNMAN_04[i][2])
+		end
 	end)
 end
 do
 	local CH_GUNMAN_03 = { { 'H3OPT_CREWWEAP', 5 } }
 	CASINO_GUNMAN:add_action('» 派奇·麦克瑞利 (8%)', function()
-		for i = 1, #CH_GUNMAN_03 do stat_set_int(CH_GUNMAN_03[i][1], true, CH_GUNMAN_03[i][2]) end
+		for i = 1, #CH_GUNMAN_03 do
+			stat_set_int(CH_GUNMAN_03[i][1], true, CH_GUNMAN_03[i][2])
+		end
 	end)
 end
 do
 	local CH_GUNMAN_02 = { { 'H3OPT_CREWWEAP', 3 } }
 	CASINO_GUNMAN:add_action('» 查理·里德 (7%)', function()
-		for i = 1, #CH_GUNMAN_02 do stat_set_int(CH_GUNMAN_02[i][1], true, CH_GUNMAN_02[i][2]) end
+		for i = 1, #CH_GUNMAN_02 do
+			stat_set_int(CH_GUNMAN_02[i][1], true, CH_GUNMAN_02[i][2])
+		end
 	end)
 end
 do
 	local CH_GUNMAN_01 = { { 'H3OPT_CREWWEAP', 1 } }
 	CASINO_GUNMAN:add_action('» 卡尔·阿卜拉季 (5%)', function()
-		for i = 1, #CH_GUNMAN_01 do stat_set_int(CH_GUNMAN_01[i][1], true, CH_GUNMAN_01[i][2]) end
+		for i = 1, #CH_GUNMAN_01 do
+			stat_set_int(CH_GUNMAN_01[i][1], true, CH_GUNMAN_01[i][2])
+		end
 	end)
 end
 do
 	local CH_GUNMAN_RND = { { 'H3OPT_CREWWEAP', 1, 5, 1, 5 } }
 	CASINO_GUNMAN:add_action('» 随机枪手 (??%)', function()
-		for i = 1, #CH_GUNMAN_RND do stat_set_int(CH_GUNMAN_RND[i][1], true, math.random(CH_GUNMAN_RND[i][4], CH_GUNMAN_RND[i][5])) end
+		for i = 1, #CH_GUNMAN_RND do
+			stat_set_int(CH_GUNMAN_RND[i][1], true, math.random(CH_GUNMAN_RND[i][4], CH_GUNMAN_RND[i][5]))
+		end
 	end)
 end
 do
 	local CH_GUNMAN_00 = { { 'H3OPT_CREWWEAP', 6 } }
 	CASINO_GUNMAN:add_action('» 移除枪手 (0%)', function()
-		for i = 1, #CH_GUNMAN_00 do stat_set_int(CH_GUNMAN_00[i][1], true, CH_GUNMAN_00[i][2]) end
+		for i = 1, #CH_GUNMAN_00 do
+			stat_set_int(CH_GUNMAN_00[i][1], true, CH_GUNMAN_00[i][2])
+		end
 	end)
 end
 local CASINO_GUNMAN_var = CASINO_GUNMAN:add_submenu('» 武器选择')
 do
 	local CH_Gunman_var_01 = { { 'H3OPT_WEAPS', 1 } }
 	CASINO_GUNMAN_var:add_action('» 最佳武器选择', function()
-		for i = 1, #CH_Gunman_var_01 do stat_set_int(CH_Gunman_var_01[i][1], true, CH_Gunman_var_01[i][2]) end
+		for i = 1, #CH_Gunman_var_01 do
+			stat_set_int(CH_Gunman_var_01[i][1], true, CH_Gunman_var_01[i][2])
+		end
 	end)
 end
 do
 	local CH_Gunman_var_00 = { { 'H3OPT_WEAPS', 0 } }
 	CASINO_GUNMAN_var:add_action('» 最差武器选择', function()
-		for i = 1, #CH_Gunman_var_00 do stat_set_int(CH_Gunman_var_00[i][1], true, CH_Gunman_var_00[i][2]) end
+		for i = 1, #CH_Gunman_var_00 do
+			stat_set_int(CH_Gunman_var_00[i][1], true, CH_Gunman_var_00[i][2])
+		end
 	end)
 end
 local CASINO_DRIVER_TEAM = CASINO_BOARD2:add_submenu('» 选择车手')
 do
 	local CH_DRV_MAN_05 = { { 'H3OPT_CREWDRIVER', 5 } }
 	CASINO_DRIVER_TEAM:add_action('» 切斯特·麦考伊 (10%)', function()
-		for i = 1, #CH_DRV_MAN_05 do stat_set_int(CH_DRV_MAN_05[i][1], true, CH_DRV_MAN_05[i][2]) end
+		for i = 1, #CH_DRV_MAN_05 do
+			stat_set_int(CH_DRV_MAN_05[i][1], true, CH_DRV_MAN_05[i][2])
+		end
 	end)
 end
 do
 	local CH_DRV_MAN_04 = { { 'H3OPT_CREWDRIVER', 3 } }
 	CASINO_DRIVER_TEAM:add_action('» 陶艾迪 (9%)', function()
-		for i = 1, #CH_DRV_MAN_04 do stat_set_int(CH_DRV_MAN_04[i][1], true, CH_DRV_MAN_04[i][2]) end
+		for i = 1, #CH_DRV_MAN_04 do
+			stat_set_int(CH_DRV_MAN_04[i][1], true, CH_DRV_MAN_04[i][2])
+		end
 	end)
 end
 do
 	local CH_DRV_MAN_03 = { { 'H3OPT_CREWDRIVER', 2 } }
 	CASINO_DRIVER_TEAM:add_action('» 塔丽娜.马丁内斯 (7%)', function()
-		for i = 1, #CH_DRV_MAN_03 do stat_set_int(CH_DRV_MAN_03[i][1], true, CH_DRV_MAN_03[i][2]) end
+		for i = 1, #CH_DRV_MAN_03 do
+			stat_set_int(CH_DRV_MAN_03[i][1], true, CH_DRV_MAN_03[i][2])
+		end
 	end)
 end
 do
 	local CH_DRV_MAN_02 = { { 'H3OPT_CREWDRIVER', 4 } }
 	CASINO_DRIVER_TEAM:add_action('» 扎克·尼尔森 (6%)', function()
-		for i = 1, #CH_DRV_MAN_02 do stat_set_int(CH_DRV_MAN_02[i][1], true, CH_DRV_MAN_02[i][2]) end
+		for i = 1, #CH_DRV_MAN_02 do
+			stat_set_int(CH_DRV_MAN_02[i][1], true, CH_DRV_MAN_02[i][2])
+		end
 	end)
 end
 do
 	local CH_DRV_MAN_01 = { { 'H3OPT_CREWDRIVER', 1 } }
 	CASINO_DRIVER_TEAM:add_action('» 卡里姆·登茨 (5%)', function()
-		for i = 1, #CH_DRV_MAN_01 do stat_set_int(CH_DRV_MAN_01[i][1], true, CH_DRV_MAN_01[i][2]) end
+		for i = 1, #CH_DRV_MAN_01 do
+			stat_set_int(CH_DRV_MAN_01[i][1], true, CH_DRV_MAN_01[i][2])
+		end
 	end)
 end
 do
 	local CH_DRV_MAN_RND = { { 'H3OPT_CREWDRIVER', 1, 5, 1, 5 } }
 	CASINO_DRIVER_TEAM:add_action('» 随机车手 (??%)', function()
-		for i = 1, #CH_DRV_MAN_RND do stat_set_int(CH_DRV_MAN_RND[i][1], true, math.random(CH_DRV_MAN_RND[i][4], CH_DRV_MAN_RND[i][5])) end
+		for i = 1, #CH_DRV_MAN_RND do
+			stat_set_int(CH_DRV_MAN_RND[i][1], true, math.random(CH_DRV_MAN_RND[i][4], CH_DRV_MAN_RND[i][5]))
+		end
 	end)
 end
 do
 	local CH_DRV_MAN_00 = { { 'H3OPT_CREWDRIVER', 6 } }
 	CASINO_DRIVER_TEAM:add_action('» 移除车手 (0%)', function()
-		for i = 1, #CH_DRV_MAN_00 do stat_set_int(CH_DRV_MAN_00[i][1], true, CH_DRV_MAN_00[i][2]) end
+		for i = 1, #CH_DRV_MAN_00 do
+			stat_set_int(CH_DRV_MAN_00[i][1], true, CH_DRV_MAN_00[i][2])
+		end
 	end)
 end
 local CAH_DRIVER_TEAM_var = CASINO_DRIVER_TEAM:add_submenu('» 载具选择')
 do
 	local CH_DRV_MAN_var_03 = { { 'H3OPT_VEHS', 3 } }
 	CAH_DRIVER_TEAM_var:add_action('» 最佳载具选择', function()
-		for i = 1, #CH_DRV_MAN_var_03 do stat_set_int(CH_DRV_MAN_var_03[i][1], true, CH_DRV_MAN_var_03[i][2]) end
+		for i = 1, #CH_DRV_MAN_var_03 do
+			stat_set_int(CH_DRV_MAN_var_03[i][1], true, CH_DRV_MAN_var_03[i][2])
+		end
 	end)
 end
 do
 	local CH_DRV_MAN_var_02 = { { 'H3OPT_VEHS', 2 } }
 	CAH_DRIVER_TEAM_var:add_action('» 较好载具选择', function()
-		for i = 1, #CH_DRV_MAN_var_02 do stat_set_int(CH_DRV_MAN_var_02[i][1], true, CH_DRV_MAN_var_02[i][2]) end
+		for i = 1, #CH_DRV_MAN_var_02 do
+			stat_set_int(CH_DRV_MAN_var_02[i][1], true, CH_DRV_MAN_var_02[i][2])
+		end
 	end)
 end
 do
 	local CH_DRV_MAN_var_01 = { { 'H3OPT_VEHS', 1 } }
 	CAH_DRIVER_TEAM_var:add_action('» 较差载具选择', function()
-		for i = 1, #CH_DRV_MAN_var_01 do stat_set_int(CH_DRV_MAN_var_01[i][1], true, CH_DRV_MAN_var_01[i][2]) end
+		for i = 1, #CH_DRV_MAN_var_01 do
+			stat_set_int(CH_DRV_MAN_var_01[i][1], true, CH_DRV_MAN_var_01[i][2])
+		end
 	end)
 end
 do
 	local CH_DRV_MAN_var_00 = { { 'H3OPT_VEHS', 0 } }
 	CAH_DRIVER_TEAM_var:add_action('» 最差载具选择', function()
-		for i = 1, #CH_DRV_MAN_var_00 do stat_set_int(CH_DRV_MAN_var_00[i][1], true, CH_DRV_MAN_var_00[i][2]) end
+		for i = 1, #CH_DRV_MAN_var_00 do
+			stat_set_int(CH_DRV_MAN_var_00[i][1], true, CH_DRV_MAN_var_00[i][2])
+		end
 	end)
 end
 do
 	local CH_DRV_MAN_var_RND = { { 'H3OPT_VEHS', 0, 3, 0, 3 } }
 	CAH_DRIVER_TEAM_var:add_action('» 随机载具选择', function()
-		for i = 1, #CH_DRV_MAN_var_RND do stat_set_int(CH_DRV_MAN_var_RND[i][1], true, math.random(CH_DRV_MAN_var_RND[i][4], CH_DRV_MAN_var_RND[i][5])) end
+		for i = 1, #CH_DRV_MAN_var_RND do
+			stat_set_int(CH_DRV_MAN_var_RND[i][1], true, math.random(CH_DRV_MAN_var_RND[i][4], CH_DRV_MAN_var_RND[i][5]))
+		end
 	end)
 end
 local CASINO_HACKERs = CASINO_BOARD2:add_submenu('» 选择黑客')
 do
 	local CH_HCK_MAN_04 = { { 'H3OPT_CREWHACKER', 4 } }
 	CASINO_HACKERs:add_action('» 阿维·施瓦茨曼 (10%,210/146秒)', function()
-		for i = 1, #CH_HCK_MAN_04 do stat_set_int(CH_HCK_MAN_04[i][1], true, CH_HCK_MAN_04[i][2]) end
+		for i = 1, #CH_HCK_MAN_04 do
+			stat_set_int(CH_HCK_MAN_04[i][1], true, CH_HCK_MAN_04[i][2])
+		end
 	end)
 end
 do
 	local CH_HCK_MAN_05 = { { 'H3OPT_CREWHACKER', 5 } }
 	CASINO_HACKERs:add_action('» 佩奇·哈里斯 (9%,205/143秒)', function()
-		for i = 1, #CH_HCK_MAN_05 do stat_set_int(CH_HCK_MAN_05[i][1], true, CH_HCK_MAN_05[i][2]) end
+		for i = 1, #CH_HCK_MAN_05 do
+			stat_set_int(CH_HCK_MAN_05[i][1], true, CH_HCK_MAN_05[i][2])
+		end
 	end)
 end
 do
 	local CH_HCK_MAN_03 = { { 'H3OPT_CREWHACKER', 2 } }
 	CASINO_HACKERs:add_action('» 克里斯汀·费尔兹 (7%,179/125秒)', function()
-		for i = 1, #CH_HCK_MAN_03 do stat_set_int(CH_HCK_MAN_03[i][1], true, CH_HCK_MAN_03[i][2]) end
+		for i = 1, #CH_HCK_MAN_03 do
+			stat_set_int(CH_HCK_MAN_03[i][1], true, CH_HCK_MAN_03[i][2])
+		end
 	end)
 end
 do
 	local CH_HCK_MAN_02 = { { 'H3OPT_CREWHACKER', 3 } }
 	CASINO_HACKERs:add_action('» 尤汗·布莱尔 (5%,172/121秒)', function()
-		for i = 1, #CH_HCK_MAN_02 do stat_set_int(CH_HCK_MAN_02[i][1], true, CH_HCK_MAN_02[i][2]) end
+		for i = 1, #CH_HCK_MAN_02 do
+			stat_set_int(CH_HCK_MAN_02[i][1], true, CH_HCK_MAN_02[i][2])
+		end
 	end)
 end
 do
 	local CH_HCK_MAN_01 = { { 'H3OPT_CREWHACKER', 1 } }
 	CASINO_HACKERs:add_action('» 里奇·卢肯斯 (3%,146/102秒)', function()
-		for i = 1, #CH_HCK_MAN_01 do stat_set_int(CH_HCK_MAN_01[i][1], true, CH_HCK_MAN_01[i][2]) end
+		for i = 1, #CH_HCK_MAN_01 do
+			stat_set_int(CH_HCK_MAN_01[i][1], true, CH_HCK_MAN_01[i][2])
+		end
 	end)
 end
 do
 	local CH_HCK_MAN_RND = { { 'H3OPT_CREWHACKER', 0, 5, 1, 5 } }
 	CASINO_HACKERs:add_action('» 随机黑客 (??%)', function()
-		for i = 1, #CH_HCK_MAN_RND do stat_set_int(CH_HCK_MAN_RND[i][1], true, math.random(CH_HCK_MAN_RND[i][4], CH_HCK_MAN_RND[i][5])) end
+		for i = 1, #CH_HCK_MAN_RND do
+			stat_set_int(CH_HCK_MAN_RND[i][1], true, math.random(CH_HCK_MAN_RND[i][4], CH_HCK_MAN_RND[i][5]))
+		end
 	end)
 end
 do
 	local CH_HCK_MAN_00 = { { 'H3OPT_CREWHACKER', 6 } }
 	CASINO_HACKERs:add_action('» 移除黑客 (0%)', function()
-		for i = 1, #CH_HCK_MAN_00 do stat_set_int(CH_HCK_MAN_00[i][1], true, CH_HCK_MAN_00[i][2]) end
+		for i = 1, #CH_HCK_MAN_00 do
+			stat_set_int(CH_HCK_MAN_00[i][1], true, CH_HCK_MAN_00[i][2])
+		end
 	end)
 end
 local CASINO_MASK = CASINO_BOARD2:add_submenu('» 选择面具')
 do
 	local CH_MASK_00 = { { 'H3OPT_MASKS', -1 } }
 	CASINO_MASK:add_action('» 移除面具', function()
-		for i = 1, #CH_MASK_00 do stat_set_int(CH_MASK_00[i][1], true, CH_MASK_00[i][2]) end
+		for i = 1, #CH_MASK_00 do
+			stat_set_int(CH_MASK_00[i][1], true, CH_MASK_00[i][2])
+		end
 	end)
 end
 do
 	local CH_MASK_01 = { { 'H3OPT_MASKS', 1 } }
 	CASINO_MASK:add_action('» 几何系列', function()
-		for i = 1, #CH_MASK_01 do stat_set_int(CH_MASK_01[i][1], true, CH_MASK_01[i][2]) end
+		for i = 1, #CH_MASK_01 do
+			stat_set_int(CH_MASK_01[i][1], true, CH_MASK_01[i][2])
+		end
 	end)
 end
 do
 	local CH_MASK_02 = { { 'H3OPT_MASKS', 2 } }
 	CASINO_MASK:add_action('» 猎人系列', function()
-		for i = 1, #CH_MASK_02 do stat_set_int(CH_MASK_02[i][1], true, CH_MASK_02[i][2]) end
+		for i = 1, #CH_MASK_02 do
+			stat_set_int(CH_MASK_02[i][1], true, CH_MASK_02[i][2])
+		end
 	end)
 end
 do
 	local CH_MASK_03 = { { 'H3OPT_MASKS', 3 } }
 	CASINO_MASK:add_action('» 半罩系列', function()
-		for i = 1, #CH_MASK_03 do stat_set_int(CH_MASK_03[i][1], true, CH_MASK_03[i][2]) end
+		for i = 1, #CH_MASK_03 do
+			stat_set_int(CH_MASK_03[i][1], true, CH_MASK_03[i][2])
+		end
 	end)
 end
 do
 	local CH_MASK_04 = { { 'H3OPT_MASKS', 4 } }
 	CASINO_MASK:add_action('» 表情系列', function()
-		for i = 1, #CH_MASK_04 do stat_set_int(CH_MASK_04[i][1], true, CH_MASK_04[i][2]) end
+		for i = 1, #CH_MASK_04 do
+			stat_set_int(CH_MASK_04[i][1], true, CH_MASK_04[i][2])
+		end
 	end)
 end
 do
 	local CH_MASK_05 = { { 'H3OPT_MASKS', 5 } }
 	CASINO_MASK:add_action('» 骷髅头系列', function()
-		for i = 1, #CH_MASK_05 do stat_set_int(CH_MASK_05[i][1], true, CH_MASK_05[i][2]) end
+		for i = 1, #CH_MASK_05 do
+			stat_set_int(CH_MASK_05[i][1], true, CH_MASK_05[i][2])
+		end
 	end)
 end
 do
 	local CH_MASK_06 = { { 'H3OPT_MASKS', 6 } }
 	CASINO_MASK:add_action('» 幸运水果系列', function()
-		for i = 1, #CH_MASK_06 do stat_set_int(CH_MASK_06[i][1], true, CH_MASK_06[i][2]) end
+		for i = 1, #CH_MASK_06 do
+			stat_set_int(CH_MASK_06[i][1], true, CH_MASK_06[i][2])
+		end
 	end)
 end
 do
 	local CH_MASK_07 = { { 'H3OPT_MASKS', 7 } }
 	CASINO_MASK:add_action('» 游击队系列', function()
-		for i = 1, #CH_MASK_07 do stat_set_int(CH_MASK_07[i][1], true, CH_MASK_07[i][2]) end
+		for i = 1, #CH_MASK_07 do
+			stat_set_int(CH_MASK_07[i][1], true, CH_MASK_07[i][2])
+		end
 	end)
 end
 do
 	local CH_MASK_08 = { { 'H3OPT_MASKS', 8 } }
 	CASINO_MASK:add_action('» 小丑系列', function()
-		for i = 1, #CH_MASK_08 do stat_set_int(CH_MASK_08[i][1], true, CH_MASK_08[i][2]) end
+		for i = 1, #CH_MASK_08 do
+			stat_set_int(CH_MASK_08[i][1], true, CH_MASK_08[i][2])
+		end
 	end)
 end
 do
 	local CH_MASK_09 = { { 'H3OPT_MASKS', 9 } }
 	CASINO_MASK:add_action('» 动物系列', function()
-		for i = 1, #CH_MASK_09 do stat_set_int(CH_MASK_09[i][1], true, CH_MASK_09[i][2]) end
+		for i = 1, #CH_MASK_09 do
+			stat_set_int(CH_MASK_09[i][1], true, CH_MASK_09[i][2])
+		end
 	end)
 end
 do
 	local CH_MASK_10 = { { 'H3OPT_MASKS', 10 } }
 	CASINO_MASK:add_action('» 暴乱系列', function()
-		for i = 1, #CH_MASK_10 do stat_set_int(CH_MASK_10[i][1], true, CH_MASK_10[i][2]) end
+		for i = 1, #CH_MASK_10 do
+			stat_set_int(CH_MASK_10[i][1], true, CH_MASK_10[i][2])
+		end
 	end)
 end
 do
 	local CH_MASK_11 = { { 'H3OPT_MASKS', 11 } }
 	CASINO_MASK:add_action('» 妖怪系列', function()
-		for i = 1, #CH_MASK_11 do stat_set_int(CH_MASK_11[i][1], true, CH_MASK_11[i][2]) end
+		for i = 1, #CH_MASK_11 do
+			stat_set_int(CH_MASK_11[i][1], true, CH_MASK_11[i][2])
+		end
 	end)
 end
 do
 	local CH_MASK_12 = { { 'H3OPT_MASKS', 12 } }
 	CASINO_MASK:add_action('» 曲棍球系列', function()
-		for i = 1, #CH_MASK_12 do stat_set_int(CH_MASK_12[i][1], true, CH_MASK_12[i][2]) end
+		for i = 1, #CH_MASK_12 do
+			stat_set_int(CH_MASK_12[i][1], true, CH_MASK_12[i][2])
+		end
 	end)
 end
 do
 	local CH_DUGGAN = { { 'H3OPT_DISRUPTSHIP', 3 } }
 	local CH_SCANC_LVL = { { 'H3OPT_KEYLEVELS', 2 } }
 	CASINO_BOARD2:add_action('» 解锁二级门禁卡', function()
-		for i = 1, #CH_SCANC_LVL do stat_set_int(CH_SCANC_LVL[i][1], true, CH_SCANC_LVL[i][2]) end
+		for i = 1, #CH_SCANC_LVL do
+			stat_set_int(CH_SCANC_LVL[i][1], true, CH_SCANC_LVL[i][2])
+		end
 	end)
 	CASINO_BOARD2:add_action('» 杜根货物 (削弱杜根警卫)', function()
-		for i = 1, #CH_DUGGAN do stat_set_int(CH_DUGGAN[i][1], true, CH_DUGGAN[i][2]) end
+		for i = 1, #CH_DUGGAN do
+			stat_set_int(CH_DUGGAN[i][1], true, CH_DUGGAN[i][2])
+		end
 	end)
 end
 do
 	local CH_UNLCK_3stboard_var1 = { { 'H3OPT_BITSET0', -8849 } }
 	local CH_UNLCK_3stboard_var3bc = { { 'H3OPT_BITSET0', -186 } }
 	CASINO_BOARD3:add_action('» 移除电钻 (隐迹潜踪/气势汹汹)', function()
-		for i = 1, #CH_UNLCK_3stboard_var1 do stat_set_int(CH_UNLCK_3stboard_var1[i][1], true, CH_UNLCK_3stboard_var1[i][2]) end
+		for i = 1, #CH_UNLCK_3stboard_var1 do
+			stat_set_int(CH_UNLCK_3stboard_var1[i][1], true, CH_UNLCK_3stboard_var1[i][2])
+		end
 	end)
 	CASINO_BOARD3:add_action('» 移除电钻 (兵不厌诈)', function()
-		for i = 1, #CH_UNLCK_3stboard_var3bc do stat_set_int(CH_UNLCK_3stboard_var3bc[i][1], true, CH_UNLCK_3stboard_var3bc[i][2]) end
+		for i = 1, #CH_UNLCK_3stboard_var3bc do
+			stat_set_int(CH_UNLCK_3stboard_var3bc[i][1], true, CH_UNLCK_3stboard_var3bc[i][2])
+		end
 	end)
 end
 do
 	local CH_LOAD_BOARD_var0 = { { 'H3OPT_BITSET1', -1 }, { 'H3OPT_BITSET0', -1 } }
 	local CH_UNLOAD_BOARD_var1 = { { 'H3OPT_BITSET1', 0 }, { 'H3OPT_BITSET0', 0 } }
 	CASINO_LBOARDS:add_action('» 加载全部计划版', function()
-		for i = 1, #CH_LOAD_BOARD_var0 do stat_set_int(CH_LOAD_BOARD_var0[i][1], true, CH_LOAD_BOARD_var0[i][2]) end
+		for i = 1, #CH_LOAD_BOARD_var0 do
+			stat_set_int(CH_LOAD_BOARD_var0[i][1], true, CH_LOAD_BOARD_var0[i][2])
+		end
 	end)
 	CASINO_LBOARDS:add_action('» 卸载全部计划版', function()
-		for i = 1, #CH_UNLOAD_BOARD_var1 do stat_set_int(CH_UNLOAD_BOARD_var1[i][1], true, CH_UNLOAD_BOARD_var1[i][2]) end
+		for i = 1, #CH_UNLOAD_BOARD_var1 do
+			stat_set_int(CH_UNLOAD_BOARD_var1[i][1], true, CH_UNLOAD_BOARD_var1[i][2])
+		end
 	end)
 end
 do
@@ -2113,9 +2790,13 @@ do
                       { 'H3_CR_SUBTERFUGE_4A', 100 }, { 'H3_CR_SUBTERFUGE_5A', 100 }, { 'H3_CR_DIRECT_1A', 100 }, { 'H3_CR_DIRECT_2A1', 100 },
                       { 'H3_CR_DIRECT_2A2', 100 }, { 'H3_CR_DIRECT_2BP', 100 }, { 'H3_CR_DIRECT_2C', 100 }, { 'H3_CR_DIRECT_3A', 100 },
                       { 'H3_CR_DIRECT_4A', 100 }, { 'H3_CR_DIRECT_5A', 100 }, { 'CR_ORDER', 100 } }
-	CASINO_MORE:add_action('» 解锁游戏厅奖章 & 赌场抢劫奖励', function()
-		for i = 1, #CH_AWRD_IT do stat_set_int(CH_AWRD_IT[i][1], true, CH_AWRD_IT[i][2]) end
-		for i = 1, #CH_AWRD_BL do stat_set_bool(CH_AWRD_BL[i][1], true, CH_AWRD_BL[i][2]) end
+	CASINO_MORE:add_action('» 解锁游戏厅奖章和赌场抢劫奖励', function()
+		for i = 1, #CH_AWRD_IT do
+			stat_set_int(CH_AWRD_IT[i][1], true, CH_AWRD_IT[i][2])
+		end
+		for i = 1, #CH_AWRD_BL do
+			stat_set_bool(CH_AWRD_BL[i][1], true, CH_AWRD_BL[i][2])
+		end
 		for i = 0, 128, 1 do -- 28483 - 28355 = 128
 			hash = CharID .. '_HEIST3TATTOOSTAT_BOOL'
 			stats.set_bool_masked(hash, true, i)
@@ -2134,8 +2815,12 @@ do
 	local AGATHA_MS_INT = { { 'VCM_FLOW_PROGRESS', -1 }, { 'VCM_STORY_PROGRESS', 5 } }
 	local AGATHA_MS_BOL = { { 'AWD_LEADER', true }, { 'VCM_FLOW_CS_FIN_SEEN', true } }
 	CASINO_MORE:add_action('» 跳过贝克女士任务至最后一个', function()
-		for i = 1, #AGATHA_MS_INT do stat_set_int(AGATHA_MS_INT[i][1], true, AGATHA_MS_INT[i][2]) end
-		for i = 2, #AGATHA_MS_BOL do stat_set_bool(AGATHA_MS_BOL[i][1], true, AGATHA_MS_BOL[i][2]) end
+		for i = 1, #AGATHA_MS_INT do
+			stat_set_int(AGATHA_MS_INT[i][1], true, AGATHA_MS_INT[i][2])
+		end
+		for i = 2, #AGATHA_MS_BOL do
+			stat_set_bool(AGATHA_MS_BOL[i][1], true, AGATHA_MS_BOL[i][2])
+		end
 	end)
 end
 do
@@ -2144,14 +2829,18 @@ do
                   { 'H3OPT_WEAPS', 0 }, { 'H3OPT_VEHS', 0 }, { 'H3OPT_DISRUPTSHIP', 0 }, { 'H3OPT_BODYARMORLVL', 0 }, { 'H3OPT_KEYLEVELS', 0 },
                   { 'H3OPT_MASKS', 0 }, { 'H3OPT_BITSET0', 0 } }
 	CASINO_MORE:add_action('» 重置抢劫', function()
-		for i = 1, #CH_RST do stat_set_int(CH_RST[i][1], true, CH_RST[i][2]) end
+		for i = 1, #CH_RST do
+			stat_set_int(CH_RST[i][1], true, CH_RST[i][2])
+		end
 	end)
 end
 -------- DOOMSDAY HEIST
 do
 	local DD_H_ACT1 = { { 'GANGOPS_FLOW_MISSION_PROG', 503 }, { 'GANGOPS_HEIST_STATUS', -229383 }, { 'GANGOPS_FLOW_NOTIFICATIONS', 1557 } }
 	DOOMS_PRESETS:add_action('» 末日一 : 数据泄露 $250w 1-4 人', function()
-		for i = 1, #DD_H_ACT1 do stat_set_int(DD_H_ACT1[i][1], true, DD_H_ACT1[i][2]) end
+		for i = 1, #DD_H_ACT1 do
+			stat_set_int(DD_H_ACT1[i][1], true, DD_H_ACT1[i][2])
+		end
 		globals.set_int(1962763 + 812 + 50 + 1, 313)
 		globals.set_int(1962763 + 812 + 50 + 2, 313)
 		globals.set_int(1962763 + 812 + 50 + 3, 313)
@@ -2161,7 +2850,9 @@ end
 do
 	local DD_H_ACT2 = { { 'GANGOPS_FLOW_MISSION_PROG', 240 }, { 'GANGOPS_HEIST_STATUS', -229378 }, { 'GANGOPS_FLOW_NOTIFICATIONS', 1557 } }
 	DOOMS_PRESETS:add_action('» 末日二 : 波格丹危机 $250w 1-4 人', function()
-		for i = 1, #DD_H_ACT2 do stat_set_int(DD_H_ACT2[i][1], true, DD_H_ACT2[i][2]) end
+		for i = 1, #DD_H_ACT2 do
+			stat_set_int(DD_H_ACT2[i][1], true, DD_H_ACT2[i][2])
+		end
 		globals.set_int(1962763 + 812 + 50 + 1, 214)
 		globals.set_int(1962763 + 812 + 50 + 2, 214)
 		globals.set_int(1962763 + 812 + 50 + 3, 214)
@@ -2171,7 +2862,9 @@ end
 do
 	local DD_H_ACT3 = { { 'GANGOPS_FLOW_MISSION_PROG', 16368 }, { 'GANGOPS_HEIST_STATUS', -229380 }, { 'GANGOPS_FLOW_NOTIFICATIONS', 1557 } }
 	DOOMS_PRESETS:add_action('» 末日三 : 末日将至 $250w 1-4 人', function()
-		for i = 1, #DD_H_ACT3 do stat_set_int(DD_H_ACT3[i][1], true, DD_H_ACT3[i][2]) end
+		for i = 1, #DD_H_ACT3 do
+			stat_set_int(DD_H_ACT3[i][1], true, DD_H_ACT3[i][2])
+		end
 		globals.set_int(1962763 + 812 + 50 + 1, 170)
 		globals.set_int(1962763 + 812 + 50 + 2, 170)
 		globals.set_int(1962763 + 812 + 50 + 3, 170)
@@ -2330,19 +3023,25 @@ end
 do
 	local DD_H_ULCK = { { 'GANGOPS_HEIST_STATUS', -1 }, { 'GANGOPS_HEIST_STATUS', -229384 } }
 	DOOMS_HEIST:add_action('» 解锁全部末日抢劫 (给莱斯特打电话取消末日抢劫三次)', function()
-		for i = 1, #DD_H_ULCK do stat_set_int(DD_H_ULCK[i][1], true, DD_H_ULCK[i][2]) end
+		for i = 1, #DD_H_ULCK do
+			stat_set_int(DD_H_ULCK[i][1], true, DD_H_ULCK[i][2])
+		end
 	end)
 end
 do
 	local DD_PREPS_DONE = { { 'GANGOPS_FM_MISSION_PROG', -1 } }
 	DOOMS_HEIST:add_action('» 完成全部前置', function()
-		for i = 1, #DD_PREPS_DONE do stat_set_int(DD_PREPS_DONE[i][1], true, DD_PREPS_DONE[i][2]) end
+		for i = 1, #DD_PREPS_DONE do
+			stat_set_int(DD_PREPS_DONE[i][1], true, DD_PREPS_DONE[i][2])
+		end
 	end)
 end
 do
 	local DD_H_RST = { { 'GANGOPS_FLOW_MISSION_PROG', 240 }, { 'GANGOPS_HEIST_STATUS', 0 }, { 'GANGOPS_FLOW_NOTIFICATIONS', 1557 } }
 	DOOMS_HEIST:add_action('» 重置抢劫', function()
-		for i = 1, #DD_H_RST do stat_set_int(DD_H_RST[i][1], true, DD_H_RST[i][2]) end
+		for i = 1, #DD_H_RST do
+			stat_set_int(DD_H_RST[i][1], true, DD_H_RST[i][2])
+		end
 	end)
 end
 do
@@ -2376,81 +3075,46 @@ do
 end
 -------- CLASSIC HEIST
 do
-	menu.add_feature('Custom Payout', 'action', CLASSIC_CUT.id, function(classic)
-		local r, s = input.get('It is not recommended to use such high values', '', 1000, 3)
-		if r == 1 then return HANDLER_CONTINUE end
-		if r == 2 then return HANDLER_POP end
-		globals.set_int(1934636 + 3008 + 1, tonumber(s))
+	-- [unuseable]需要用户输入
+	-- CLASSIC_CUT:add_action('自定义分红', function(classic)
+	-- 	local r, s = input.get('It is not recommended to use such high values', '', 1000, 3)
+	-- 	if r == 1 then
+	-- 		return HANDLER_CONTINUE
+	-- 	end
+	-- 	if r == 2 then
+	-- 		return HANDLER_POP
+	-- 	end
+	-- 	globals.set_int(1934636 + 3008 + 1, tonumber(s))
+	-- end)
+	CLASSIC_CUT:add_action('0 %', function()
+		globals.set_int(1934636 + 3008 + 1, 0)
 	end)
-	menu.add_feature('0 %', 'toggle', CLASSIC_CUT.id, function(a)
-		while a.on do
-			globals.set_int(1934636 + 3008 + 1, 0)
-			if not a.on then return end
-			system.wait(0)
-		end
+	CLASSIC_CUT:add_action('25 %', function()
+		globals.set_int(1934636 + 3008 + 1, 25)
 	end)
-	menu.add_feature('25 %', 'toggle', CLASSIC_CUT.id, function(a)
-		while a.on do
-			globals.set_int(1934636 + 3008 + 1, 25)
-			if not a.on then return end
-			system.wait(0)
-		end
+	CLASSIC_CUT:add_action('50 %', function()
+		globals.set_int(1934636 + 3008 + 1, 50)
 	end)
-	menu.add_feature('50 %', 'toggle', CLASSIC_CUT.id, function(a)
-		while a.on do
-			globals.set_int(1934636 + 3008 + 1, 50)
-			if not a.on then return end
-			system.wait(0)
-		end
+	CLASSIC_CUT:add_action('75 %', function()
+		globals.set_int(1934636 + 3008 + 1, 75)
 	end)
-	menu.add_feature('75 %', 'toggle', CLASSIC_CUT.id, function(a)
-		while a.on do
-			globals.set_int(1934636 + 3008 + 1, 75)
-			if not a.on then return end
-			system.wait(0)
-		end
+	CLASSIC_CUT:add_action('85 %', function()
+		globals.set_int(1934636 + 3008 + 1, 85)
 	end)
-	menu.add_feature('85 %', 'toggle', CLASSIC_CUT.id, function(a)
-		while a.on do
-			globals.set_int(1934636 + 3008 + 1, 85)
-			if not a.on then return end
-			system.wait(0)
-		end
+	CLASSIC_CUT:add_action('100 %', function()
+		globals.set_int(1934636 + 3008 + 1, 100)
 	end)
-	menu.add_feature('100 %', 'toggle', CLASSIC_CUT.id, function(a)
-		while a.on do
-			globals.set_int(1934636 + 3008 + 1, 100)
-			if not a.on then return end
-			system.wait(0)
-		end
+	CLASSIC_CUT:add_action('125 %', function()
+		globals.set_int(1934636 + 3008 + 1, 125)
 	end)
-	menu.add_feature('125 %', 'toggle', CLASSIC_CUT.id, function(a)
-		while a.on do
-			globals.set_int(1934636 + 3008 + 1, 125)
-			if not a.on then return end
-			system.wait(0)
-		end
+	CLASSIC_CUT:add_action('150 %', function()
+		globals.set_int(1934636 + 3008 + 1, 150)
 	end)
-	menu.add_feature('150 %', 'toggle', CLASSIC_CUT.id, function(a)
-		while a.on do
-			globals.set_int(1934636 + 3008 + 1, 150)
-			if not a.on then return end
-			system.wait(0)
-		end
+	CLASSIC_CUT:add_action('175 %', function()
+		globals.set_int(1934636 + 3008 + 1, 175)
 	end)
-	menu.add_feature('175 %', 'toggle', CLASSIC_CUT.id, function(a)
-		while a.on do
-			globals.set_int(1934636 + 3008 + 1, 175)
-			if not a.on then return end
-			system.wait(0)
-		end
-	end)
-	menu.add_feature('200 %', 'toggle', CLASSIC_CUT.id, function(a)
-		while a.on do
-			globals.set_int(1934636 + 3008 + 1, 200)
-			if not a.on then return end
-			system.wait(0)
-		end
+	CLASSIC_CUT:add_action('200 %', function(a)
+		globals.set_int(1934636 + 3008 + 1, 200)
 	end)
 end
 do
@@ -2477,8 +3141,7 @@ do
                            { 'CR_NARC_STEAL_METH', 5000 }, { 'CR_NARC_FINALE', 5000 }, { 'CR_PACIFIC_TRUCKS ', 5000 }, { 'CR_PACIFIC_WITSEC', 5000 },
                            { 'CR_PACIFIC_HACK', 5000 }, { 'CR_PACIFIC_BIKES', 5000 }, { 'CR_PACIFIC_CONVOY', 5000 }, { 'CR_PACIFIC_FINALE', 5000 },
                            { 'MPPLY_HEIST_ACH_TRACKER', -1 } }
-	menu.add_feature('» Unlock All Awards & All Classic Heists', 'action', CLASSIC_HEISTS.id, function()
-		menu.notify('- All achievements unlocked\n\n- All Classic Heists unlocked\n\nSwitch session or restart the game to take effect', '', 6, 0x64FF7800)
+	CLASSIC_HEISTS:add_action('» 解锁全部公寓抢劫和奖励', function()
 		for i = 1, #Apartment_AWD_I do
 			stat_set_int(Apartment_AWD_I[i][1], true, Apartment_AWD_I[i][2])
 			stat_set_int(Apartment_AWD_I[i][1], false, Apartment_AWD_I[i][2])
@@ -2491,207 +3154,126 @@ do
 end
 do
 	local Apartment_SetDone = { { 'HEIST_PLANNING_STAGE', -1 } }
-	menu.add_feature('» Complete all setups', 'toggle', CLASSIC_HEISTS.id, function(checkin)
-		menu.notify('You may need to choose a Heist and then complete the first setup\n\nLet activated until then ;)', '', 7, 0x50FF78B4)
-		while checkin.on do
-			for i = 1, #Apartment_SetDone do stat_set_int(Apartment_SetDone[i][1], true, Apartment_SetDone[i][2]) end
-			-- 防止卡住
-			sleep(0)
+	CLASSIC_HEISTS:add_action('» 跳过全部前置', function()
+		for i = 1, #Apartment_SetDone do
+			stat_set_int(Apartment_SetDone[i][1], true, Apartment_SetDone[i][2])
 		end
 	end)
 end
-menu.add_feature('» Fleeca Heist 15 MILLIONs', 'toggle', CLASSIC_HEISTS.id, function(a)
-	menu.notify(
-					'* Only works if you are the Host\n* Does not affect others players\n* Use this as your last option\n* Keep it on until the end of the Heist\n* Activate when you are on the cut screen',
-					'Fleeca 15 Millions', 10, 0x646C1A51)
-	while a.on do
-		globals.set_int(1934636 + 3008 + 1, 10434)
-		-- 防止卡住
-		sleep(0)
-	end
+CLASSIC_HEISTS:add_action('» 全福银行 1500w (作为房主时使用)', function()
+	globals.set_int(1934636 + 3008 + 1, 10434)
 end)
-menu.add_feature('» Fleeca Heist 10 MILLIONs', 'toggle', CLASSIC_HEISTS.id, function(ab)
-	menu.notify(
-					'* Only works if you are the Host\n* Does not affect others players\n* Use this as your last option\n* Keep it on until the end of the Heist\n* Activate when you are on the cut screen',
-					'Fleeca 10 Millions', 10, 0x646C1A51)
-	while ab.on do
-		globals.set_int(1934636 + 3008 + 1, 7000)
-		-- 防止卡住
-		sleep(0)
-	end
+CLASSIC_HEISTS:add_action('» 全福银行 1000w (作为房主时使用)', function()
+	globals.set_int(1934636 + 3008 + 1, 7000)
 end)
-menu.add_feature('» Fleeca Heist 5 MILLIONs', 'toggle', CLASSIC_HEISTS.id, function(ab)
-	menu.notify(
-					'* Only works if you are the Host\n* Does not affect others players\n* Use this as your last option\n* Keep it on until the end of the Heist\n* Activate when you are on the cut screen',
-					'Fleeca 5 Millions', 10, 0x646C1A51)
-	while ab.on do
-		globals.set_int(1934636 + 3008 + 1, 3500)
-		-- 防止卡住
-		sleep(0)
-	end
+CLASSIC_HEISTS:add_action('» 全福银行 500w (作为房主时使用)', function()
+	globals.set_int(1934636 + 3008 + 1, 3500)
 end)
 -- CLASSIC CUT WEEKLY EVENT
-menu.add_feature('» [2x EVENT] Fleeca Heist 15 MILLIONs', 'toggle', CLASSIC_HEISTS.id, function(eg)
-	menu.notify('This option should only be used when the double weekly event (2x RP and GTA$) is enabled!', '', 5, 0x641FD5E9)
-	menu.notify(
-					'* Only works if you are the Host\n* Does not affect other players\n* Use this as your last option\n* Keep it on until the end of the Heist\n* Activate when you are on the cut screen',
-					'Fleeca 15 Millions [x2 EVENT]', 10, 0x646C1A51)
-	while eg.on do
-		globals.set_int(1934636 + 3008 + 1, 5217)
-		-- 防止卡住
-		sleep(0)
-	end
+CLASSIC_HEISTS:add_action('» [2x] 全福银行 1500w (作为房主时使用)', function()
+	globals.set_int(1934636 + 3008 + 1, 5217)
 end)
-menu.add_feature('» [2x EVENT] Fleeca Heist 10 MILLIONs', 'toggle', CLASSIC_HEISTS.id, function(eg)
-	menu.notify('This option should only be used when the double weekly event (2x RP and GTA$) is enabled!', '', 5, 0x641FD5E9)
-	menu.notify(
-					'* Only works if you are the Host\n* Does not affect other players\n* Use this as your last option\n* Keep it on until the end of the Heist\n* Activate when you are on the cut screen',
-					'Fleeca 10 Millions [x2 EVENT]', 10, 0x646C1A51)
-	while eg.on do
-		globals.set_int(1934636 + 3008 + 1, 3500)
-		-- 防止卡住
-		sleep(0)
-	end
+CLASSIC_HEISTS:add_action('» [2x] 全福银行 1000w (作为房主时使用)', function()
+	globals.set_int(1934636 + 3008 + 1, 3500)
 end)
-menu.add_feature('» [2x EVENT] Fleeca Heist 5 MILLIONs', 'toggle', CLASSIC_HEISTS.id, function(eg)
-	menu.notify('This option should only be used when the double weekly event (2x RP and GTA$) is enabled!', '', 5, 0x641FD5E9)
-	menu.notify(
-					'* Only works if you are the Host\n* Does not affect other players\n* Use this as your last option\n* Keep it on until the end of the Heist\n* Activate when you are on the cut screen',
-					'Fleeca 5 Millions [x2 EVENT]', 10, 0x646C1A51)
-	while eg.on do
-		globals.set_int(1934636 + 3008 + 1, 1750)
-		-- 防止卡住
-		sleep(0)
-	end
+CLASSIC_HEISTS:add_action('» [2x] 全福银行 500w (作为房主时使用)', function()
+	globals.set_int(1934636 + 3008 + 1, 1750)
 end)
 ------------- LS CONTRACTS
-menu.add_feature('» Increase Payout to 1 Million', 'toggle', LS_ROBBERY.id, function(rob)
-	menu.notify(
-					' Always keep this option actived before starting a contract\n\n There is a cooldown for the payment, about 15-20 minutes if you plan to repeat\n\n Affects you only',
-					'', 7, 0x6414B400)
-	while rob.on do
-		globals.set_int(262145 + 30691 + 0, 1000000)
-		globals.set_int(262145 + 30691 + 1, 1000000)
-		globals.set_int(262145 + 30691 + 2, 1000000)
-		globals.set_int(262145 + 30691 + 3, 1000000)
-		globals.set_int(262145 + 30691 + 4, 1000000)
-		globals.set_int(262145 + 30691 + 5, 1000000)
-		globals.set_int(262145 + 30691 + 6, 1000000)
-		globals.set_int(262145 + 30691 + 7, 1000000)
-		-- globals.set_int(292668,1000000)
-		globals.set_int(262145 + 30690, 1000000) -- reward when joining a contract
-		globals.set_float(262145 + 30687, 0) -- IA cut removal
-		-- 防止卡住
-		sleep(0)
-	end
+LS_ROBBERY:add_action('» 修改收入为 100w', function()
+	globals.set_int(262145 + 30691 + 0, 1000000)
+	globals.set_int(262145 + 30691 + 1, 1000000)
+	globals.set_int(262145 + 30691 + 2, 1000000)
+	globals.set_int(262145 + 30691 + 3, 1000000)
+	globals.set_int(262145 + 30691 + 4, 1000000)
+	globals.set_int(262145 + 30691 + 5, 1000000)
+	globals.set_int(262145 + 30691 + 6, 1000000)
+	globals.set_int(262145 + 30691 + 7, 1000000)
+	-- globals.set_int(292668,1000000)
+	globals.set_int(262145 + 30690, 1000000) -- reward when joining a contract
+	globals.set_float(262145 + 30687, 0) -- IA cut removal
 end)
-menu.add_feature('» [2x EVENT] Increase payout to 1 Million', 'toggle', LS_ROBBERY.id, function(rob0)
-	menu.notify(
-					'Always keep this option actived before starting a contract\n\nThere is a cooldown for the payment, about 15-20 minutes if you plan to repeat\n\nAffects you only',
-					'', 7, 0x6414B400)
-	menu.notify(
-					'This option should only be used when the double event (2x RP and GTA$) is enabled!\n\nThe payment may appear as 500,000, but in fact you will get 1 million',
-					'', 7, 0x6400FA14)
-	while rob0.on do
-		globals.set_int(262145 + 30691 + 0, 500000)
-		globals.set_int(262145 + 30691 + 1, 500000)
-		globals.set_int(262145 + 30691 + 2, 500000)
-		globals.set_int(262145 + 30691 + 3, 500000)
-		globals.set_int(262145 + 30691 + 4, 500000)
-		globals.set_int(262145 + 30691 + 5, 500000)
-		globals.set_int(262145 + 30691 + 6, 500000)
-		globals.set_int(262145 + 30691 + 7, 500000)
-		-- globals.set_int(292668,500000)
-		globals.set_int(262145 + 30690, 500000) -- reward when joining a contract
-		globals.set_float(262145 + 30687, 0) -- IA cut removal
-		-- 防止卡住
-		sleep(0)
-	end
+LS_ROBBERY:add_action('» [2x] 修改收入为 100w', function()
+	globals.set_int(262145 + 30691 + 0, 500000)
+	globals.set_int(262145 + 30691 + 1, 500000)
+	globals.set_int(262145 + 30691 + 2, 500000)
+	globals.set_int(262145 + 30691 + 3, 500000)
+	globals.set_int(262145 + 30691 + 4, 500000)
+	globals.set_int(262145 + 30691 + 5, 500000)
+	globals.set_int(262145 + 30691 + 6, 500000)
+	globals.set_int(262145 + 30691 + 7, 500000)
+	-- globals.set_int(292668,500000)
+	globals.set_int(262145 + 30690, 500000) -- reward when joining a contract
+	globals.set_float(262145 + 30687, 0) -- IA cut removal
 end)
 do
 	local LS_CONTRACT_0_UD = { { 'TUNER_GEN_BS', 12543 }, { 'TUNER_CURRENT', 0 } }
-	menu.add_feature('» Union Depository', 'action', LS_ROBBERY.id, function()
+	LS_ROBBERY:add_action('» 联合储蓄合约', function()
 		for i = 1, #LS_CONTRACT_0_UD do
-			menu.notify('For immediate effect... It is recommended that you stay outside from your Workshop!\n\nChoosed: Union Depository Contract', '', 6,
-			            0x64F06414)
 			stat_set_int(LS_CONTRACT_0_UD[i][1], true, LS_CONTRACT_0_UD[i][2])
 		end
 	end)
 end
 do
 	local LS_CONTRACT_1_SD = { { 'TUNER_GEN_BS', 4351 }, { 'TUNER_CURRENT', 1 } }
-	menu.add_feature('» The Superdollar Deal', 'action', LS_ROBBERY.id, function()
+	LS_ROBBERY:add_action('» 大钞交易', function()
 		for i = 1, #LS_CONTRACT_1_SD do
-			menu.notify('For immediate effect... It is recommended that you stay outside from your Workshop!\n\nChoosed: The Superdollar Deal Contract', '', 6,
-			            0x64F06414)
 			stat_set_int(LS_CONTRACT_1_SD[i][1], true, LS_CONTRACT_1_SD[i][2])
 		end
 	end)
 end
 do
 	local LS_CONTRACT_2_BC = { { 'TUNER_GEN_BS', 12543 }, { 'TUNER_CURRENT', 2 } }
-	menu.add_feature('» The Bank Contract', 'action', LS_ROBBERY.id, function()
+	LS_ROBBERY:add_action('» 银行合约', function()
 		for i = 1, #LS_CONTRACT_2_BC do
-			menu.notify('For immediate effect... It is recommended that you stay outside from your Workshop!\n\nChoosed: The Bank Contract', '', 6, 0x64F06414)
 			stat_set_int(LS_CONTRACT_2_BC[i][1], true, LS_CONTRACT_2_BC[i][2])
 		end
 	end)
 end
 do
 	local LS_CONTRACT_3_ECU = { { 'TUNER_GEN_BS', 12543 }, { 'TUNER_CURRENT', 3 } }
-	menu.add_feature('» The ECU Job', 'action', LS_ROBBERY.id, function()
+	LS_ROBBERY:add_action('» 电控单元差事', function()
 		for i = 1, #LS_CONTRACT_3_ECU do
-			menu.notify('For immediate effect... It is recommended that you stay outside from your Workshop!\n\nChoosed: The ECU Job Contract', '', 6,
-			            0x64F06414)
 			stat_set_int(LS_CONTRACT_3_ECU[i][1], true, LS_CONTRACT_3_ECU[i][2])
 		end
 	end)
 end
 do
 	local LS_CONTRACT_4_PRSN = { { 'TUNER_GEN_BS', 12543 }, { 'TUNER_CURRENT', 4 } }
-	menu.add_feature('» The Prison Contract', 'action', LS_ROBBERY.id, function()
+	LS_ROBBERY:add_action('» 监狱合约', function()
 		for i = 1, #LS_CONTRACT_4_PRSN do
-			menu.notify('For immediate effect... It is recommended that you stay outside from your Workshop!\n\nChoosed: The Prison Contract', '', 6,
-			            0x64F06414)
 			stat_set_int(LS_CONTRACT_4_PRSN[i][1], true, LS_CONTRACT_4_PRSN[i][2])
 		end
 	end)
 end
 do
 	local LS_CONTRACT_5_AGC = { { 'TUNER_GEN_BS', 12543 }, { 'TUNER_CURRENT', 5 } }
-	menu.add_feature('» The Agency Deal', 'action', LS_ROBBERY.id, function()
+	LS_ROBBERY:add_action('» IAA 交易', function()
 		for i = 1, #LS_CONTRACT_5_AGC do
-			menu.notify('For immediate effect... It is recommended that you stay outside from your Workshop!\n\nChoosed: The Agency Deal Contract', '', 6,
-			            0x64F06414)
 			stat_set_int(LS_CONTRACT_5_AGC[i][1], true, LS_CONTRACT_5_AGC[i][2])
 		end
 	end)
 end
 do
 	local LS_CONTRACT_6_LOST = { { 'TUNER_GEN_BS', 12543 }, { 'TUNER_CURRENT', 6 } }
-	menu.add_feature('» The Lost Contract', 'action', LS_ROBBERY.id, function()
+	LS_ROBBERY:add_action('» 失落摩托帮合约', function()
 		for i = 1, #LS_CONTRACT_6_LOST do
-			menu.notify('For immediate effect... It is recommended that you stay outside from your Workshop!\n\nChoosed: The Lost Contract', '', 6, 0x64F06414)
 			stat_set_int(LS_CONTRACT_6_LOST[i][1], true, LS_CONTRACT_6_LOST[i][2])
 		end
 	end)
 end
 do
 	local LS_CONTRACT_7_DATA = { { 'TUNER_GEN_BS', 12543 }, { 'TUNER_CURRENT', 7 } }
-	menu.add_feature('» The Data Contract', 'action', LS_ROBBERY.id, function()
+	LS_ROBBERY:add_action('» 数据合约', function()
 		for i = 1, #LS_CONTRACT_7_DATA do
-			menu.notify('For immediate effect... It is recommended that you stay outside from your Workshop!\n\nChoosed: The Data Contract', '', 6, 0x64F06414)
-			menu.notify('Ignoring some dialogues between npc\'s can prevent you from getting paid, please don\'t teleport too often!', 'Important', 6,
-			            0x6414F0FF)
 			stat_set_int(LS_CONTRACT_7_DATA[i][1], true, LS_CONTRACT_7_DATA[i][2])
 		end
 	end)
 end
 do
 	local LS_CONTRACT_MSS_ONLY = { { 'TUNER_GEN_BS', -1 } }
-	menu.add_feature('» Complete missions (only)', 'action', LS_ROBBERY.id, function()
+	LS_ROBBERY:add_action('» 完成全部任务', function()
 		for i = 1, #LS_CONTRACT_MSS_ONLY do
-			menu.notify('Changes will only happen if you are outside your Auto-Shop\n\nMissions completed', 'Heist Control', 6, 0x64F06414)
 			stat_set_int(LS_CONTRACT_MSS_ONLY[i][1], true, LS_CONTRACT_MSS_ONLY[i][2])
 		end
 	end)
@@ -2705,160 +3287,155 @@ do
 	local LS_TUNERS_DLC_IT = { { 'AWD_CAR_CLUB_MEM', 100 }, { 'AWD_SPRINTRACER', 50 }, { 'AWD_STREETRACER', 50 }, { 'AWD_PURSUITRACER', 50 },
                             { 'AWD_TEST_CAR', 240 }, { 'AWD_AUTO_SHOP', 50 }, { 'AWD_CAR_EXPORT', 100 }, { 'AWD_GROUNDWORK', 40 },
                             { 'AWD_ROBBERY_CONTRACT', 100 }, { 'AWD_FACES_OF_DEATH', 100 } }
-	menu.add_feature('» Unlock All Tuners Awards', 'action', LS_ROBBERY.id, function()
-		for i = 1, #LS_TUNERS_DLC_IT do stat_set_int(LS_TUNERS_DLC_IT[i][1], true, LS_TUNERS_DLC_IT[i][2]) end
-		for i = 2, #LS_TUNERS_DLC_BL do stat_set_bool(LS_TUNERS_DLC_BL[i][1], true, LS_TUNERS_DLC_BL[i][2]) end
+	LS_ROBBERY:add_action('» 解锁全部改装铺合约奖励', function()
+		for i = 1, #LS_TUNERS_DLC_IT do
+			stat_set_int(LS_TUNERS_DLC_IT[i][1], true, LS_TUNERS_DLC_IT[i][2])
+		end
+		for i = 2, #LS_TUNERS_DLC_BL do
+			stat_set_bool(LS_TUNERS_DLC_BL[i][1], true, LS_TUNERS_DLC_BL[i][2])
+		end
 		for i = 0, 576, 1 do
-			hash, mask = stats.get_bool_hash_and_mask('_TUNERPSTAT_BOOL', i, CharID)
-			stats.set_bool_masked(hash, true, mask, 1, true)
+			hash = CharID .. '_TUNERPSTAT_BOOL'
+			stats.set_bool_masked(hash, true, i)
 		end
 		globals.set_int(262145 + 30833, 1)
-		menu.notify('All Tuners DLC Awards Unlocked', '', 3, 0x50FF78F0)
 	end)
 end
-local ROBBERY_RESETER = menu.add_feature('::: More Options', 'parent', LS_ROBBERY.id)
+local ROBBERY_RESETER = LS_ROBBERY:add_submenu('::: 更多选项')
 do
 	local LS_CONTRACT_MISSION_RST = { { 'TUNER_GEN_BS', 12467 } }
-	menu.add_feature('» Reset Missions (only)', 'action', ROBBERY_RESETER.id, function()
+	ROBBERY_RESETER:add_action('» 重置任务', function()
 		for i = 1, #LS_CONTRACT_MISSION_RST do
-			menu.notify('Changes will only happen if you are outside your Auto-Shop\n\nMissions reseted', 'Heist Control', 3, 0x64F06414)
 			stat_set_int(LS_CONTRACT_MISSION_RST[i][1], true, LS_CONTRACT_MISSION_RST[i][2])
 		end
 	end)
 end
 do
 	local LS_CONTRACT_RST = { { 'TUNER_GEN_BS', 8371 }, { 'TUNER_CURRENT', -1 } }
-	menu.add_feature('» Reset Contracts', 'action', ROBBERY_RESETER.id, function()
+	ROBBERY_RESETER:add_action('» 重置合约', 'action', ROBBERY_RESETER.id, function()
 		for i = 1, #LS_CONTRACT_RST do
-			menu.notify('Changes will only happen if you are outside your Auto-Shop\n\nContract reseted', 'Heist Control', 3, 0x64F06414)
 			stat_set_int(LS_CONTRACT_RST[i][1], true, LS_CONTRACT_RST[i][2])
 		end
 	end)
 end
 do
 	local RST_COUNT_TNR = { { 'TUNER_COUNT', 0 }, { 'TUNER_EARNINGS', 0 } }
-	menu.add_feature('» Reset Total Gains & Completed Missions', 'action', ROBBERY_RESETER.id, function()
+	ROBBERY_RESETER:add_action('» 重置合约任务收入和完成次数', function()
 		for i = 1, #RST_COUNT_TNR do
-			menu.notify('It may only update if you are outside your workshop\n\nThe values have been reseted', '', 4, 0x64FF7878)
 			stat_set_int(RST_COUNT_TNR[i][1], true, RST_COUNT_TNR[i][2])
 		end
 	end)
 end
 -- THE CONTRACT DLC
-local CONTRACT_MANAGER = menu.add_feature('» VIP Contract: Dr. Dre', 'parent', TH_CONTRACT.id, function()
-	menu.notify('It may be necessary to log out/return to the Office PC for the values to be updated', '', 5, 0x5014F0E6)
-end)
-local CONTRACT_MANAGER_ = menu.add_feature('» NightLife Leak', 'parent', CONTRACT_MANAGER.id)
-local CONTRACT_MANAGER__ = menu.add_feature('» High Society Leak', 'parent', CONTRACT_MANAGER.id)
-local CONTRACT_MANAGER___ = menu.add_feature('» South Central Leak', 'parent', CONTRACT_MANAGER.id)
+local CONTRACT_MANAGER = TH_CONTRACT:add_submenu('» VIP 合约')
+local CONTRACT_MANAGER_ = CONTRACT_MANAGER:add_submenu('» 夜生活泄密')
+local CONTRACT_MANAGER__ = CONTRACT_MANAGER:add_submenu('» 上流社会泄密')
+local CONTRACT_MANAGER___ = CONTRACT_MANAGER:add_submenu('» 南中心区泄密')
 do
 	local LEAK_NIGHTCLUB = { { 'FIXER_GENERAL_BS', -1 }, { 'FIXER_COMPLETED_BS', -1 }, { 'FIXER_STORY_BS', 3 }, { 'FIXER_STORY_COOLDOWN', -1 } }
-	menu.add_feature('» The Nightclub (Prep)', 'action', CONTRACT_MANAGER_.id, function()
-		for i = 1, #LEAK_NIGHTCLUB do stat_set_int(LEAK_NIGHTCLUB[i][1], true, LEAK_NIGHTCLUB[i][2]) end
-		menu.notify('The NightClub Prep selected')
+	CONTRACT_MANAGER_:add_action('» 夜总会 (前置)', function()
+		for i = 1, #LEAK_NIGHTCLUB do
+			stat_set_int(LEAK_NIGHTCLUB[i][1], true, LEAK_NIGHTCLUB[i][2])
+		end
 	end)
 end
 do
 	local LEAK_MARINA = { { 'FIXER_GENERAL_BS', -1 }, { 'FIXER_COMPLETED_BS', -1 }, { 'FIXER_STORY_BS', 4 }, { 'FIXER_STORY_COOLDOWN', -1 } }
-	menu.add_feature('» The Marina (Prep)', 'action', CONTRACT_MANAGER_.id, function()
-		for i = 1, #LEAK_MARINA do stat_set_int(LEAK_MARINA[i][1], true, LEAK_MARINA[i][2]) end
-		menu.notify('Marina Prep selected')
+	CONTRACT_MANAGER_:add_action('» 船坞 (前置)', function()
+		for i = 1, #LEAK_MARINA do
+			stat_set_int(LEAK_MARINA[i][1], true, LEAK_MARINA[i][2])
+		end
 	end)
 end
 do
 	local LEAK_NIGHTLIFE = { { 'FIXER_GENERAL_BS', -1 }, { 'FIXER_COMPLETED_BS', -1 }, { 'FIXER_STORY_BS', 12 }, { 'FIXER_STORY_COOLDOWN', -1 } }
-	menu.add_feature('» NightLife Leak (Mission)', 'action', CONTRACT_MANAGER_.id, function()
-		for i = 1, #LEAK_NIGHTLIFE do stat_set_int(LEAK_NIGHTLIFE[i][1], true, LEAK_NIGHTLIFE[i][2]) end
-		menu.notify('NightLife Mission selected')
+	CONTRACT_MANAGER_:add_action('» 夜生活泄密 (任务)', function()
+		for i = 1, #LEAK_NIGHTLIFE do
+			stat_set_int(LEAK_NIGHTLIFE[i][1], true, LEAK_NIGHTLIFE[i][2])
+		end
 	end)
 end
 do
 	local LEAK_COUNTRYCLUB = { { 'FIXER_GENERAL_BS', -1 }, { 'FIXER_COMPLETED_BS', -1 }, { 'FIXER_STORY_STRAND', -1 }, { 'FIXER_STORY_BS', 28 },
                             { 'FIXER_STORY_COOLDOWN', -1 } }
-	menu.add_feature('» The Country Club (Prep)', 'action', CONTRACT_MANAGER__.id, function()
-		for i = 1, #LEAK_COUNTRYCLUB do stat_set_int(LEAK_COUNTRYCLUB[i][1], true, LEAK_COUNTRYCLUB[i][2]) end
-		menu.notify('The Country Club Prep selected')
+	CONTRACT_MANAGER__:add_action('» 乡村俱乐部 (前置)', function()
+		for i = 1, #LEAK_COUNTRYCLUB do
+			stat_set_int(LEAK_COUNTRYCLUB[i][1], true, LEAK_COUNTRYCLUB[i][2])
+		end
 	end)
 end
 do
 	local LEAK_GUESTLIST = { { 'FIXER_GENERAL_BS', -1 }, { 'FIXER_COMPLETED_BS', -1 }, { 'FIXER_STORY_STRAND', -1 }, { 'FIXER_STORY_BS', 60 },
                           { 'FIXER_STORY_COOLDOWN', -1 } }
-	menu.add_feature('» Guest List (Prep)', 'action', CONTRACT_MANAGER__.id, function()
-		for i = 1, #LEAK_GUESTLIST do stat_set_int(LEAK_GUESTLIST[i][1], true, LEAK_GUESTLIST[i][2]) end
-		menu.notify('Guest List Prep selected')
+	CONTRACT_MANAGER__:add_action('» 宾客名单 (前置)', function()
+		for i = 1, #LEAK_GUESTLIST do
+			stat_set_int(LEAK_GUESTLIST[i][1], true, LEAK_GUESTLIST[i][2])
+		end
 	end)
 end
 do
 	local LEAK_HIGHSOCIETY = { { 'FIXER_GENERAL_BS', -1 }, { 'FIXER_COMPLETED_BS', -1 }, { 'FIXER_STORY_STRAND', -1 }, { 'FIXER_STORY_BS', 124 },
                             { 'FIXER_STORY_COOLDOWN', -1 } }
-	menu.add_feature('» High Society (Mission)', 'action', CONTRACT_MANAGER__.id, function()
-		for i = 1, #LEAK_HIGHSOCIETY do stat_set_int(LEAK_HIGHSOCIETY[i][1], true, LEAK_HIGHSOCIETY[i][2]) end
-		menu.notify('High Society Mission selected')
+	CONTRACT_MANAGER__:add_action('» 上流社会泄密 (任务)', function()
+		for i = 1, #LEAK_HIGHSOCIETY do
+			stat_set_int(LEAK_HIGHSOCIETY[i][1], true, LEAK_HIGHSOCIETY[i][2])
+		end
 	end)
 end
 do
 	local LEAK_DAVIS = { { 'FIXER_GENERAL_BS', -1 }, { 'FIXER_COMPLETED_BS', -1 }, { 'FIXER_STORY_STRAND', -1 }, { 'FIXER_STORY_BS', 252 },
                       { 'FIXER_STORY_COOLDOWN', -1 } }
-	menu.add_feature('» Davis (Prep)', 'action', CONTRACT_MANAGER___.id, function()
-		for i = 1, #LEAK_DAVIS do stat_set_int(LEAK_DAVIS[i][1], true, LEAK_DAVIS[i][2]) end
-		menu.notify('Davis Prep selected')
+	CONTRACT_MANAGER___:add_action('» 戴维斯 (前置)', function()
+		for i = 1, #LEAK_DAVIS do
+			stat_set_int(LEAK_DAVIS[i][1], true, LEAK_DAVIS[i][2])
+		end
 	end)
 end
 do
 	local LEAK_BALLAS = { { 'FIXER_GENERAL_BS', -1 }, { 'FIXER_COMPLETED_BS', -1 }, { 'FIXER_STORY_STRAND', -1 }, { 'FIXER_STORY_BS', 508 },
                        { 'FIXER_STORY_COOLDOWN', -1 } }
-	menu.add_feature('» The Ballas (Prep)', 'action', CONTRACT_MANAGER___.id, function()
-		for i = 1, #LEAK_BALLAS do stat_set_int(LEAK_BALLAS[i][1], true, LEAK_BALLAS[i][2]) end
-		menu.notify('Ballas Prep selected')
+	CONTRACT_MANAGER___:add_action('» 巴勒帮 (前置)', function()
+		for i = 1, #LEAK_BALLAS do
+			stat_set_int(LEAK_BALLAS[i][1], true, LEAK_BALLAS[i][2])
+		end
 	end)
 end
 do
 	local LEAK_STUDIO = { { 'FIXER_GENERAL_BS', -1 }, { 'FIXER_COMPLETED_BS', -1 }, { 'FIXER_STORY_STRAND', -1 }, { 'FIXER_STORY_BS', 2044 },
                        { 'FIXER_STORY_COOLDOWN', -1 } }
-	menu.add_feature('» Agency Studio (Mission)', 'action', CONTRACT_MANAGER___.id, function()
-		for i = 1, #LEAK_STUDIO do stat_set_int(LEAK_STUDIO[i][1], true, LEAK_STUDIO[i][2]) end
-		menu.notify('Studio Mission selected\n\nTo update correctly leave the apartment or change session')
+	CONTRACT_MANAGER___:add_action('» 工作室时间 (任务)', function()
+		for i = 1, #LEAK_STUDIO do
+			stat_set_int(LEAK_STUDIO[i][1], true, LEAK_STUDIO[i][2])
+		end
 	end)
 end
 do
 	local LEAK_FINAL = { { 'FIXER_GENERAL_BS', -1 }, { 'FIXER_COMPLETED_BS', -1 }, { 'FIXER_STORY_STRAND', -1 }, { 'FIXER_STORY_BS', 4092 },
                       { 'FIXER_STORY_COOLDOWN', -1 } }
-	menu.add_feature('» Final Contract: Don\'t Fuck with Dre', 'action', CONTRACT_MANAGER___.id, function()
-		for i = 1, #LEAK_FINAL do stat_set_int(LEAK_FINAL[i][1], true, LEAK_FINAL[i][2]) end
-		menu.notify('Final Contract selected\n\nTo update correctly leave the apartment or change session')
+	CONTRACT_MANAGER___:add_action('» 终章 : 别惹德瑞', function()
+		for i = 1, #LEAK_FINAL do
+			stat_set_int(LEAK_FINAL[i][1], true, LEAK_FINAL[i][2])
+		end
 	end)
 end
 --
-menu.add_feature('» Modify Final Contract Payout (2.4 Millions)', 'toggle', TH_CONTRACT.id, function(MDFY_C_PAYOUT)
-	menu.notify('It only affects you', '', 5, 0x5014B4F0)
-	while MDFY_C_PAYOUT.on do
-		globals.set_int(262145 + 31389, 2400000)
-		-- 防止卡住
-		sleep(0)
-	end
+TH_CONTRACT:add_action('» 修改终章收入 240w', function()
+	globals.set_int(262145 + 31389, 2400000)
 end)
-menu.add_feature('» [EVENT] Modify Final Contract Payout (2.4 Millions)', 'toggle', TH_CONTRACT.id, function(MDFY_CE_PAYOUT)
-	menu.notify('* It only affects you\n\n* Only use this option when there is a bonus payout event', '', 5, 0x5014B4F0)
-	while MDFY_CE_PAYOUT.on do
-		globals.set_int(262145 + 31389, 1600000)
-		-- 防止卡住
-		sleep(0)
-	end
+TH_CONTRACT:add_action('» [活动] 修改终章收入 240w', function()
+	globals.set_int(262145 + 31389, 1600000)
 end)
-menu.add_feature('» Remove Security Missions/Payphone Cooldown', 'toggle', TH_CONTRACT.id, function(CONT_REM_CD)
-	while CONT_REM_CD.on do
-		globals.set_int(262145 + 31345, 0)
-		globals.set_int(262145 + 31423, 0)
-		globals.set_int(2720311, 0) --- NEED update
-		-- 防止卡住
-		sleep(0)
-	end
+TH_CONTRACT:add_action('» 移除安保合约冷却', function(CONT_REM_CD)
+	globals.set_int(262145 + 31345, 0)
+	globals.set_int(262145 + 31423, 0)
+	globals.set_int(2720311, 0) --- NEED update
 end)
 do
 	local CONTRACT_COMPLETE = { { 'FIXER_GENERAL_BS', -1 }, { 'FIXER_COMPLETED_BS', -1 }, { 'FIXER_STORY_BS', -1 }, { 'FIXER_STORY_COOLDOWN', -1 } }
-	menu.add_feature('» Complete all Missions', 'action', TH_CONTRACT.id, function()
-		for i = 1, #CONTRACT_COMPLETE do stat_set_int(CONTRACT_COMPLETE[i][1], true, CONTRACT_COMPLETE[i][2]) end
-		menu.notify('Missions completed!')
+	TH_CONTRACT:add_action('» 完成全部任务', function()
+		for i = 1, #CONTRACT_COMPLETE do
+			stat_set_int(CONTRACT_COMPLETE[i][1], true, CONTRACT_COMPLETE[i][2])
+		end
 	end)
 end
 do
@@ -2870,166 +3447,106 @@ do
                        { 'AWD_STUDIO_TOUR', true }, { 'AWD_DONT_MESS_DRE', true }, { 'AWD_BACKUP', true }, { 'AWD_SHORTFRANK_1', true },
                        { 'AWD_SHORTFRANK_2', true }, { 'AWD_SHORTFRANK_3', true }, { 'AWD_CONTR_KILLER', true }, { 'AWD_DOGS_BEST_FRIEND', true },
                        { 'AWD_MUSIC_STUDIO', true }, { 'AWD_SHORTLAMAR_1', true }, { 'AWD_SHORTLAMAR_2', true }, { 'AWD_SHORTLAMAR_3', true } }
-	menu.add_feature('» Unlock Awards + Clothes', 'action', TH_CONTRACT.id, function()
+	TH_CONTRACT:add_action('» 解锁全部合约奖励和服装', function()
 		local BL0 = PlayerMP .. '_FIXERPSTAT_BOOL0'
 		local BL1 = PlayerMP .. '_FIXERPSTAT_BOOL1'
 		for i = 0, 128, 1 do
-			stats.set_bool_masked(BL0, true, i, 1, true) -- True
-			stats.set_bool_masked(BL1, true, i, 1, true) -- True
+			stats.set_bool_masked(BL0, true, i) -- True
+			stats.set_bool_masked(BL1, true, i) -- True
 		end
-		for i = 1, #TH_AWARDS_I do stat_set_int(TH_AWARDS_I[i][1], true, TH_AWARDS_I[i][2]) end
-		for i = 1, #TH_AWARDS_B do stat_set_bool(TH_AWARDS_B[i][1], true, TH_AWARDS_B[i][2]) end
-		menu.notify('Awards & Clothes Unlocked', '', 5, 0x5014B4F0)
+		for i = 1, #TH_AWARDS_I do
+			stat_set_int(TH_AWARDS_I[i][1], true, TH_AWARDS_I[i][2])
+		end
+		for i = 1, #TH_AWARDS_B do
+			stat_set_bool(TH_AWARDS_B[i][1], true, TH_AWARDS_B[i][2])
+		end
 	end)
 end
 -- TOOLS
--- Vehicle Speed From Zeromenu
-menu.add_feature('» Modify Vehicle Top Speed', 'action', TOOLS.id, function()
-	local veh = ped.get_vehicle_ped_is_using(player.get_player_ped(player.player_id()))
-	local r, s = input.get('Enter a new Speed', '', 9999999, 3)
-	if r == 1 then return HANDLER_CONTINUE end
-	if r == 2 then return HANDLER_POP end
-	speed = s
-	if veh ~= nil then
-		if not network.has_control_of_entity(veh) then network.request_control_of_entity(veh) end
-		entity.set_entity_max_speed(veh, speed * 1000)
-		vehicle.modify_vehicle_top_speed(veh, speed)
-		vehicle.set_vehicle_engine_torque_multiplier_this_frame(veh, speed)
-		entity.get_entity_model_hash(ped.get_vehicle_ped_is_using(player.get_player_ped(player.player_id())))
-	end
-	menu.notify('Speed modified to\n' .. speed, '', 5, 0x5014F046)
-end)
-menu.add_feature('» Weaken all NPCs', 'toggle', TOOLS.id, function(_RE)
-	while _RE.on do
-		for k, PedIA in pairs(ped.get_all_peds()) do
-			if not ped.is_ped_a_player(PedIA) then
-				weapon.remove_all_ped_weapons(PedIA)
-				ped.set_ped_combat_movement(PedIA, 0)
-			end
-		end
-		system.yield(1000)
-	end
-end)
--- This is a concept, works well, but depends in many things
--- menu.add_feature("» Remove Heli/Boats", "action", TOOLS.id, function()
--- 	for k, DOORs in pairs(vehicle.get_all_vehicles()) do
--- 		local ENT_ENTRY = entity.get_entity_model_hash(DOORs) or vehicle.get_all_vehicle_model_hashes(DOORs)
--- 		local AVG = 2047212121
--- 		local heliA = 2623428164
--- 		local heliB = 745926877
--- 		local boatA = 1448677353
--- 		local truck = 1747439474
--- 		if ENT_ENTRY == AVG or ENT_ENTRY == heliA or ENT_ENTRY == heliB or ENT_ENTRY == boatA or ENT_ENTRY == truck then
--- 			network.request_control_of_entity(DOORs)
--- 			local timer = utils.time_ms() + 500
--- 			while not network.has_control_of_entity(DOORs) and timer > utils.time_ms() do
--- 				system.wait(1500)
--- 			end
--- 			if network.has_control_of_entity(DOORs) then
--- 				entity.set_entity_coords_no_offset(DOORs,vector(671.389,7613.515,-109.629))
--- 			end
--- 		end
--- 	end
--- end)
-menu.add_feature('» Allow Jobs/Missions on non public lobbies', 'toggle', TOOLS.id, function(_mi)
-	while _mi.on do
-		globals.set_int(2714635 + 744, 0) -- NETWORK::NETWORK_SESSION_GET_PRIVATE_SLOTS
-		-- 防止卡住
-		sleep(0)
-	end
-	menu.notify('Now you can sell do some jobs/missions in private sessions', '', 5, 0x5014B4F0)
-end)
-menu.add_feature('» Silent Mode (No notifications)', 'toggle', TOOLS.id, function(quiet)
-	while quiet.on do
-		menu.clear_all_notifications()
-		-- 防止卡住
-		sleep(0)
-	end
-end)
-menu.add_feature('» Clear notifications', 'action', TOOLS.id, function()
-	menu.clear_visible_notifications()
+TOOLS:add_action('» 允许非公开战局任务', 'toggle', TOOLS.id, function()
+	globals.set_int(2714635 + 744, 0) -- NETWORK::NETWORK_SESSION_GET_PRIVATE_SLOTS
 end)
 -- Heist Cooldown Reminder
-do
-	local COOLDOWN_REMIND = menu.add_feature('» Heist Cooldown Reminder', 'parent', TOOLS.id)
-	menu.add_feature('» Reminder for Cayo Perico Heist', 'action', COOLDOWN_REMIND.id, function(HCR_Cayo)
-		menu.notify('Counting down the next 16 minutes\n\nYou can play a different Heist in the meantime\n\nThe cooldown for each Heist is individual',
-		            ':: Cayo Perico Heist', 15, 0x64FF78B4)
-		system.wait(60000)
-		system.wait(300000)
-		menu.notify('5 minutes have passed\n\nThere are still 10 minutes left to finish the cooldown.\n\nYou will receive another notification soon',
-		            ':: Cayo Perico Heist', 10, 0x64FF78B4)
-		system.wait(300000)
-		menu.notify('10 minutes have passed\n\nThere are still 6 minutes left to finish the cooldown.\n\nYou will receive another notification soon',
-		            ':: Cayo Perico Heist', 10, 0x64FF78B4)
-		system.wait(360000)
-		menu.notify('16 minutes have passed\n\nThe cooldown is over!!!\n\nNow you can play and get paid again\nEnjoy!', ':: Cayo Perico Heist', 20,
-		            0x6400FF14)
-		return menu.notify('Heist Cooldown Reminder has been disabled...', '', 5, 0x64781EF0)
-	end)
-	menu.add_feature('» Reminder for Diamond Casino Heist', 'action', COOLDOWN_REMIND.id, function(HCR_Casino)
-		menu.notify('Counting down the next 16 minutes\n\nYou can play a different Heist in the meantime\n\nThe cooldown for each Heist is individual',
-		            ':: Diamond Casino Heist', 15, 0x64FF78B4)
-		system.wait(60000)
-		system.wait(300000)
-		menu.notify('5 minutes have passed\n\nThere are still 10 minutes left to finish the cooldown.\n\nYou will receive another notification soon',
-		            ':: Diamond Casino Heist', 10, 0x64FF78B4)
-		system.wait(300000)
-		menu.notify('10 minutes have passed\n\nThere are still 6 minutes left to finish the cooldown.\n\nYou will receive another notification soon',
-		            ':: Diamond Casino Heist', 10, 0x64FF78B4)
-		system.wait(360000)
-		menu.notify('16 minutes have passed\n\nThe cooldown is over!!!\n\nNow you can play and get paid again\nEnjoy!', ':: Diamond Casino Heist', 20,
-		            0x6400FF14)
-		return menu.notify('Heist Cooldown Reminder has been disabled...', '', 5, 0x64781EF0)
-	end)
-	menu.add_feature('» Reminder for Doomsday Heist', 'action', COOLDOWN_REMIND.id, function(HCR_Dooms)
-		menu.notify('Counting down the next 16 minutes\n\nYou can play a different Heist in the meantime\n\nThe cooldown for each Heist is individual',
-		            ':: Doomsday Heist', 15, 0x64FF78B4)
-		system.wait(60000)
-		system.wait(300000)
-		menu.notify('5 minutes have passed\n\nThere are still 10 minutes left to finish the cooldown.\n\nYou will receive another notification soon',
-		            ':: Doomsday Heist', 10, 0x64FF78B4)
-		system.wait(300000)
-		menu.notify('10 minutes have passed\n\nThere are still 6 minutes left to finish the cooldown.\n\nYou will receive another notification soon',
-		            ':: Doomsday Heist', 10, 0x64FF78B4)
-		system.wait(360000)
-		menu.notify('16 minutes have passed\n\nThe cooldown is over!!!\n\nNow you can play and get paid again\nEnjoy!', ':: Doomsday Heist', 20, 0x6400FF14)
-		return menu.notify('Heist Cooldown Reminder has been disabled...', '', 5, 0x64781EF0)
-	end)
-	menu.add_feature('» Reminder for Classic Heists', 'action', COOLDOWN_REMIND.id, function(HCR_Classic)
-		menu.notify('Counting down the next 16 minutes\n\nYou can play a different Heist in the meantime\n\nThe cooldown for each Heist is individual',
-		            ':: Classic Heists', 15, 0x64FF78B4)
-		system.wait(60000)
-		system.wait(300000)
-		menu.notify('5 minutes have passed\n\nThere are still 10 minutes left to finish the cooldown.\n\nYou will receive another notification soon',
-		            ':: Classic Heists', 10, 0x64FF78B4)
-		system.wait(300000)
-		menu.notify('10 minutes have passed\n\nThere are still 6 minutes left to finish the cooldown.\n\nYou will receive another notification soon',
-		            ':: Classic Heists', 10, 0x64FF78B4)
-		system.wait(360000)
-		menu.notify('16 minutes have passed\n\nThe cooldown is over!!!\n\nNow you can play and get paid again\nEnjoy!', ':: Classic Heists', 20, 0x6400FF14)
-		return menu.notify('Heist Cooldown Reminder has been disabled...', '', 5, 0x64781EF0)
-	end)
-	menu.add_feature('» Reminder for LS Robbery (Contracts)', 'action', COOLDOWN_REMIND.id, function(HCR_LS)
-		menu.notify('Counting down the next 17 minutes\n\nYou can play a different Heist in the meantime\n\nThe cooldown for each Heist is individual',
-		            ':: LS Robbery - Contracts', 15, 0x64FF78B4)
-		system.wait(60000)
-		system.wait(300000)
-		menu.notify('5 minutes have passed\n\nThere are still 10 minutes left to finish the cooldown.\n\nYou will receive another notification soon',
-		            ':: LS Robbery - Contracts', 10, 0x64FF78B4)
-		system.wait(300000)
-		menu.notify('10 minutes have passed\n\nThere are still 7 minutes left to finish the cooldown.\n\nYou will receive another notification soon',
-		            ':: LS Robbery - Contracts', 10, 0x64FF78B4)
-		system.wait(420000)
-		menu.notify('17 minutes have passed\n\nThe cooldown is over!!!\n\nNow you can play and get paid again\nEnjoy!', ':: LS Robbery - Contracts', 20,
-		            0x6400FF14)
-		return menu.notify('Heist Cooldown Reminder has been disabled...', '', 5, 0x64781EF0)
-	end)
-end
-do
-	menu.add_feature('» Leave Session (Freeze GTA for a moment)', 'action', TOOLS.id, function()
-		menu.notify('Task completed', '', 3, 0x5000D214)
-		local time = utils.time_ms() + 8500
-		while time > utils.time_ms() do end
-	end)
-end
+-- [unuseable]需要lua多线程运行
+-- do
+-- 	local COOLDOWN_REMIND = menu.add_feature('» Heist Cooldown Reminder', 'parent', TOOLS.id)
+-- 	menu.add_feature('» Reminder for Cayo Perico Heist', 'action', COOLDOWN_REMIND.id, function(HCR_Cayo)
+-- 		menu.notify('Counting down the next 16 minutes\n\nYou can play a different Heist in the meantime\n\nThe cooldown for each Heist is individual',
+-- 		            ':: Cayo Perico Heist', 15, 0x64FF78B4)
+-- 		system.wait(60000)
+-- 		system.wait(300000)
+-- 		menu.notify('5 minutes have passed\n\nThere are still 10 minutes left to finish the cooldown.\n\nYou will receive another notification soon',
+-- 		            ':: Cayo Perico Heist', 10, 0x64FF78B4)
+-- 		system.wait(300000)
+-- 		menu.notify('10 minutes have passed\n\nThere are still 6 minutes left to finish the cooldown.\n\nYou will receive another notification soon',
+-- 		            ':: Cayo Perico Heist', 10, 0x64FF78B4)
+-- 		system.wait(360000)
+-- 		menu.notify('16 minutes have passed\n\nThe cooldown is over!!!\n\nNow you can play and get paid again\nEnjoy!', ':: Cayo Perico Heist', 20,
+-- 		            0x6400FF14)
+-- 		return menu.notify('Heist Cooldown Reminder has been disabled...', '', 5, 0x64781EF0)
+-- 	end)
+-- 	menu.add_feature('» Reminder for Diamond Casino Heist', 'action', COOLDOWN_REMIND.id, function(HCR_Casino)
+-- 		menu.notify('Counting down the next 16 minutes\n\nYou can play a different Heist in the meantime\n\nThe cooldown for each Heist is individual',
+-- 		            ':: Diamond Casino Heist', 15, 0x64FF78B4)
+-- 		system.wait(60000)
+-- 		system.wait(300000)
+-- 		menu.notify('5 minutes have passed\n\nThere are still 10 minutes left to finish the cooldown.\n\nYou will receive another notification soon',
+-- 		            ':: Diamond Casino Heist', 10, 0x64FF78B4)
+-- 		system.wait(300000)
+-- 		menu.notify('10 minutes have passed\n\nThere are still 6 minutes left to finish the cooldown.\n\nYou will receive another notification soon',
+-- 		            ':: Diamond Casino Heist', 10, 0x64FF78B4)
+-- 		system.wait(360000)
+-- 		menu.notify('16 minutes have passed\n\nThe cooldown is over!!!\n\nNow you can play and get paid again\nEnjoy!', ':: Diamond Casino Heist', 20,
+-- 		            0x6400FF14)
+-- 		return menu.notify('Heist Cooldown Reminder has been disabled...', '', 5, 0x64781EF0)
+-- 	end)
+-- 	menu.add_feature('» Reminder for Doomsday Heist', 'action', COOLDOWN_REMIND.id, function(HCR_Dooms)
+-- 		menu.notify('Counting down the next 16 minutes\n\nYou can play a different Heist in the meantime\n\nThe cooldown for each Heist is individual',
+-- 		            ':: Doomsday Heist', 15, 0x64FF78B4)
+-- 		system.wait(60000)
+-- 		system.wait(300000)
+-- 		menu.notify('5 minutes have passed\n\nThere are still 10 minutes left to finish the cooldown.\n\nYou will receive another notification soon',
+-- 		            ':: Doomsday Heist', 10, 0x64FF78B4)
+-- 		system.wait(300000)
+-- 		menu.notify('10 minutes have passed\n\nThere are still 6 minutes left to finish the cooldown.\n\nYou will receive another notification soon',
+-- 		            ':: Doomsday Heist', 10, 0x64FF78B4)
+-- 		system.wait(360000)
+-- 		menu.notify('16 minutes have passed\n\nThe cooldown is over!!!\n\nNow you can play and get paid again\nEnjoy!', ':: Doomsday Heist', 20, 0x6400FF14)
+-- 		return menu.notify('Heist Cooldown Reminder has been disabled...', '', 5, 0x64781EF0)
+-- 	end)
+-- 	menu.add_feature('» Reminder for Classic Heists', 'action', COOLDOWN_REMIND.id, function(HCR_Classic)
+-- 		menu.notify('Counting down the next 16 minutes\n\nYou can play a different Heist in the meantime\n\nThe cooldown for each Heist is individual',
+-- 		            ':: Classic Heists', 15, 0x64FF78B4)
+-- 		system.wait(60000)
+-- 		system.wait(300000)
+-- 		menu.notify('5 minutes have passed\n\nThere are still 10 minutes left to finish the cooldown.\n\nYou will receive another notification soon',
+-- 		            ':: Classic Heists', 10, 0x64FF78B4)
+-- 		system.wait(300000)
+-- 		menu.notify('10 minutes have passed\n\nThere are still 6 minutes left to finish the cooldown.\n\nYou will receive another notification soon',
+-- 		            ':: Classic Heists', 10, 0x64FF78B4)
+-- 		system.wait(360000)
+-- 		menu.notify('16 minutes have passed\n\nThe cooldown is over!!!\n\nNow you can play and get paid again\nEnjoy!', ':: Classic Heists', 20, 0x6400FF14)
+-- 		return menu.notify('Heist Cooldown Reminder has been disabled...', '', 5, 0x64781EF0)
+-- 	end)
+-- 	menu.add_feature('» Reminder for LS Robbery (Contracts)', 'action', COOLDOWN_REMIND.id, function(HCR_LS)
+-- 		menu.notify('Counting down the next 17 minutes\n\nYou can play a different Heist in the meantime\n\nThe cooldown for each Heist is individual',
+-- 		            ':: LS Robbery - Contracts', 15, 0x64FF78B4)
+-- 		system.wait(60000)
+-- 		system.wait(300000)
+-- 		menu.notify('5 minutes have passed\n\nThere are still 10 minutes left to finish the cooldown.\n\nYou will receive another notification soon',
+-- 		            ':: LS Robbery - Contracts', 10, 0x64FF78B4)
+-- 		system.wait(300000)
+-- 		menu.notify('10 minutes have passed\n\nThere are still 7 minutes left to finish the cooldown.\n\nYou will receive another notification soon',
+-- 		            ':: LS Robbery - Contracts', 10, 0x64FF78B4)
+-- 		system.wait(420000)
+-- 		menu.notify('17 minutes have passed\n\nThe cooldown is over!!!\n\nNow you can play and get paid again\nEnjoy!', ':: LS Robbery - Contracts', 20,
+-- 		            0x6400FF14)
+-- 		return menu.notify('Heist Cooldown Reminder has been disabled...', '', 5, 0x64781EF0)
+-- 	end)
+-- end
+-- 风险提示
+bfmenu:add_action("遇到 bug 请联系作者",function() end)
+bfmenu:add_action("Discord:@Blue-Flag#5246",function() end)
+bfmenu:add_action("Github:Galaxy-Studio-Code/Blue-Flag-Lua",function() end)
+bfmenu:add_action("本脚本部分功能有风险",function() end)
+bfmenu:add_action("风险自控, 封号了可以告知你使用的功能",function() end)
