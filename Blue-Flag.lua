@@ -85,7 +85,7 @@ Player_Function:add_toggle('切换角色时自动补满血量、护甲和弹药'
 end, function(e)
 	toggle = e
 	if e then
-		menu.register_callback('MaxArmorHealthAmmoOnPlayerChanged', function(oldPlayer, newPlayer)
+		PlayerChangedCallback = menu.register_callback('OnPlayerChanged', function(oldPlayer, newPlayer)
 			-- When switching player, instantly refill health and armor
 			if newPlayer ~= nil then
 				newPlayer:set_armour(100)
@@ -95,7 +95,7 @@ end, function(e)
 		end)
 	end
 	if not e then
-		menu.remove_callback('MaxArmorHealthAmmoOnPlayerChanged')
+		menu.remove_callback(PlayerChangedCallback)
 	end
 end)
 Player_Function:add_action('自杀', function()
@@ -162,12 +162,12 @@ end, function(value)
 	localplayer:set_config_flag(241, value)
 end)
 local toggled = false
-Player_Function:add_toggle('切换角色时自动补满血量、护甲和弹药', function()
+Player_Function:add_toggle('进入载具时自动补满血量', function()
 	return toggled
 end, function(e)
 	toggle = e
 	if e then
-		menu.register_callback('MaxVehicleHealth', function(oldVehicle, newVehicle)
+		VehicelChangedCallback = menu.register_callback('OnVehicleChanged', function(oldVehicle, newVehicle)
 			if newVehicle ~= nil then
 				if newVehicle:get_health() < newVehicle:get_max_health() then
 					newVehicle:set_health(newVehicle:get_max_health())
@@ -176,7 +176,7 @@ end, function(e)
 		end)
 	end
 	if not e then
-		menu.remove_callback('MaxVehicleHealth')
+		menu.remove_callback(VehicelChangedCallback)
 	end
 end)
 current_vehicle = localplayer:get_current_vehicle()
