@@ -209,11 +209,11 @@ end, function(e)
 		menu.remove_callback(VehicelChangedCallback)
 	end
 end)
-if not localplayer then
-	return nil
-end
-local current_vehicle = localplayer:get_current_vehicle()
 local function m_v_health()
+	if not localplayer then
+		return nil
+	end
+	local current_vehicle = localplayer:get_current_vehicle()
 	if not current_vehicle then
 		return 1000
 	end
@@ -222,41 +222,49 @@ local function m_v_health()
 	end
 	return current_vehicle:get_max_health()
 end
-if not localplayer then
-	return nil
-end
-local current_vehicle = localplayer:get_current_vehicle()
 Vehicle_Function:add_int_range('载具血量', 10, 0, m_v_health(), function()
+	if not localplayer then
+		return nil
+	end
+	local current_vehicle = localplayer:get_current_vehicle()
 	if not current_vehicle then
 		return nil
 	end
 	return current_vehicle:get_health()
 end, function(value)
+	if not localplayer then
+		return nil
+	end
+	local current_vehicle = localplayer:get_current_vehicle()
 	if not current_vehicle then
 		return nil
 	end
 	current_vehicle:set_health(value)
 end)
-if not localplayer then
-	return nil
-end
-local current_vehicle = localplayer:get_current_vehicle()
 Vehicle_Function:add_int_range('修改载具极速', 10, 0, 1000, function()
+	if not localplayer then
+		return nil
+	end
+	local current_vehicle = localplayer:get_current_vehicle()
 	if not current_vehicle then
 		return nil
 	end
 	return current_vehicle:get_max_speed()
 end, function(value)
+	if not localplayer then
+		return nil
+	end
+	local current_vehicle = localplayer:get_current_vehicle()
 	if not current_vehicle then
 		return nil
 	end
 	current_vehicle:set_max_speed(value)
 end)
-if not localplayer then
-	return nil
-end
 local Vehicle_Model = Vehicle_Function:add_submenu('设置载具模型')
 function Set_Vehicle_Model(model)
+	if not localplayer then
+		return nil
+	end
 	local current_vehicle = localplayer:get_current_vehicle()
 	if not current_vehicle then
 		return nil
@@ -692,12 +700,12 @@ Recovery_Function:add_action('生成 Ped 掉落 ($2000)', function()
 	globals.set_uint(4528329 + 1 + (globals.get_int(2783345) * 85) + 66 + 2, 2)
 	sleep(1)
 end)
-testmenu:add_action('天基炮退款 $50w', function()
+Recovery_Function:add_action('天基炮退款 $50w', function()
 	globals.set_int(1964179, 1)
 	sleep(5)
 	globals.set_int(1964179, 0)
 end)
-testmenu:add_action('天基炮退款 $75w', function()
+Recovery_Function:add_action('天基炮退款 $75w', function()
 	globals.set_int(1964179, 2)
 	sleep(5)
 	globals.set_int(1964179, 0)
