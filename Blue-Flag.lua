@@ -2,8 +2,17 @@
 -- Github: https://github.com/Galaxy-Studio-Code/Blue-Flag-Lua
 -- init
 require_game_build(2628)
-local LUA_VER = '1.0.11B'
+local LUA_VER = '1.1.0'
 local bfmenu = menu.add_submenu('Blue-Flag\'s Lua')
+local Player_Function = bfmenu:add_submenu('玩家功能')
+local Weapon_Function = bfmenu:add_submenu('武器功能')
+local Vehicle_Function = bfmenu:add_submenu('载具功能')
+local World_Function = bfmenu:add_submenu('世界功能')
+local Teleport_Function = bfmenu:add_submenu('传送功能')
+local Recovery_Function = bfmenu:add_submenu('恢复功能')
+local Heist_Control = bfmenu:add_submenu('任务控制功能')
+local Misc_Function = bfmenu:add_submenu('杂项功能')
+local HE_about_info = bfmenu:add_submenu('关于')
 -- Script core function [INT]
 local function stat_set_int(hash, prefix, value, save)
 	save = true
@@ -72,7 +81,6 @@ function GTA_MP()
 end
 local PlayerMP = 'MP' .. GTA_MP()
 -- Player Function
-local Player_Function = bfmenu:add_submenu('玩家功能')
 -- Kiddion's example
 Player_Function:add_toggle('冻结玩家', function()
 	if not localplayer then
@@ -109,7 +117,7 @@ Player_Function:add_action('自杀', function()
 end)
 local function m_health()
 	if not localplayer then
-		return nil
+		return 1000
 	end
 	if localplayer:get_max_health() < 1000 then
 		return 1000
@@ -163,7 +171,6 @@ end)
 -- 	menu.clear_visible_notifications()
 -- end)
 -- Weapon Function
-local Weapon_Function = bfmenu:add_submenu('武器功能')
 Weapon_Function:add_action('补满防弹衣', function()
 	local items = { { 'MP_CHAR_ARMOUR_1_COUNT', 10 }, { 'MP_CHAR_ARMOUR_2_COUNT', 10 }, { 'MP_CHAR_ARMOUR_3_COUNT', 10 },
                  { 'MP_CHAR_ARMOUR_4_COUNT', 10 }, { 'MP_CHAR_ARMOUR_5_COUNT', 10 } }
@@ -172,7 +179,6 @@ Weapon_Function:add_action('补满防弹衣', function()
 	end
 end)
 -- Vehicle Function
-local Vehicle_Function = bfmenu:add_submenu('载具功能')
 -- Kiddion's example
 Vehicle_Function:add_toggle('保持载具引擎开启', function()
 	if not localplayer then
@@ -249,16 +255,65 @@ end)
 if not localplayer then
 	return nil
 end
-local current_vehicle = localplayer:get_current_vehicle()
-local Vehicle_Model = Vehicle_Function:add_submenu('载具模型功能')
-Vehicle_Model:add_action('清除载具模型', function()
+local Vehicle_Model = Vehicle_Function:add_submenu('设置载具模型')
+function Set_Vehicle_Model(model)
+	local current_vehicle = localplayer:get_current_vehicle()
 	if not current_vehicle then
 		return nil
 	end
-	current_vehicle:set_model_hash(nil)
-end)
+	current_vehicle:set_model_hash(model)
+end
+local Spawn_Vehicle = Vehicle_Function:add_submenu('生成载具')
+function Spawn_Vehicle(model, moreopt)
+	local position = localplayer:get_position()
+	globals.set_int(2725269 + 2, 1)
+	globals.set_uint(2725269 + 5, 1)
+	globals.set_uint(2725269 + 27, 1)
+	if moreopt then
+		globals.set_text(2725269 + 27 + 1, 'PLATE_TEXT') -- EHICLE_NUMBER_PLATE_TEXT
+		globals.set_uint(2725269 + 27 + 5, 255) -- VEHICLE_PRIMARY_COLOR
+		globals.set_uint(2725269 + 27 + 6, 255) -- VEHICLE_SECONDARY_COLOR
+		globals.set_uint(2725269 + 27 + 7, 255) -- VEHICLE_EXTRA_COLOURS
+		globals.set_int(2725269 + 27 + 8, 255)
+		globals.set_int(2725269 + 27 + 10, 5)
+		globals.set_int(2725269 + 27 + 12, 4)
+		globals.set_int(2725269 + 27 + 13, 8)
+		globals.set_int(2725269 + 27 + 14, 6)
+		globals.set_int(2725269 + 27 + 15, 3)
+		globals.set_int(2725269 + 27 + 16, 4)
+		globals.set_int(2725269 + 27 + 17, 13)
+		globals.set_int(2725269 + 27 + 18, 8)
+		globals.set_int(2725269 + 27 + 19, 5)
+		globals.set_int(2725269 + 27 + 20, 255)
+		globals.set_int(2725269 + 27 + 21, 3)
+		globals.set_int(2725269 + 27 + 22, 6)
+		globals.set_int(2725269 + 27 + 23, 10)
+		globals.set_int(2725269 + 27 + 24, -1)
+		globals.set_uint(2725269 + 27 + 59, 2)
+		globals.set_int(2725269 + 27 + 62, 255)
+		globals.set_int(2725269 + 27 + 63, 0)
+		globals.set_int(2725269 + 27 + 64, 0)
+		globals.set_int(2725269 + 27 + 65, 2)
+		globals.set_uint(2725269 + 27 + 67, 1)
+		globals.set_uint(2725269 + 27 + 69, 0)
+		globals.set_uint(2725269 + 27 + 27, 1)
+		globals.set_uint(2725269 + 27 + 74, 255) -- VEHICLE_NEON_LIGHTS_COLOUR
+		globals.set_uint(2725269 + 27 + 75, 255)
+		globals.set_uint(2725269 + 27 + 76, 255)
+		globals.set_uint(2725269 + 27 + 68, 1) -- GET_CONVERTIBLE_ROOF_STATE
+		globals.set_int(2725269 + 27 + 77, 0xF0400000) -- CAR OPTIONS
+		globals.set_uint(2725269 + 27 + 96, 1)
+		globals.set_uint(2725269 + 27 + 97, 1)
+		globals.set_uint(2725269 + 27 + 98, 0)
+		globals.set_uint(2725269 + 27 + 99, 255)
+	end
+	globals.set_uint(2725269 + 27 + 70, 0) -- VEHICLE_DOOR_LOCK_STATUS (If it is not 0, you cant enter the vehicle).
+	globals.set_int(2725269 + 27 + 66, modelhash)
+	globals.set_float(2725269 + 7, position.x + 5) -- Position X
+	globals.set_float(2725269 + 7 + 1, position.y + 5) -- Position Y
+	globals.set_float(2725269 + 7 + 2, -255)
+end
 -- World Function
-local World_Function = bfmenu:add_submenu('世界功能')
 World_Function:add_action('允许非公开战局任务', function()
 	globals.set_int(2714635 + 744, 0) -- NETWORK::NETWORK_SESSION_GET_PRIVATE_SLOTS
 end)
@@ -383,15 +438,20 @@ World_Function:add_action('复活附近 NPC', function()
 		::continue::
 	end
 end)
--- [unuseable]需要ped判断
--- World_Function:add_action('Weaken all NPCs', function()
--- 	for k, PedIA in pairs(ped.get_all_peds()) do
--- 		if not ped.is_ped_a_player(PedIA) then
--- 			weapon.remove_all_ped_weapons(PedIA)
--- 			ped.set_ped_combat_movement(PedIA
--- 		end
--- 	end
--- end)
+World_Function:add_action('削弱全部 NPC', function()
+	for p in replayinterface.get_peds() do
+		if p == nil or p:get_pedtype() < 4 then
+			goto continue
+		end
+		p:set_infinite_ammo(false)
+		p:set_wallet(2000)
+		p:set_run_speed(0.3)
+		for w in p:get_all_weapon_hashes() do
+			p:set_weapon_enabled(w, false)
+		end
+		::continue::
+	end
+end)
 -- [unuseable]需要操作实体
 -- This is a concept, works well, but depends in many things
 -- World_Function("移除直升机/船", function()
@@ -423,7 +483,6 @@ end)
 -- 	end)
 -- end
 -- Teleport Function
-local Teleport_Function = bfmenu:add_submenu('传送功能')
 local HU_JING_TELE = Teleport_Function:add_submenu('虎鲸内传送点')
 HU_JING_TELE:add_action('驾驶座位', function()
 	if not localplayer then
@@ -599,7 +658,50 @@ UKN_KBBL_TELE:add_action('Kenny\'s Backyard Boogie - 地点 4', function()
 	localplayer:set_position(vector3(-2162.770, 1115.913, -24.371))
 end)
 -- Recovery Function
-local Recovery_Function = bfmenu:add_submenu('恢复功能')
+Recovery_Function:add_action('附近 Ped 掉落 ($2000)', function()
+	local position = localplayer:get_position()
+	position.z = position.z + 10
+	for p in replayinterface.get_peds() do
+		if not p or p == localplayer then
+			goto continue
+		end
+		if p:get_pedtype() < 4 then
+			goto continue
+		end
+		if p:is_in_vehicle() then
+			goto continue
+		end
+		p:set_position(position)
+		p:set_freeze_momentum(true)
+		p:set_wallet(2000)
+		p:set_health(0)
+		sleep(0.5)
+		::continue::
+	end
+end)
+Recovery_Function:add_action('生成 Ped 掉落 ($2000)', function()
+	if not localplayer then
+		return nil
+	end
+	local position = localplayer:get_position()
+	globals.set_uint(2783351, 1)
+	globals.set_int(2783345 + 1, 2001)
+	globals.set_float(2783345 + 3, position.x)
+	globals.set_float(2783345 + 4, position.y)
+	globals.set_float(2783345 + 5, position.z + 5)
+	globals.set_uint(4528329 + 1 + (globals.get_int(2783345) * 85) + 66 + 2, 2)
+	sleep(1)
+end)
+testmenu:add_action('天基炮退款 $50w', function()
+	globals.set_int(1964179, 1)
+	sleep(5)
+	globals.set_int(1964179, 0)
+end)
+testmenu:add_action('天基炮退款 $75w', function()
+	globals.set_int(1964179, 2)
+	sleep(5)
+	globals.set_int(1964179, 0)
+end)
 Recovery_Function:add_action('清除被杀记录', function()
 	stat_set_int('MP0_ARCHENEMY_KILLS', true, 0)
 	stat_set_int('MP1_ARCHENEMY_KILLS', true, 0)
@@ -645,14 +747,12 @@ Recovery_Function:add_action('移除收支差', function()
 	end
 end)
 -- Misc Function
-local Misc_Function = bfmenu:add_submenu('杂项功能')
 local SCENE_CUT = Misc_Function:add_submenu('过场动画')
 SCENE_CUT:add_action('跳过过场动画', function()
 	menu.end_cutscene()
 end)
 -- Heist Control
 -- Edit from 2Take1 Heist-Control-v2 lua by jhowkNx
-local Heist_Control = bfmenu:add_submenu('任务控制功能')
 local PERICO_HEIST = Heist_Control:add_submenu('佩里科岛')
 local CAYO_AUTO_PRST = PERICO_HEIST:add_submenu('预设 (进入分红界面后也须点击一次)')
 local NON_EVENT = CAYO_AUTO_PRST:add_submenu('标准预设 $250w')
@@ -1351,6 +1451,18 @@ TELEPORT_DOOMS:add_action('设施 :: 抢劫计划室', function()
 	end
 	localplayer:set_position(vector3(343.97885131836, 4864.76953125, -60.004898071289))
 end)
+TELEPORT_DOOMS:add_action('末日一 :: IAA基地', function()
+	if not localplayer then
+		return nil
+	end
+	localplayer:set_position(vector3(2051.454102, 2937.856201, 46.412567))
+end)
+TELEPORT_DOOMS:add_action('末日一 :: 作战室', function()
+	if not localplayer then
+		return nil
+	end
+	localplayer:set_position(vector3(2066.660645, 2991.692383, -67.501999))
+end)
 TELEPORT_DOOMS:add_action('末日二 :: 拍照屏幕', function()
 	if not localplayer then
 		return nil
@@ -1363,8 +1475,14 @@ TELEPORT_DOOMS:add_action('末日二 :: 囚犯牢房', function()
 	end
 	localplayer:set_position(vector3(512.888, 4833.033, -68.989))
 end)
+TELEPORT_DOOMS:add_action('(\'末日二 :: 复仇者', function()
+	if not localplayer then
+		return nil
+	end
+	localplayer:set_position(vector3(-970.208191, 6216.608398, 2.252363))
+end)
+
 do
-	local HE_about_info = bfmenu:add_submenu('关于')
 	HE_about_info:add_action('By : Blue-Flag', function()
 	end)
 	HE_about_info:add_action('Version : ' .. LUA_VER, function()
