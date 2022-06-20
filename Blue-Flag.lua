@@ -274,15 +274,184 @@ function Set_Vehicle_Model(modelHash)
 	end
 	current_vehicle:set_model_hash(modelHash)
 end
--- do
--- 	for i = 1, #vehicleHashes do
--- 		local model = vehicleHashes[i][1]
--- 		local hash = vehicleHashes[i][2]
--- 		Vehicle_Model:add_action(model, function()
--- 			Set_Vehicle_Model(hash)
--- 		end)
--- 	end
--- end
+do
+	Vehicle_Model_Boats = Vehicle_Model:add_submenu('船')
+	for i = 1, #vehicleHashes_Boats do
+		local model = vehicleHashes_Boats[i][1]
+		local hash = vehicleHashes_Boats[i][2]
+		Vehicle_Model_Boats:add_action(model, function()
+			Set_Vehicle_Model(hash)
+		end)
+	end
+	Vehicle_Model_Commercials = Vehicle_Model:add_submenu('商用车')
+	for i = 1, #vehicleHashes_Commercials do
+		local model = vehicleHashes_Commercials[i][1]
+		local hash = vehicleHashes_Commercials[i][2]
+		Vehicle_Model_Commercials:add_action(model, function()
+			Set_Vehicle_Model(hash)
+		end)
+	end
+	Vehicle_Model_Compacts = Vehicle_Model:add_submenu('小型汽车')
+	for i = 1, #vehicleHashes_Compacts do
+		local model = vehicleHashes_Compacts[i][1]
+		local hash = vehicleHashes_Compacts[i][2]
+		Vehicle_Model_Compacts:add_action(model, function()
+			Set_Vehicle_Model(hash)
+		end)
+	end
+	Vehicle_Model_Coupes = Vehicle_Model:add_submenu('轿跑车')
+	for i = 1, #vehicleHashes_Coupes do
+		local model = vehicleHashes_Coupes[i][1]
+		local hash = vehicleHashes_Coupes[i][2]
+		Vehicle_Model_Coupes:add_action(model, function()
+			Set_Vehicle_Model(hash)
+		end)
+	end
+	Vehicle_Model_Cycles = Vehicle_Model:add_submenu('自行车')
+	for i = 1, #vehicleHashes_Cycles do
+		local model = vehicleHashes_Cycles[i][1]
+		local hash = vehicleHashes_Cycles[i][2]
+		Vehicle_Model_Cycles:add_action(model, function()
+			Set_Vehicle_Model(hash)
+		end)
+	end
+	Vehicle_Model_Emergency = Vehicle_Model:add_submenu('特种车')
+	for i = 1, #vehicleHashes_Emergency do
+		local model = vehicleHashes_Emergency[i][1]
+		local hash = vehicleHashes_Emergency[i][2]
+		Vehicle_Model_Emergency:add_action(model, function()
+			Set_Vehicle_Model(hash)
+		end)
+	end
+	Vehicle_Model_Helicopters = Vehicle_Model:add_submenu('直升机')
+	for i = 1, #vehicleHashes_Helicopters do
+		local model = vehicleHashes_Helicopters[i][1]
+		local hash = vehicleHashes_Helicopters[i][2]
+		Vehicle_Model_Helicopters:add_action(model, function()
+			Set_Vehicle_Model(hash)
+		end)
+	end
+	Vehicle_Model_Industrial = Vehicle_Model:add_submenu('工业用车')
+	for i = 1, #vehicleHashes_Industrial do
+		local model = vehicleHashes_Industrial[i][1]
+		local hash = vehicleHashes_Industrial[i][2]
+		Vehicle_Model_Industrial:add_action(model, function()
+			Set_Vehicle_Model(hash)
+		end)
+	end
+	Vehicle_Model_Military = Vehicle_Model:add_submenu('军用车')
+	for i = 1, #vehicleHashes_Military do
+		local model = vehicleHashes_Military[i][1]
+		local hash = vehicleHashes_Military[i][2]
+		Vehicle_Model_Military:add_action(model, function()
+			Set_Vehicle_Model(hash)
+		end)
+	end
+	Vehicle_Model_Motorcycles = Vehicle_Model:add_submenu('摩托车')
+	for i = 1, #vehicleHashes_Motorcycles do
+		local model = vehicleHashes_Motorcycles[i][1]
+		local hash = vehicleHashes_Motorcycles[i][2]
+		Vehicle_Model_Motorcycles:add_action(model, function()
+			Set_Vehicle_Model(hash)
+		end)
+	end
+	Vehicle_Model_Muscle = Vehicle_Model:add_submenu('肌肉车')
+	for i = 1, #vehicleHashes_Muscle do
+		local model = vehicleHashes_Muscle[i][1]
+		local hash = vehicleHashes_Muscle[i][2]
+		Vehicle_Model_Muscle:add_action(model, function()
+			Set_Vehicle_Model(hash)
+		end)
+	end
+	Vehicle_Model_Off_Road = Vehicle_Model:add_submenu('越野车')
+	for i = 1, #vehicleHashes_Off_Road do
+		local model = vehicleHashes_Off_Road[i][1]
+		local hash = vehicleHashes_Off_Road[i][2]
+		Vehicle_Model_Off_Road:add_action(model, function()
+			Set_Vehicle_Model(hash)
+		end)
+	end
+	Vehicle_Model_Open_Wheel = Vehicle_Model:add_submenu('开轮式')
+	for i = 1, #vehicleHashes_Open_Wheel do
+		local model = vehicleHashes_Open_Wheel[i][1]
+		local hash = vehicleHashes_Open_Wheel[i][2]
+		Vehicle_Model_Open_Wheel:add_action(model, function()
+			Set_Vehicle_Model(hash)
+		end)
+	end
+	Vehicle_Model_Planes = Vehicle_Model:add_submenu('飞机')
+	for i = 1, #vehicleHashes_Planes do
+		local model = vehicleHashes_Planes[i][1]
+		local hash = vehicleHashes_Planes[i][2]
+		Vehicle_Model_Planes:add_action(model, function()
+			Set_Vehicle_Model(hash)
+		end)
+	end
+	Vehicle_Model_Sedans = Vehicle_Model:add_submenu('轿车')
+	for i = 1, #vehicleHashes_Sedans do
+		local model = vehicleHashes_Sedans[i][1]
+		local hash = vehicleHashes_Sedans[i][2]
+		Vehicle_Model_Sedans:add_action(model, function()
+			Set_Vehicle_Model(hash)
+		end)
+	end
+	Vehicle_Model_Service = Vehicle_Model:add_submenu('服务用车')
+	for i = 1, #vehicleHashes_Service do
+		local model = vehicleHashes_Service[i][1]
+		local hash = vehicleHashes_Service[i][2]
+		Vehicle_Model_Service:add_action(model, function()
+			Set_Vehicle_Model(hash)
+		end)
+	end
+	Vehicle_Model_SUVs = Vehicle_Model:add_submenu('SUV')
+	for i = 1, #vehicleHashes_SUVs do
+		local model = vehicleHashes_SUVs[i][1]
+		local hash = vehicleHashes_SUVs[i][2]
+		Vehicle_Model_SUVs:add_action(model, function()
+			Set_Vehicle_Model(hash)
+		end)
+	end
+	Vehicle_Model_Sports = Vehicle_Model:add_submenu('跑车')
+	for i = 1, #vehicleHashes_Sports do
+		local model = vehicleHashes_Sports[i][1]
+		local hash = vehicleHashes_Sports[i][2]
+		Vehicle_Model_Sports:add_action(model, function()
+			Set_Vehicle_Model(hash)
+		end)
+	end
+	Vehicle_Model_Sports_Classics = Vehicle_Model:add_submenu('经典跑车')
+	for i = 1, #vehicleHashes_Sports_Classics do
+		local model = vehicleHashes_Sports_Classics[i][1]
+		local hash = vehicleHashes_Sports_Classics[i][2]
+		Vehicle_Model_Sports_Classics:add_action(model, function()
+			Set_Vehicle_Model(hash)
+		end)
+	end
+	Vehicle_Model_Super = Vehicle_Model:add_submenu('超级跑车')
+	for i = 1, #vehicleHashes_Super do
+		local model = vehicleHashes_Super[i][1]
+		local hash = vehicleHashes_Super[i][2]
+		Vehicle_Model_Super:add_action(model, function()
+			Set_Vehicle_Model(hash)
+		end)
+	end
+	Vehicle_Model_Utility = Vehicle_Model:add_submenu('公众事业用车')
+	for i = 1, #vehicleHashes_Utility do
+		local model = vehicleHashes_Utility[i][1]
+		local hash = vehicleHashes_Utility[i][2]
+		Vehicle_Model_Utility:add_action(model, function()
+			Set_Vehicle_Model(hash)
+		end)
+	end
+	Vehicle_Model_Vans = Vehicle_Model:add_submenu('厢型车')
+	for i = 1, #vehicleHashes_Vans do
+		local model = vehicleHashes_Vans[i][1]
+		local hash = vehicleHashes_Vans[i][2]
+		Vehicle_Model_Vans:add_action(model, function()
+			Set_Vehicle_Model(hash)
+		end)
+	end
+end
 local Vehicle_Spawn = Vehicle_Function:add_submenu('生成载具')
 Vehicle_Spawn:add_toggle('使用高级自定义设定', function()
 	return Vehicle_Spawn_Adv_Custom_Setting
@@ -341,15 +510,184 @@ function Spawn_Vehicle(model)
 	globals.set_float(2725269 + 7 + 1, position.y + 5) -- Position Y
 	globals.set_float(2725269 + 7 + 2, -255)
 end
--- do
--- 	for i = 1, #vehicleHashes do
--- 		local model = vehicleHashes[i][1]
--- 		local hash = vehicleHashes[i][2]
--- 		Vehicle_Model:add_action(model, function()
--- 			Spawn_Vehicle(hash)
--- 		end)
--- 	end
--- end
+do
+	Vehicle_Spawn_Boats = Vehicle_Spawn:add_submenu('船')
+	for i = 1, #vehicleHashes_Boats do
+		local model = vehicleHashes_Boats[i][1]
+		local hash = vehicleHashes_Boats[i][2]
+		Vehicle_Spawn_Boats:add_action(model, function()
+			Spawn_Vehicle(hash)
+		end)
+	end
+	Vehicle_Spawn_Commercials = Vehicle_Spawn:add_submenu('商用车')
+	for i = 1, #vehicleHashes_Commercials do
+		local model = vehicleHashes_Commercials[i][1]
+		local hash = vehicleHashes_Commercials[i][2]
+		Vehicle_Spawn_Commercials:add_action(model, function()
+			Spawn_Vehicle(hash)
+		end)
+	end
+	Vehicle_Spawn_Compacts = Vehicle_Spawn:add_submenu('小型汽车')
+	for i = 1, #vehicleHashes_Compacts do
+		local model = vehicleHashes_Compacts[i][1]
+		local hash = vehicleHashes_Compacts[i][2]
+		Vehicle_Spawn_Compacts:add_action(model, function()
+			Spawn_Vehicle(hash)
+		end)
+	end
+	Vehicle_Spawn_Coupes = Vehicle_Spawn:add_submenu('轿跑车')
+	for i = 1, #vehicleHashes_Coupes do
+		local model = vehicleHashes_Coupes[i][1]
+		local hash = vehicleHashes_Coupes[i][2]
+		Vehicle_Spawn_Coupes:add_action(model, function()
+			Spawn_Vehicle(hash)
+		end)
+	end
+	Vehicle_Spawn_Cycles = Vehicle_Spawn:add_submenu('自行车')
+	for i = 1, #vehicleHashes_Cycles do
+		local model = vehicleHashes_Cycles[i][1]
+		local hash = vehicleHashes_Cycles[i][2]
+		Vehicle_Spawn_Cycles:add_action(model, function()
+			Spawn_Vehicle(hash)
+		end)
+	end
+	Vehicle_Spawn_Emergency = Vehicle_Spawn:add_submenu('特种车')
+	for i = 1, #vehicleHashes_Emergency do
+		local model = vehicleHashes_Emergency[i][1]
+		local hash = vehicleHashes_Emergency[i][2]
+		Vehicle_Spawn_Emergency:add_action(model, function()
+			Spawn_Vehicle(hash)
+		end)
+	end
+	Vehicle_Spawn_Helicopters = Vehicle_Spawn:add_submenu('直升机')
+	for i = 1, #vehicleHashes_Helicopters do
+		local model = vehicleHashes_Helicopters[i][1]
+		local hash = vehicleHashes_Helicopters[i][2]
+		Vehicle_Spawn_Helicopters:add_action(model, function()
+			Spawn_Vehicle(hash)
+		end)
+	end
+	Vehicle_Spawn_Industrial = Vehicle_Spawn:add_submenu('工业用车')
+	for i = 1, #vehicleHashes_Industrial do
+		local model = vehicleHashes_Industrial[i][1]
+		local hash = vehicleHashes_Industrial[i][2]
+		Vehicle_Spawn_Industrial:add_action(model, function()
+			Spawn_Vehicle(hash)
+		end)
+	end
+	Vehicle_Spawn_Military = Vehicle_Spawn:add_submenu('军用车')
+	for i = 1, #vehicleHashes_Military do
+		local model = vehicleHashes_Military[i][1]
+		local hash = vehicleHashes_Military[i][2]
+		Vehicle_Spawn_Military:add_action(model, function()
+			Spawn_Vehicle(hash)
+		end)
+	end
+	Vehicle_Spawn_Motorcycles = Vehicle_Spawn:add_submenu('摩托车')
+	for i = 1, #vehicleHashes_Motorcycles do
+		local model = vehicleHashes_Motorcycles[i][1]
+		local hash = vehicleHashes_Motorcycles[i][2]
+		Vehicle_Spawn_Motorcycles:add_action(model, function()
+			Spawn_Vehicle(hash)
+		end)
+	end
+	Vehicle_Spawn_Muscle = Vehicle_Spawn:add_submenu('肌肉车')
+	for i = 1, #vehicleHashes_Muscle do
+		local model = vehicleHashes_Muscle[i][1]
+		local hash = vehicleHashes_Muscle[i][2]
+		Vehicle_Spawn_Muscle:add_action(model, function()
+			Spawn_Vehicle(hash)
+		end)
+	end
+	Vehicle_Spawn_Off_Road = Vehicle_Spawn:add_submenu('越野车')
+	for i = 1, #vehicleHashes_Off_Road do
+		local model = vehicleHashes_Off_Road[i][1]
+		local hash = vehicleHashes_Off_Road[i][2]
+		Vehicle_Spawn_Off_Road:add_action(model, function()
+			Spawn_Vehicle(hash)
+		end)
+	end
+	Vehicle_Spawn_Open_Wheel = Vehicle_Spawn:add_submenu('开轮式')
+	for i = 1, #vehicleHashes_Open_Wheel do
+		local model = vehicleHashes_Open_Wheel[i][1]
+		local hash = vehicleHashes_Open_Wheel[i][2]
+		Vehicle_Spawn_Open_Wheel:add_action(model, function()
+			Spawn_Vehicle(hash)
+		end)
+	end
+	Vehicle_Spawn_Planes = Vehicle_Spawn:add_submenu('飞机')
+	for i = 1, #vehicleHashes_Planes do
+		local model = vehicleHashes_Planes[i][1]
+		local hash = vehicleHashes_Planes[i][2]
+		Vehicle_Spawn_Planes:add_action(model, function()
+			Spawn_Vehicle(hash)
+		end)
+	end
+	Vehicle_Spawn_Sedans = Vehicle_Spawn:add_submenu('轿车')
+	for i = 1, #vehicleHashes_Sedans do
+		local model = vehicleHashes_Sedans[i][1]
+		local hash = vehicleHashes_Sedans[i][2]
+		Vehicle_Spawn_Sedans:add_action(model, function()
+			Spawn_Vehicle(hash)
+		end)
+	end
+	Vehicle_Spawn_Service = Vehicle_Spawn:add_submenu('服务用车')
+	for i = 1, #vehicleHashes_Service do
+		local model = vehicleHashes_Service[i][1]
+		local hash = vehicleHashes_Service[i][2]
+		Vehicle_Spawn_Service:add_action(model, function()
+			Spawn_Vehicle(hash)
+		end)
+	end
+	Vehicle_Spawn_SUVs = Vehicle_Spawn:add_submenu('SUV')
+	for i = 1, #vehicleHashes_SUVs do
+		local model = vehicleHashes_SUVs[i][1]
+		local hash = vehicleHashes_SUVs[i][2]
+		Vehicle_Spawn_SUVs:add_action(model, function()
+			Spawn_Vehicle(hash)
+		end)
+	end
+	Vehicle_Spawn_Sports = Vehicle_Spawn:add_submenu('跑车')
+	for i = 1, #vehicleHashes_Sports do
+		local model = vehicleHashes_Sports[i][1]
+		local hash = vehicleHashes_Sports[i][2]
+		Vehicle_Spawn_Sports:add_action(model, function()
+			Spawn_Vehicle(hash)
+		end)
+	end
+	Vehicle_Spawn_Sports_Classics = Vehicle_Spawn:add_submenu('经典跑车')
+	for i = 1, #vehicleHashes_Sports_Classics do
+		local model = vehicleHashes_Sports_Classics[i][1]
+		local hash = vehicleHashes_Sports_Classics[i][2]
+		Vehicle_Spawn_Sports_Classics:add_action(model, function()
+			Spawn_Vehicle(hash)
+		end)
+	end
+	Vehicle_Spawn_Super = Vehicle_Spawn:add_submenu('超级跑车')
+	for i = 1, #vehicleHashes_Super do
+		local model = vehicleHashes_Super[i][1]
+		local hash = vehicleHashes_Super[i][2]
+		Vehicle_Spawn_Super:add_action(model, function()
+			Spawn_Vehicle(hash)
+		end)
+	end
+	Vehicle_Spawn_Utility = Vehicle_Spawn:add_submenu('公众事业用车')
+	for i = 1, #vehicleHashes_Utility do
+		local model = vehicleHashes_Utility[i][1]
+		local hash = vehicleHashes_Utility[i][2]
+		Vehicle_Spawn_Utility:add_action(model, function()
+			Spawn_Vehicle(hash)
+		end)
+	end
+	Vehicle_Spawn_Vans = Vehicle_Spawn:add_submenu('厢型车')
+	for i = 1, #vehicleHashes_Vans do
+		local model = vehicleHashes_Vans[i][1]
+		local hash = vehicleHashes_Vans[i][2]
+		Vehicle_Spawn_Vans:add_action(model, function()
+			Spawn_Vehicle(hash)
+		end)
+	end
+end
 -- World Function
 World_Function:add_action('允许非公开战局任务', function()
 	globals.set_int(2714635 + 744, 0) -- NETWORK::NETWORK_SESSION_GET_PRIVATE_SLOTS
