@@ -16,7 +16,7 @@ local PLATE_TEXT = 'Blue-Flag'
 local Vehicle_Spawn_Adv_Custom_Setting = false;
 -- 高级自定义设置参数请自行 goto Vehicle_Spawn_Adv_Setting 修改
 require_game_build(2628)
-local LUA_VER = '1.1.2'
+local LUA_VER = '1.1.3'
 local bfmenu = menu.add_submenu('Blue-Flag\'s Lua')
 local Player_Function = bfmenu:add_submenu('玩家功能')
 local Weapon_Function = bfmenu:add_submenu('武器功能')
