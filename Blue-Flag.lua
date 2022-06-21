@@ -240,7 +240,7 @@ end, function(value)
 	end
 	current_vehicle:set_max_speed(value)
 end)
-vehicleHashes_Boats = { { '丁卡 水上侯爵', 3251507587 }, { '佩嘉西 飙速', 231083307 }, { '佩嘉西 飙速', 437538602 }, { '兰帕达缇 公牛', 1070967343 }, { '兰帕达缇 公牛', 908897389 }, { '卢恩 虎鲸', 1336872304 }, { '库尔兹31巡逻艇', 4018222598 }, { '拖船', 2194326579 }, { '水上枭雄 海鲨摩托艇', 3264692260 }, { '水上枭雄 海鲨摩托艇', 3678636260 }, { '水上枭雄 海鲨摩托艇', 3983945033 }, { '海怪 阿维萨', 2588363614 }, { '海怪', 3228633070 }, { '潜水艇', 771711535 }, { '警用追猎快艇', 3806844075 }, { '诗津 向阳号', 4012021193 }, { '诗津 思快乐快艇', 400514754 }, { '诗津 极限快艇', 861409633 }, { '诗津 烈阳号', 1448677353 }, { '诗津 烈阳号', 290013743 }, { '诗津 长鳍', 1861786828 }, { '长崎 小艇', 1033245328 }, { '长崎 小艇', 276773164 }, { '长崎 小艇', 509498602 }, { '长崎 小艇', 867467158 }, { '长崎 武装小艇', 3314393930 } }
+vehicleHashes_Boats = { { '丁卡 水上侯爵', 3251507587 }, { '丁卡 水上侯爵 (测试)', -1043459709 }, { '佩嘉西 飙速', 231083307 }, { '佩嘉西 飙速', 437538602 }, { '兰帕达缇 公牛', 1070967343 }, { '兰帕达缇 公牛', 908897389 }, { '卢恩 虎鲸', 1336872304 }, { '库尔兹31巡逻艇', 4018222598 }, { '拖船', 2194326579 }, { '水上枭雄 海鲨摩托艇', 3264692260 }, { '水上枭雄 海鲨摩托艇', 3678636260 }, { '水上枭雄 海鲨摩托艇', 3983945033 }, { '海怪 阿维萨', 2588363614 }, { '海怪', 3228633070 }, { '潜水艇', 771711535 }, { '警用追猎快艇', 3806844075 }, { '诗津 向阳号', 4012021193 }, { '诗津 思快乐快艇', 400514754 }, { '诗津 极限快艇', 861409633 }, { '诗津 烈阳号', 1448677353 }, { '诗津 烈阳号', 290013743 }, { '诗津 长鳍', 1861786828 }, { '长崎 小艇', 1033245328 }, { '长崎 小艇', 276773164 }, { '长崎 小艇', 509498602 }, { '长崎 小艇', 867467158 }, { '长崎 武装小艇', 3314393930 } }
 vehicleHashes_Commercials = { { 'HVY 倾卸车', 850991848 }, { 'MTL 末日地狱犬', 3493417227 }, { 'MTL 梦魇地狱犬', 1909700336 }, { 'MTL 科幻地狱犬', 679453769 }, { 'MTL 跑德', 2112052861 }, { 'MTL 跑德改装版', 1653666139 }, { 'MTL 车辆运送车', 569305213 }, { '乔氏 尖锥魅影', 2645431192 }, { '乔氏 搬运者', 1518533038 }, { '乔氏 搬运者改装版', 387748548 }, { '乔氏 魅影', 2157618379 }, { '乔氏 魅影改装版', 177270108 }, { '威皮 班森', 2053223216 }, { '威霸 拦截者', 1747439474 }, { '威霸 拦截者', 4080511798 }, { '贝飞特 恐霸', 2306538597 }, { '麦霸子 猛骡', 1343932732 }, { '麦霸子 猛骡', 2242229361 }, { '麦霸子 猛骡', 3244501995 }, { '麦霸子 猛骡', 904750859 }, { '麦霸子 猛骡改装版', 1945374990 } }
 vehicleHashes_Compacts = { { '丁卡 旅行家', 3950024287 }, { '丁卡 旅行家羽黑', 409049982 }, { '包洛坎 原野行者', 2844316578 }, { '卡林 半吊子', 1682114128 }, { '卡林 半吊子', 3164157193 }, { '古罗帝 精力霸300', 1429622905 }, { '古罗帝 精力霸R/A', 1549126457 }, { '威尼 天威', 3117103977 }, { '威尼 天威经典版', 931280609 }, { '威尼 末日天威', 628003514 }, { '威尼 梦魇天威', 1239571361 }, { '威尼 科幻天威', 1537277726 }, { '毕福 俱乐部', 2196012677 }, { '毕福 象鼻虫', 1644055914 }, { '绝致 狂想曲', 841808271 }, { '贝飞特 哑剧', 3863274624 }, { '麦克斯韦 反社会', 1118611807 } }
 vehicleHashes_Coupes = { { '兰帕达缇 恶龙', 3903372712 }, { '兰帕达缇 恶龙GT', 4205676014 }, { '卡林 普莱温', 1416471345 }, { '埃努斯 温莎', 1581459400 }, { '埃努斯 温莎敞篷版', 2364918497 }, { '埃努斯 至尊慧眼敞篷版', 330661258 }, { '欧斯洛 F620', 3703357000 }, { '欧斯洛 胡狼', 3670438162 }, { '浪子 典范', 4289813342 }, { '绝品 先知', 3783366066 }, { '绝品 先知XS', 1348744438 }, { '绝品 卫士', 873639469 }, { '绝品 卫士XS', 1349725314 }, { '绝品 绝品天堂', 3172678083 }, { '绝品 绝品天堂敞篷版', 3101863448 } }
@@ -263,208 +263,27 @@ vehicleHashes_SUVs = { { '亚班尼 骑兵', 2006918058 }, { '亚班尼 骑兵',
 vehicleHashes_Trains = { { '缆车', 3334677549 }, { '货运列车', 1030400667 }, { '货运列车', 184361638 }, { '货运列车', 240201337 }, { '货运列车', 3186376089 }, { '货运列车', 586013744 }, { '货运列车', 642617954 }, { '货运列车', 868868440 }, { '货运列车', 920453016 } }
 vehicleHashes_Utility = { { 'HVY 叉车', 1491375716 }, { '公共事业卡车', 2132890591 }, { '公共事业卡车', 516990260 }, { '公共事业卡车', 887537515 }, { '军用拖车', 2657817814 }, { '军用拖车', 2818520053 }, { '军用拖车', 3087536137 }, { '割草车', 1783355638 }, { '威皮 大满贯卡车', 3249056020 }, { '威皮 沙德勒', 3695398481 }, { '威皮 沙德勒', 734217681 }, { '拖吊车', 2971866336 }, { '拖吊车', 3852654278 }, { '拖船', 524108981 }, { '拖车', 1019737494 }, { '拖车', 1784254509 }, { '拖车', 1956216962 }, { '拖车', 2016027501 }, { '拖车', 2078290630 }, { '拖车', 2091594960 }, { '拖车', 2154757102 }, { '拖车', 2236089197 }, { '拖车', 2524324030 }, { '拖车', 2715434129 }, { '拖车', 2942498482 }, { '拖车', 3194418602 }, { '拖车', 3417488910 }, { '拖车', 3517691494 }, { '拖车', 356391690 }, { '拖车', 3564062519 }, { '拖车', 390902130 }, { '拖车', 712162987 }, { '斯坦利 农耕机', 1445631933 }, { '斯坦利 农耕机', 2218488798 }, { '机动作战中心', 1502869817 }, { '机场牵引车', 3448987385 }, { '码头拖车', 3410276810 }, { '老式拖拉机', 1641462412 }, { '草捆拖车', 3895125590 }, { '行李拖车', 1560980623 }, { '高尔夫球车', 1147287684 }, { '高尔夫球车', 3525819835 }, { '高尔夫球车', 3757070668 } }
 vehicleHashes_Vans = { { '冒险家 天堂', 1488164764 }, { '冒险家 游侠', 65402552 }, { '冒险家 游侠经典四驱车', 1802742206 }, { '冒险家 游侠经典版', 1026149675 }, { '冒险家 澜波', 1162065741 }, { '冒险家 澜波', 2518351607 }, { '冒险家 澜波改装版', 1475773103 }, { '冒险家 野牛', 1739845664 }, { '冒险家 野牛', 2072156101 }, { '冒险家 野牛', 4278019151 }, { '厢村', 4061868990 }, { '威皮 劲速', 3484649228 }, { '威皮 劲速改装版', 219613597 }, { '威皮 小丑花车', 728614474 }, { '威皮 游侠改装版', 1486521356 }, { '威皮 迷你厢型车', 3984502180 }, { '威皮 迷你厢型车改装版', 3168702960 }, { '威皮 雄猫XL', 1069929536 }, { '威霸 厢村', 121658888 }, { '威霸 厢村', 2307837162 }, { '威霸 厢村', 444171386 }, { '威霸 小马', 4175309224 }, { '威霸 小马', 943752001 }, { '威霸 露营车', 1876516712 }, { '废五金回收车', 2594165727 }, { '毕福 乘风', 2983726598 }, { '毕福 乘风', 699456151 }, { '玉米饼餐车', 1951180813 }, { '绝致 屌客', 1132262048 }, { '绝致 屌客', 2551651283 }, { '绝致 屌客', 2948279460 }, { '绝致 屌客', 893081117 }, { '绝致 屌客帮派版', 2549763894 }, { '绝致 屌客帮派版', 296357396 }, { '绝致 除虫大师屌客', 3387490166 }, { '装甲版厢村', 682434785 }, { '赛柯尼 安旅者', 4174679674 } }
-local Vehicle_Model = Vehicle_Function:add_submenu('设置载具模型')
-function Set_Vehicle_Model(modelHash)
-	if not localplayer then
-		return nil
-	end
-	local current_vehicle = localplayer:get_current_vehicle()
-	if not current_vehicle then
-		return nil
-	end
-	current_vehicle:set_model_hash(modelHash)
-end
-do
-	Vehicle_Model_Boats = Vehicle_Model:add_submenu('船')
-	for i = 1, #vehicleHashes_Boats do
-		local model = vehicleHashes_Boats[i][1]
-		local hash = vehicleHashes_Boats[i][2]
-		Vehicle_Model_Boats:add_action(model, function()
-			Set_Vehicle_Model(hash)
-		end)
-	end
-	Vehicle_Model_Commercials = Vehicle_Model:add_submenu('商用车')
-	for i = 1, #vehicleHashes_Commercials do
-		local model = vehicleHashes_Commercials[i][1]
-		local hash = vehicleHashes_Commercials[i][2]
-		Vehicle_Model_Commercials:add_action(model, function()
-			Set_Vehicle_Model(hash)
-		end)
-	end
-	Vehicle_Model_Compacts = Vehicle_Model:add_submenu('小型汽车')
-	for i = 1, #vehicleHashes_Compacts do
-		local model = vehicleHashes_Compacts[i][1]
-		local hash = vehicleHashes_Compacts[i][2]
-		Vehicle_Model_Compacts:add_action(model, function()
-			Set_Vehicle_Model(hash)
-		end)
-	end
-	Vehicle_Model_Coupes = Vehicle_Model:add_submenu('轿跑车')
-	for i = 1, #vehicleHashes_Coupes do
-		local model = vehicleHashes_Coupes[i][1]
-		local hash = vehicleHashes_Coupes[i][2]
-		Vehicle_Model_Coupes:add_action(model, function()
-			Set_Vehicle_Model(hash)
-		end)
-	end
-	Vehicle_Model_Cycles = Vehicle_Model:add_submenu('自行车')
-	for i = 1, #vehicleHashes_Cycles do
-		local model = vehicleHashes_Cycles[i][1]
-		local hash = vehicleHashes_Cycles[i][2]
-		Vehicle_Model_Cycles:add_action(model, function()
-			Set_Vehicle_Model(hash)
-		end)
-	end
-	Vehicle_Model_Emergency = Vehicle_Model:add_submenu('特种车')
-	for i = 1, #vehicleHashes_Emergency do
-		local model = vehicleHashes_Emergency[i][1]
-		local hash = vehicleHashes_Emergency[i][2]
-		Vehicle_Model_Emergency:add_action(model, function()
-			Set_Vehicle_Model(hash)
-		end)
-	end
-	Vehicle_Model_Helicopters = Vehicle_Model:add_submenu('直升机')
-	for i = 1, #vehicleHashes_Helicopters do
-		local model = vehicleHashes_Helicopters[i][1]
-		local hash = vehicleHashes_Helicopters[i][2]
-		Vehicle_Model_Helicopters:add_action(model, function()
-			Set_Vehicle_Model(hash)
-		end)
-	end
-	Vehicle_Model_Industrial = Vehicle_Model:add_submenu('工业用车')
-	for i = 1, #vehicleHashes_Industrial do
-		local model = vehicleHashes_Industrial[i][1]
-		local hash = vehicleHashes_Industrial[i][2]
-		Vehicle_Model_Industrial:add_action(model, function()
-			Set_Vehicle_Model(hash)
-		end)
-	end
-	Vehicle_Model_Military = Vehicle_Model:add_submenu('军用车')
-	for i = 1, #vehicleHashes_Military do
-		local model = vehicleHashes_Military[i][1]
-		local hash = vehicleHashes_Military[i][2]
-		Vehicle_Model_Military:add_action(model, function()
-			Set_Vehicle_Model(hash)
-		end)
-	end
-	Vehicle_Model_Motorcycles = Vehicle_Model:add_submenu('摩托车')
-	for i = 1, #vehicleHashes_Motorcycles do
-		local model = vehicleHashes_Motorcycles[i][1]
-		local hash = vehicleHashes_Motorcycles[i][2]
-		Vehicle_Model_Motorcycles:add_action(model, function()
-			Set_Vehicle_Model(hash)
-		end)
-	end
-	Vehicle_Model_Muscle = Vehicle_Model:add_submenu('肌肉车')
-	for i = 1, #vehicleHashes_Muscle do
-		local model = vehicleHashes_Muscle[i][1]
-		local hash = vehicleHashes_Muscle[i][2]
-		Vehicle_Model_Muscle:add_action(model, function()
-			Set_Vehicle_Model(hash)
-		end)
-	end
-	Vehicle_Model_Off_Road = Vehicle_Model:add_submenu('越野车')
-	for i = 1, #vehicleHashes_Off_Road do
-		local model = vehicleHashes_Off_Road[i][1]
-		local hash = vehicleHashes_Off_Road[i][2]
-		Vehicle_Model_Off_Road:add_action(model, function()
-			Set_Vehicle_Model(hash)
-		end)
-	end
-	Vehicle_Model_Open_Wheel = Vehicle_Model:add_submenu('开轮式')
-	for i = 1, #vehicleHashes_Open_Wheel do
-		local model = vehicleHashes_Open_Wheel[i][1]
-		local hash = vehicleHashes_Open_Wheel[i][2]
-		Vehicle_Model_Open_Wheel:add_action(model, function()
-			Set_Vehicle_Model(hash)
-		end)
-	end
-	Vehicle_Model_Planes = Vehicle_Model:add_submenu('飞机')
-	for i = 1, #vehicleHashes_Planes do
-		local model = vehicleHashes_Planes[i][1]
-		local hash = vehicleHashes_Planes[i][2]
-		Vehicle_Model_Planes:add_action(model, function()
-			Set_Vehicle_Model(hash)
-		end)
-	end
-	Vehicle_Model_Sedans = Vehicle_Model:add_submenu('轿车')
-	for i = 1, #vehicleHashes_Sedans do
-		local model = vehicleHashes_Sedans[i][1]
-		local hash = vehicleHashes_Sedans[i][2]
-		Vehicle_Model_Sedans:add_action(model, function()
-			Set_Vehicle_Model(hash)
-		end)
-	end
-	Vehicle_Model_Service = Vehicle_Model:add_submenu('服务用车')
-	for i = 1, #vehicleHashes_Service do
-		local model = vehicleHashes_Service[i][1]
-		local hash = vehicleHashes_Service[i][2]
-		Vehicle_Model_Service:add_action(model, function()
-			Set_Vehicle_Model(hash)
-		end)
-	end
-	Vehicle_Model_SUVs = Vehicle_Model:add_submenu('SUV')
-	for i = 1, #vehicleHashes_SUVs do
-		local model = vehicleHashes_SUVs[i][1]
-		local hash = vehicleHashes_SUVs[i][2]
-		Vehicle_Model_SUVs:add_action(model, function()
-			Set_Vehicle_Model(hash)
-		end)
-	end
-	Vehicle_Model_Sports = Vehicle_Model:add_submenu('跑车')
-	for i = 1, #vehicleHashes_Sports do
-		local model = vehicleHashes_Sports[i][1]
-		local hash = vehicleHashes_Sports[i][2]
-		Vehicle_Model_Sports:add_action(model, function()
-			Set_Vehicle_Model(hash)
-		end)
-	end
-	Vehicle_Model_Sports_Classics = Vehicle_Model:add_submenu('经典跑车')
-	for i = 1, #vehicleHashes_Sports_Classics do
-		local model = vehicleHashes_Sports_Classics[i][1]
-		local hash = vehicleHashes_Sports_Classics[i][2]
-		Vehicle_Model_Sports_Classics:add_action(model, function()
-			Set_Vehicle_Model(hash)
-		end)
-	end
-	Vehicle_Model_Super = Vehicle_Model:add_submenu('超级跑车')
-	for i = 1, #vehicleHashes_Super do
-		local model = vehicleHashes_Super[i][1]
-		local hash = vehicleHashes_Super[i][2]
-		Vehicle_Model_Super:add_action(model, function()
-			Set_Vehicle_Model(hash)
-		end)
-	end
-	Vehicle_Model_Utility = Vehicle_Model:add_submenu('公众事业用车')
-	for i = 1, #vehicleHashes_Utility do
-		local model = vehicleHashes_Utility[i][1]
-		local hash = vehicleHashes_Utility[i][2]
-		Vehicle_Model_Utility:add_action(model, function()
-			Set_Vehicle_Model(hash)
-		end)
-	end
-	Vehicle_Model_Vans = Vehicle_Model:add_submenu('厢型车')
-	for i = 1, #vehicleHashes_Vans do
-		local model = vehicleHashes_Vans[i][1]
-		local hash = vehicleHashes_Vans[i][2]
-		Vehicle_Model_Vans:add_action(model, function()
-			Set_Vehicle_Model(hash)
-		end)
-	end
-end
 local Vehicle_Spawn = Vehicle_Function:add_submenu('生成载具')
 Vehicle_Spawn:add_toggle('使用高级自定义设定', function()
 	return Vehicle_Spawn_Adv_Custom_Setting
 end, function(customSetting)
 	Vehicle_Spawn_Adv_Custom_Setting = not Vehicle_Spawn_Adv_Custom_Setting
 end)
+function toint(x)
+	if x > 2147483647 then
+		return toint(x - 4294967296)
+	else
+		return x
+	end
+end
 function Spawn_Vehicle(model)
+	model = toint(model)
 	local position = localplayer:get_position()
 	globals.set_int(2725269 + 2, 1)
 	globals.set_uint(2725269 + 5, 1)
 	globals.set_uint(2725269 + 27, 1)
 	if Vehicle_Spawn_Custom_Plate_text then
-		globals.set_text(2725269 + 27 + 1, PLATE_TEXT) -- EHICLE_NUMBER_PLATE_TEXT 车牌号
+		globals.set_string(2725269 + 27 + 1, PLATE_TEXT, 100) -- EHICLE_NUMBER_PLATE_TEXT 车牌号
 	end
 	if Vehicle_Spawn_Adv_Custom_Setting then
 		::Vehicle_Spawn_Adv_Setting::
@@ -505,7 +324,7 @@ function Spawn_Vehicle(model)
 		globals.set_uint(2725269 + 27 + 99, 255)
 	end
 	globals.set_uint(2725269 + 27 + 70, 0) -- VEHICLE_DOOR_LOCK_STATUS (If it is not 0, you cant enter the vehicle). 车门
-	globals.set_int(2725269 + 27 + 66, modelhash)
+	globals.set_int(2725269 + 27 + 66, model)
 	globals.set_float(2725269 + 7, position.x + 5) -- Position X
 	globals.set_float(2725269 + 7 + 1, position.y + 5) -- Position Y
 	globals.set_float(2725269 + 7 + 2, -255)
@@ -655,11 +474,11 @@ do
 			Spawn_Vehicle(hash)
 		end)
 	end
-	Vehicle_Spawn_Sports_Classics = Vehicle_Spawn:add_submenu('经典跑车')
-	for i = 1, #vehicleHashes_Sports_Classics do
-		local model = vehicleHashes_Sports_Classics[i][1]
-		local hash = vehicleHashes_Sports_Classics[i][2]
-		Vehicle_Spawn_Sports_Classics:add_action(model, function()
+	Vehicle_Spawn_Sports_Classic = Vehicle_Spawn:add_submenu('经典跑车')
+	for i = 1, #vehicleHashes_Sports_Classic do
+		local model = vehicleHashes_Sports_Classic[i][1]
+		local hash = vehicleHashes_Sports_Classic[i][2]
+		Vehicle_Spawn_Sports_Classic:add_action(model, function()
 			Spawn_Vehicle(hash)
 		end)
 	end
@@ -1314,70 +1133,70 @@ end)
 local EDIT_HI = HI_a:add_submenu('编辑器')
 EDIT_HI:add_action('该功能暂时不可用', function()
 end)
-EDIT_HI:add_int_range("修改佩里克岛抢劫次数",1,0,9999999,function()
-	return stats.get_int(PlayerMP .. "_H4_PLAYTHROUGH_STATUS")
+EDIT_HI:add_int_range('修改佩里克岛抢劫次数', 1, 0, 9999999, function()
+	return stats.get_int(PlayerMP .. '_H4_PLAYTHROUGH_STATUS')
 end, function(ME)
-	stats.set_int(PlayerMP .. "_H4_PLAYTHROUGH_STATUS", ME)
+	stats.set_int(PlayerMP .. '_H4_PLAYTHROUGH_STATUS', ME)
 end)
-EDIT_HI:add_int_range("修改虎鲸次数",1,0,9999999,function()
-	return stats.get_int(PlayerMP .. "_CR_SUBMARINE")
-end,function(ME)
-	stats.set_int(PlayerMP .. "_CR_SUBMARINE", ME)
+EDIT_HI:add_int_range('修改虎鲸次数', 1, 0, 9999999, function()
+	return stats.get_int(PlayerMP .. '_CR_SUBMARINE')
+end, function(ME)
+	stats.set_int(PlayerMP .. '_CR_SUBMARINE', ME)
 end)
-EDIT_HI:add_int_range("修改阿尔科诺斯特次数",1,0,9999999,function()
-	return stats.get_int(PlayerMP .. "_CR_STRATEGIC_BOMBER")
-end,function(ME)
-	stats.set_int(PlayerMP .. "_CR_STRATEGIC_BOMBER", ME)
+EDIT_HI:add_int_range('修改阿尔科诺斯特次数', 1, 0, 9999999, function()
+	return stats.get_int(PlayerMP .. '_CR_STRATEGIC_BOMBER')
+end, function(ME)
+	stats.set_int(PlayerMP .. '_CR_STRATEGIC_BOMBER', ME)
 end)
-EDIT_HI:add_int_range("修改梅杜莎次数",1,0,9999999,function()
-	return stats.get_int(PlayerMP .. "_CR_SMUGGLER_PLANE")
-end,function(ME)
-	stats.set_int(PlayerMP .. "_CR_SMUGGLER_PLANE", ME)
+EDIT_HI:add_int_range('修改梅杜莎次数', 1, 0, 9999999, function()
+	return stats.get_int(PlayerMP .. '_CR_SMUGGLER_PLANE')
+end, function(ME)
+	stats.set_int(PlayerMP .. '_CR_SMUGGLER_PLANE', ME)
 end)
-EDIT_HI:add_int_range("修改隐型直升机次数",1,0,9999999,function()
-	return stats.get_int(PlayerMP .. "_CR_STEALTH_HELI")
-end,function(ME)
-	stats.set_int(PlayerMP .. "_CR_STEALTH_HELI", ME)
+EDIT_HI:add_int_range('修改隐型直升机次数', 1, 0, 9999999, function()
+	return stats.get_int(PlayerMP .. '_CR_STEALTH_HELI')
+end, function(ME)
+	stats.set_int(PlayerMP .. '_CR_STEALTH_HELI', ME)
 end)
-EDIT_HI:add_int_range("修改巡逻艇次数",1,0,9999999,function()
-	return stats.get_int(PlayerMP .. "_CR_PATROL_BOAT")
-end,function(ME)
-	stats.set_int(PlayerMP .. "_CR_PATROL_BOAT", ME)
+EDIT_HI:add_int_range('修改巡逻艇次数', 1, 0, 9999999, function()
+	return stats.get_int(PlayerMP .. '_CR_PATROL_BOAT')
+end, function(ME)
+	stats.set_int(PlayerMP .. '_CR_PATROL_BOAT', ME)
 end)
-EDIT_HI:add_int_range("修改长崎次数",1,0,9999999,function()
-	return stats.get_int(PlayerMP .. "_CR_SMUGGLER_BOAT")
-end,function(ME)
-	stats.set_int(PlayerMP .. "_CR_SMUGGLER_BOAT", ME)
+EDIT_HI:add_int_range('修改长崎次数', 1, 0, 9999999, function()
+	return stats.get_int(PlayerMP .. '_CR_SMUGGLER_BOAT')
+end, function(ME)
+	stats.set_int(PlayerMP .. '_CR_SMUGGLER_BOAT', ME)
 end)
-EDIT_HI:add_int_range("修改猎豹雕像次数",1,0,9999999,function()
-	return stats.get_int(PlayerMP .. "_CR_SAPHIREPANSTAT")
-end,function(ME)
-	stats.set_int(PlayerMP .. "_CR_SAPHIREPANSTAT", ME)
+EDIT_HI:add_int_range('修改猎豹雕像次数', 1, 0, 9999999, function()
+	return stats.get_int(PlayerMP .. '_CR_SAPHIREPANSTAT')
+end, function(ME)
+	stats.set_int(PlayerMP .. '_CR_SAPHIREPANSTAT', ME)
 end)
-EDIT_HI:add_int_range("修改玛德拉索文件次数",1,0,9999999,function()
-	return stats.get_int(PlayerMP .. "_CR_MADRAZO_FILES")
-end,function(ME)
-	stats.set_int(PlayerMP .. "_CR_MADRAZO_FILES", ME)
+EDIT_HI:add_int_range('修改玛德拉索文件次数', 1, 0, 9999999, function()
+	return stats.get_int(PlayerMP .. '_CR_MADRAZO_FILES')
+end, function(ME)
+	stats.set_int(PlayerMP .. '_CR_MADRAZO_FILES', ME)
 end)
-EDIT_HI:add_int_range("修改粉钻次数",1,0,9999999,function()
-	return stats.get_int(PlayerMP .. "_CR_PINK_DIAMOND")
-end,function(ME)
-	stats.set_int(PlayerMP .. "_CR_PINK_DIAMOND", ME)
+EDIT_HI:add_int_range('修改粉钻次数', 1, 0, 9999999, function()
+	return stats.get_int(PlayerMP .. '_CR_PINK_DIAMOND')
+end, function(ME)
+	stats.set_int(PlayerMP .. '_CR_PINK_DIAMOND', ME)
 end)
-EDIT_HI:add_int_range("修改不记名债券次数",1,0,9999999,function()
-	return stats.get_int(PlayerMP .. "_CR_BEARER_BONDS")
-end,function(ME)
-	stats.set_int(PlayerMP .. "_CR_BEARER_BONDS", ME)
+EDIT_HI:add_int_range('修改不记名债券次数', 1, 0, 9999999, function()
+	return stats.get_int(PlayerMP .. '_CR_BEARER_BONDS')
+end, function(ME)
+	stats.set_int(PlayerMP .. '_CR_BEARER_BONDS', ME)
 end)
-EDIT_HI:add_int_range("修改红宝石项链次数",1,0,9999999,function()
-	return stats.get_int(PlayerMP .. "_CR_PEARL_NECKLACE")
-end,function(ME)
-	stats.set_int(PlayerMP .. "_CR_PEARL_NECKLACE", ME)
+EDIT_HI:add_int_range('修改红宝石项链次数', 1, 0, 9999999, function()
+	return stats.get_int(PlayerMP .. '_CR_PEARL_NECKLACE')
+end, function(ME)
+	stats.set_int(PlayerMP .. '_CR_PEARL_NECKLACE', ME)
 end)
-EDIT_HI:add_int_range("修改西西米托龙舌兰酒次数",1,0,9999999,function()
-	return stats.get_int(PlayerMP .. "_CR_TEQUILA")
-end,function(ME)
-	stats.set_int(PlayerMP .. "_CR_TEQUILA", ME)
+EDIT_HI:add_int_range('修改西西米托龙舌兰酒次数', 1, 0, 9999999, function()
+	return stats.get_int(PlayerMP .. '_CR_TEQUILA')
+end, function(ME)
+	stats.set_int(PlayerMP .. '_CR_TEQUILA', ME)
 end)
 -- CAYO CUSTOM TELEPORT
 TELEPORT_QL:add_action('虎鲸 :: 内部面板 [请先呼叫虎鲸]', function()
@@ -2123,9 +1942,9 @@ do
 	end)
 end
 ------- ADVANCED FEATURES CAYO
-PERICO_HOST_CUT:add_int_range("自定义分红",1,0,200,function()
+PERICO_HOST_CUT:add_int_range('自定义分红', 1, 0, 200, function()
 	return globals.get_int(1973525 + 823 + 56 + 1)
-end,function(s)
+end, function(s)
 	globals.set_int(1973525 + 823 + 56 + 1, s)
 end)
 PERICO_HOST_CUT:add_action('0 %', function()
@@ -2147,9 +1966,9 @@ PERICO_HOST_CUT:add_action('150 %', function()
 	globals.set_int(1973525 + 823 + 56 + 1, 150)
 end)
 -- PLAYER 2 CUT MANAGER
-PERICO_P2_CUT:add_int_range("自定义分红",1,0,200,function()
+PERICO_P2_CUT:add_int_range('自定义分红', 1, 0, 200, function()
 	return globals.get_int(1973525 + 823 + 56 + 2)
-end,function(s)
+end, function(s)
 	globals.set_int(1973525 + 823 + 56 + 2, s)
 end)
 PERICO_P2_CUT:add_action('0 %', function()
@@ -2171,9 +1990,9 @@ PERICO_P2_CUT:add_action('150 %', function()
 	globals.set_int(1973525 + 823 + 56 + 2, 150)
 end)
 -- PLAYER 3 CUT MANAGER
-PERICO_P3_CUT:add_int_range("自定义分红",1,0,200,function()
+PERICO_P3_CUT:add_int_range('自定义分红', 1, 0, 200, function()
 	return globals.get_int(1973525 + 823 + 56 + 3)
-end,function(s)
+end, function(s)
 	globals.set_int(1973525 + 823 + 56 + 3, s)
 end)
 PERICO_P3_CUT:add_action('0 %', function()
@@ -2195,9 +2014,9 @@ PERICO_P3_CUT:add_action('150 %', function()
 	globals.set_int(1973525 + 823 + 56 + 3, 150)
 end)
 -- PLAYER 4 CUT MANAGER
-PERICO_P4_CUT:add_int_range("自定义分红",1,0,200,function()
+PERICO_P4_CUT:add_int_range('自定义分红', 1, 0, 200, function()
 	return globals.get_int(1973525 + 823 + 56 + 4)
-end,function(s)
+end, function(s)
 	globals.set_int(1973525 + 823 + 56 + 4, s)
 end)
 PERICO_P4_CUT:add_action('0 %', function()
@@ -2386,31 +2205,31 @@ do
 		end
 	end)
 end
-local CAH_2ND_TARGET_MDY = CAYO_SECONDARY:add_submenu("修改次要目标价值")
-CAH_2ND_TARGET_MDY:add_int_range("修改现金价值",1,0,1000,function()
-	return globals.get_int(PlayerMP .. "_H4LOOT_CASH_V")
-end,function(s)
-	globals.set_int(PlayerMP .. "_H4LOOT_CASH_V", s)
+local CAH_2ND_TARGET_MDY = CAYO_SECONDARY:add_submenu('修改次要目标价值')
+CAH_2ND_TARGET_MDY:add_int_range('修改现金价值', 1, 0, 1000, function()
+	return globals.get_int(PlayerMP .. '_H4LOOT_CASH_V')
+end, function(s)
+	globals.set_int(PlayerMP .. '_H4LOOT_CASH_V', s)
 end)
-CAH_2ND_TARGET_MDY:add_int_range("修改大麻价值",1,0,1000,function()
-	return globals.get_int(PlayerMP .. "_H4LOOT_WEED_V")
-end,function(s)
-	globals.set_int(PlayerMP .. "_H4LOOT_WEED_V", s)
+CAH_2ND_TARGET_MDY:add_int_range('修改大麻价值', 1, 0, 1000, function()
+	return globals.get_int(PlayerMP .. '_H4LOOT_WEED_V')
+end, function(s)
+	globals.set_int(PlayerMP .. '_H4LOOT_WEED_V', s)
 end)
-CAH_2ND_TARGET_MDY:add_int_range("修改可卡因价值",1,0,1000,function()
-	return globals.get_int(PlayerMP .. "_H4LOOT_COKE_V")
-end,function(s)
-	globals.set_int(PlayerMP .. "_H4LOOT_COKE_V", s)
+CAH_2ND_TARGET_MDY:add_int_range('修改可卡因价值', 1, 0, 1000, function()
+	return globals.get_int(PlayerMP .. '_H4LOOT_COKE_V')
+end, function(s)
+	globals.set_int(PlayerMP .. '_H4LOOT_COKE_V', s)
 end)
-CAH_2ND_TARGET_MDY:add_int_range("修改黄金价值",1,0,1000,function()
-	return globals.get_int(PlayerMP .. "_H4LOOT_GOLD_V")
-end,function(s)
-	globals.set_int(PlayerMP .. "_H4LOOT_GOLD_V", s)
+CAH_2ND_TARGET_MDY:add_int_range('修改黄金价值', 1, 0, 1000, function()
+	return globals.get_int(PlayerMP .. '_H4LOOT_GOLD_V')
+end, function(s)
+	globals.set_int(PlayerMP .. '_H4LOOT_GOLD_V', s)
 end)
-CAH_2ND_TARGET_MDY:add_int_range("修改画价值",1,0,1000,function()
-	return globals.get_int(PlayerMP .. "_H4LOOT_PAINT_V")
-end,function(s)
-	globals.set_int(PlayerMP .. "_H4LOOT_PAINT_V", s)
+CAH_2ND_TARGET_MDY:add_int_range('修改画价值', 1, 0, 1000, function()
+	return globals.get_int(PlayerMP .. '_H4LOOT_PAINT_V')
+end, function(s)
+	globals.set_int(PlayerMP .. '_H4LOOT_PAINT_V', s)
 end)
 local CAYO_COMPOUND = CAYO_SECONDARY:add_submenu('豪宅内次要目标')
 do
@@ -2788,9 +2607,9 @@ end
 local CAH_PLAYER_CUT = CAH_ADVCED:add_submenu('玩家分红')
 do
 	local CAH_NON_HOSTCUT = CAH_PLAYER_CUT:add_submenu('你的分红 (不是房主是使用)')
-	CAH_NON_HOSTCUT:add_int_range("自定义分红",1,0,200,function()
+	CAH_NON_HOSTCUT:add_int_range('自定义分红', 1, 0, 200, function()
 		return globals.get_int(2715551 + 6546)
-	end,function(s)
+	end, function(s)
 		globals.set_int(2715551 + 6546, s)
 	end)
 	CAH_NON_HOSTCUT:add_action('0 %', function()
@@ -2817,9 +2636,9 @@ do
 end
 do
 	local CAH_PLAYER_HOST = CAH_PLAYER_CUT:add_submenu('你的分红 (作为房主时使用)')
-	CAH_PLAYER_HOST:add_int_range("自定义分红",1,0,200,function()
+	CAH_PLAYER_HOST:add_int_range('自定义分红', 1, 0, 200, function()
 		return globals.get_int(1966739 + 2326)
-	end,function(s)
+	end, function(s)
 		globals.set_int(1966739 + 2326, s)
 	end)
 	CAH_PLAYER_HOST:add_action('0 %', function()
@@ -2844,9 +2663,9 @@ do
 		globals.set_int(1966739 + 2326, 150)
 	end)
 	local CAH_PLAYER_TWO = CAH_PLAYER_CUT:add_submenu('玩家 2 分红')
-	CAH_PLAYER_TWO:add_int_range("自定义分红",1,0,200,function()
+	CAH_PLAYER_TWO:add_int_range('自定义分红', 1, 0, 200, function()
 		return globals.get_int(1966739 + 2326 + 1)
-	end,function(s)
+	end, function(s)
 		globals.set_int(1966739 + 2326 + 1, s)
 	end)
 	CAH_PLAYER_TWO:add_action('0 %', function()
@@ -2868,9 +2687,9 @@ do
 		globals.set_int(1966739 + 2326 + 1, 150)
 	end)
 	local CAH_PLAYER_THREE = CAH_PLAYER_CUT:add_submenu('玩家 3 分红')
-	CAH_PLAYER_THREE:add_int_range("自定义分红",1,0,200,function()
+	CAH_PLAYER_THREE:add_int_range('自定义分红', 1, 0, 200, function()
 		return globals.get_int(1966739 + 2326 + 2)
-	end,function(s)
+	end, function(s)
 		globals.set_int(1966739 + 2326 + 2, s)
 	end)
 	CAH_PLAYER_THREE:add_action('0 %', function()
@@ -2892,9 +2711,9 @@ do
 		globals.set_int(1966739 + 2326 + 2, 150)
 	end)
 	local CAH_PLAYER_FOUR = CAH_PLAYER_CUT:add_submenu('玩家 4 分红')
-	CAH_PLAYER_FOUR:add_int_range("自定义分红",1,0,200,function()
+	CAH_PLAYER_FOUR:add_int_range('自定义分红', 1, 0, 200, function()
 		return globals.get_int(1966739 + 2326 + 3)
-	end,function(s)
+	end, function(s)
 		globals.set_int(1966739 + 2326 + 3, s)
 	end)
 	CAH_PLAYER_FOUR:add_action('0 %', function()
@@ -3453,9 +3272,9 @@ do
 end
 do
 	local DDHEIST_HOST_MANAGER = DDHEIST_PLYR_MANAGER:add_submenu('玩家 1 分红')
-	DDHEIST_HOST_MANAGER:add_int_range("自定义分红",1,0,200,function()
+	DDHEIST_HOST_MANAGER:add_int_range('自定义分红', 1, 0, 200, function()
 		return globals.get_int(1962763 + 812 + 50 + 1)
-	end,function(s)
+	end, function(s)
 		globals.set_int(1962763 + 812 + 50 + 1, s)
 	end)
 	DDHEIST_HOST_MANAGER:add_action('0%', function()
@@ -3482,9 +3301,9 @@ do
 end
 do
 	local DDHEIST_PLAYER2_MANAGER = DDHEIST_PLYR_MANAGER:add_submenu('玩家 2 分红')
-	DDHEIST_PLAYER2_MANAGER:add_int_range("自定义分红",1,0,200,function()
+	DDHEIST_PLAYER2_MANAGER:add_int_range('自定义分红', 1, 0, 200, function()
 		return globals.get_int(1962763 + 812 + 50 + 2)
-	end,function(s)
+	end, function(s)
 		globals.set_int(1962763 + 812 + 50 + 2, s)
 	end)
 	DDHEIST_PLAYER2_MANAGER:add_action('0%', function()
@@ -3514,9 +3333,9 @@ do
 end
 do
 	local DDHEIST_PLAYER3_MANAGER = DDHEIST_PLYR_MANAGER:add_submenu('玩家 3 分红')
-	DDHEIST_PLAYER3_MANAGER:add_int_range("自定义分红",1,0,200,function()
+	DDHEIST_PLAYER3_MANAGER:add_int_range('自定义分红', 1, 0, 200, function()
 		return globals.get_int(1962763 + 812 + 50 + 3)
-	end,function(s)
+	end, function(s)
 		globals.set_int(1962763 + 812 + 50 + 3, s)
 	end)
 	DDHEIST_PLAYER3_MANAGER:add_action('0%', function()
@@ -3546,9 +3365,9 @@ do
 end
 do
 	local DDHEIST_PLAYER4_MANAGER = DDHEIST_PLYR_MANAGER:add_submenu('玩家 4 分红')
-	DDHEIST_PLAYER4_MANAGER:add_int_range("自定义分红",1,0,200,function()
+	DDHEIST_PLAYER4_MANAGER:add_int_range('自定义分红', 1, 0, 200, function()
 		return globals.get_int(1962763 + 812 + 50 + 4)
-	end,function(s)
+	end, function(s)
 		globals.set_int(1962763 + 812 + 50 + 4, s)
 	end)
 	DDHEIST_PLAYER4_MANAGER:add_action('0%', function()
@@ -3620,9 +3439,9 @@ do
 end
 -------- CLASSIC HEIST
 do
-	CLASSIC_CUT:add_int_range("自定义分红",1,0,200,function()
+	CLASSIC_CUT:add_int_range('自定义分红', 1, 0, 200, function()
 		return globals.get_int(1934636 + 3008 + 1)
-	end,function(s)
+	end, function(s)
 		globals.set_int(1934636 + 3008 + 1, s)
 	end)
 	CLASSIC_CUT:add_action('0 %', function()
@@ -3972,8 +3791,8 @@ TOOLS:add_action('允许非公开战局任务', function()
 	globals.set_int(2714635 + 744, 0) -- NETWORK::NETWORK_SESSION_GET_PRIVATE_SLOTS
 end)
 ---- Cayo mini-game
-menu.add_feature("佩里科岛 : 指纹复制器", "action", MINI_GAME_TOOL.id, function()
-    script.set_local_i(gameplay.get_hash_key("fm_mission_controller_2020"), 23177, 5)
+TOOLS:add_action('佩里科岛 : 指纹复制器', function()
+	script.set_local_i(gameplay.get_hash_key('fm_mission_controller_2020'), 23177, 5)
 end)
 MINI_GAME_TOOL:add_action('佩里科岛 : VOLTlab (关闭防空系统)', function()
 	if not localplayer then
@@ -4000,11 +3819,11 @@ MINI_GAME_TOOL:add_action('赌场 : 金库门', function() -- ref: int func_1008
 	local Value = script('fm_mission_controller'):get_int(10068 + 37)
 	script('fm_mission_controller'):set_int(10068 + 7, Value)
 end)
-MINI_GAME_TOOL:add_action("赌场 : 指纹 (游戏厅练习)", function() -- am_mp_arc_cab_manager
-	script("am_mp_arc_cab_manager"):set_int(2829, 5)
+MINI_GAME_TOOL:add_action('赌场 : 指纹 (游戏厅练习)', function() -- am_mp_arc_cab_manager
+	script('am_mp_arc_cab_manager'):set_int(2829, 5)
 end)
-MINI_GAME_TOOL:add_action("赌场 : 门禁 (游戏厅练习)", function() -- am_mp_arc_cab_manager
-	script("am_mp_arc_cab_manager"):set_int(3826, 5)
+MINI_GAME_TOOL:add_action('赌场 : 门禁 (游戏厅练习)', function() -- am_mp_arc_cab_manager
+	script('am_mp_arc_cab_manager'):set_int(3826, 5)
 end)
 ---- Doomsday mini-game
 MINI_GAME_TOOL:add_action('末日三 : 激光破解', function() -- fm_mission_controller
