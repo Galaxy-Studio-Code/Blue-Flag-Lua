@@ -827,36 +827,6 @@ World_Function:add_action('削弱全部 NPC', function()
 		::continue::
 	end
 end)
--- [unuseable]需要操作实体
--- This is a concept, works well, but depends in many things
--- World_Function("移除直升机/船", function()
--- 	for k, DOORs in pairs(vehicle.get_all_vehicles()) do
--- 		local ENT_ENTRY = entity.get_entity_model_hash(DOORs) or vehicle.get_all_vehicle_model_hashes(DOORs)
--- 		local AVG = 2047212121
--- 		local heliA = 2623428164
--- 		local heliB = 745926877
--- 		local boatA = 1448677353
--- 		local truck = 1747439474
--- 		if ENT_ENTRY == AVG or ENT_ENTRY == heliA or ENT_ENTRY == heliB or ENT_ENTRY == boatA or ENT_ENTRY == truck then
--- 			network.request_control_of_entity(DOORs)
--- 			local timer = utils.time_ms() + 500
--- 			while not network.has_control_of_entity(DOORs) and timer > utils.time_ms() do
--- 				system.wait(1500)
--- 			end
--- 			if network.has_control_of_entity(DOORs) then
--- 				entity.set_entity_coords_no_offset(DOORs,vector(671.389,7613.515,-109.629))
--- 			end
--- 		end
--- 	end
--- end)
--- [unuseable]需要对时间的操作
--- do
--- 	World_Function:add_action('离开战局', function()
--- 		local time = utils.time_ms() + 8500
--- 		while time > utils.time_ms() do
--- 		end
--- 	end)
--- end
 -- Teleport Function
 local HU_JING_TELE = Teleport_Function:add_submenu('虎鲸内传送点')
 HU_JING_TELE:add_action('驾驶座位', function()
@@ -1342,87 +1312,73 @@ HI_Complete:add_action('查询完成的佩里克岛抢劫次数', function()
 	end)
 end)
 local EDIT_HI = HI_a:add_submenu('编辑器')
--- [unuseable]需要用户输入
 EDIT_HI:add_action('该功能暂时不可用', function()
 end)
--- local valueToSet = EDIT_HI:add_action("修改佩里克岛抢劫次数", function()
--- 	local Choose, ME = input.get("输入数字", "", 1000, 3)
--- 	if Choose == 1 then return HANDLER_CONTINUE end
--- 	if Choose == 2 then return HANDLER_POP end
--- 	stats.set_int(PlayerMP .. "_H4_PLAYTHROUGH_STATUS", tonumber(ME))
--- end)
--- local valueToSet = EDIT_HI:add_action("修改虎鲸次数", function()
--- 	local Choose, ME = input.get("输入数字", "", 1000, 3)
--- 	if Choose == 1 then return HANDLER_CONTINUE end
--- 	if Choose == 2 then return HANDLER_POP end
--- 	stats.set_int(PlayerMP .. "_CR_SUBMARINE", tonumber(ME))
--- end)
--- local valueToSet = EDIT_HI:add_action("修改阿尔科诺斯特次数", function()
--- 	local Choose, ME = input.get("输入数字", "", 1000, 3)
--- 	if Choose == 1 then return HANDLER_CONTINUE end
--- 	if Choose == 2 then return HANDLER_POP end
--- 	stats.set_int(PlayerMP .. "_CR_STRATEGIC_BOMBER", tonumber(ME))
--- end)
--- local valueToSet = EDIT_HI:add_action("修改梅杜莎次数", function()
--- 	local Choose, ME = input.get("输入数字", "", 1000, 3)
--- 	if Choose == 1 then return HANDLER_CONTINUE end
--- 	if Choose == 2 then return HANDLER_POP end
--- 	stats.set_int(PlayerMP .. "_CR_SMUGGLER_PLANE", tonumber(ME))
--- end)
--- local valueToSet = EDIT_HI:add_action("修改隐型直升机次数", function()
--- 	local Choose, ME = input.get("输入数字", "", 1000, 3)
--- 	if Choose == 1 then return HANDLER_CONTINUE end
--- 	if Choose == 2 then return HANDLER_POP end
--- 	stats.set_int(PlayerMP .. "_CR_STEALTH_HELI", tonumber(ME))
--- end)
--- local valueToSet = EDIT_HI:add_action("修改巡逻艇次数", function()
--- 	local Choose, ME = input.get("输入数字", "", 1000, 3)
--- 	if Choose == 1 then return HANDLER_CONTINUE end
--- 	if Choose == 2 then return HANDLER_POP end
--- 	stats.set_int(PlayerMP .. "_CR_PATROL_BOAT", tonumber(ME))
--- end)
--- local valueToSet = EDIT_HI:add_action("修改长崎次数", function()
--- 	local Choose, ME = input.get("输入数字", "", 1000, 3)
--- 	if Choose == 1 then return HANDLER_CONTINUE end
--- 	if Choose == 2 then return HANDLER_POP end
--- 	stats.set_int(PlayerMP .. "_CR_SMUGGLER_BOAT", tonumber(ME))
--- end)
--- local valueToSet = EDIT_HI:add_action("修改猎豹雕像次数", function()
--- 	local Choose, ME = input.get("输入数字", "", 1000, 3)
--- 	if Choose == 1 then return HANDLER_CONTINUE end
--- 	if Choose == 2 then return HANDLER_POP end
--- 	stats.set_int(PlayerMP .. "_CR_SAPHIREPANSTAT", tonumber(ME))
--- end)
--- local valueToSet = EDIT_HI:add_action("修改玛德拉索文件次数", function()
--- 		local Choose, ME = input.get("输入数字", "", 1000, 3)
--- 		if Choose == 1 then return HANDLER_CONTINUE end
--- 		if Choose == 2 then return HANDLER_POP end
--- 		stats.set_int(PlayerMP .. "_CR_MADRAZO_FILES", tonumber(ME))
--- 	end)
--- local valueToSet = EDIT_HI:add_action("修改粉钻次数", function()
--- 		local Choose, ME = input.get("输入数字", "", 1000, 3)
--- 		if Choose == 1 then return HANDLER_CONTINUE end
--- 		if Choose == 2 then return HANDLER_POP end
--- 		stats.set_int(PlayerMP .. "_CR_PINK_DIAMOND", tonumber(ME))
--- 	end)
--- local valueToSet = EDIT_HI:add_action("修改不记名债券次数", function()
--- 		local Choose, ME = input.get("输入数字", "", 1000, 3)
--- 		if Choose == 1 then return HANDLER_CONTINUE end
--- 		if Choose == 2 then return HANDLER_POP end
--- 		stats.set_int(PlayerMP .. "_CR_BEARER_BONDS", tonumber(ME))
--- 	end)
--- local valueToSet = EDIT_HI:add_action("修改红宝石项链次数", function()
--- 		local Choose, ME = input.get("输入数字", "", 1000, 3)
--- 		if Choose == 1 then return HANDLER_CONTINUE end
--- 		if Choose == 2 then return HANDLER_POP end
--- 		stats.set_int(PlayerMP .. "_CR_PEARL_NECKLACE", tonumber(ME))
--- 	end)
--- local valueToSet = EDIT_HI:add_action("修改西西米托龙舌兰酒次数", function()
--- 	local Choose, ME = input.get("输入数字", "", 1000, 3)
--- 	if Choose == 1 then return HANDLER_CONTINUE end
--- 	if Choose == 2 then return HANDLER_POP end
--- 	stats.set_int(PlayerMP .. "_CR_TEQUILA", tonumber(ME))
--- end)
+EDIT_HI:add_int_range("修改佩里克岛抢劫次数",1,0,9999999,function()
+	return stats.get_int(PlayerMP .. "_H4_PLAYTHROUGH_STATUS")
+end, function(ME)
+	stats.set_int(PlayerMP .. "_H4_PLAYTHROUGH_STATUS", ME)
+end)
+EDIT_HI:add_int_range("修改虎鲸次数",1,0,9999999,function()
+	return stats.get_int(PlayerMP .. "_CR_SUBMARINE")
+end,function(ME)
+	stats.set_int(PlayerMP .. "_CR_SUBMARINE", ME)
+end)
+EDIT_HI:add_int_range("修改阿尔科诺斯特次数",1,0,9999999,function()
+	return stats.get_int(PlayerMP .. "_CR_STRATEGIC_BOMBER")
+end,function(ME)
+	stats.set_int(PlayerMP .. "_CR_STRATEGIC_BOMBER", ME)
+end)
+EDIT_HI:add_int_range("修改梅杜莎次数",1,0,9999999,function()
+	return stats.get_int(PlayerMP .. "_CR_SMUGGLER_PLANE")
+end,function(ME)
+	stats.set_int(PlayerMP .. "_CR_SMUGGLER_PLANE", ME)
+end)
+EDIT_HI:add_int_range("修改隐型直升机次数",1,0,9999999,function()
+	return stats.get_int(PlayerMP .. "_CR_STEALTH_HELI")
+end,function(ME)
+	stats.set_int(PlayerMP .. "_CR_STEALTH_HELI", ME)
+end)
+EDIT_HI:add_int_range("修改巡逻艇次数",1,0,9999999,function()
+	return stats.get_int(PlayerMP .. "_CR_PATROL_BOAT")
+end,function(ME)
+	stats.set_int(PlayerMP .. "_CR_PATROL_BOAT", ME)
+end)
+EDIT_HI:add_int_range("修改长崎次数",1,0,9999999,function()
+	return stats.get_int(PlayerMP .. "_CR_SMUGGLER_BOAT")
+end,function(ME)
+	stats.set_int(PlayerMP .. "_CR_SMUGGLER_BOAT", ME)
+end)
+EDIT_HI:add_int_range("修改猎豹雕像次数",1,0,9999999,function()
+	return stats.get_int(PlayerMP .. "_CR_SAPHIREPANSTAT")
+end,function(ME)
+	stats.set_int(PlayerMP .. "_CR_SAPHIREPANSTAT", ME)
+end)
+EDIT_HI:add_int_range("修改玛德拉索文件次数",1,0,9999999,function()
+	return stats.get_int(PlayerMP .. "_CR_MADRAZO_FILES")
+end,function(ME)
+	stats.set_int(PlayerMP .. "_CR_MADRAZO_FILES", ME)
+end)
+EDIT_HI:add_int_range("修改粉钻次数",1,0,9999999,function()
+	return stats.get_int(PlayerMP .. "_CR_PINK_DIAMOND")
+end,function(ME)
+	stats.set_int(PlayerMP .. "_CR_PINK_DIAMOND", ME)
+end)
+EDIT_HI:add_int_range("修改不记名债券次数",1,0,9999999,function()
+	return stats.get_int(PlayerMP .. "_CR_BEARER_BONDS")
+end,function(ME)
+	stats.set_int(PlayerMP .. "_CR_BEARER_BONDS", ME)
+end)
+EDIT_HI:add_int_range("修改红宝石项链次数",1,0,9999999,function()
+	return stats.get_int(PlayerMP .. "_CR_PEARL_NECKLACE")
+end,function(ME)
+	stats.set_int(PlayerMP .. "_CR_PEARL_NECKLACE", ME)
+end)
+EDIT_HI:add_int_range("修改西西米托龙舌兰酒次数",1,0,9999999,function()
+	return stats.get_int(PlayerMP .. "_CR_TEQUILA")
+end,function(ME)
+	stats.set_int(PlayerMP .. "_CR_TEQUILA", ME)
+end)
 -- CAYO CUSTOM TELEPORT
 TELEPORT_QL:add_action('虎鲸 :: 内部面板 [请先呼叫虎鲸]', function()
 	if not localplayer then
@@ -1851,7 +1807,7 @@ TELEPORT_DOOMS:add_action('末日二 :: 囚犯牢房', function()
 	end
 	localplayer:set_position(vector3(512.888, 4833.033, -68.989))
 end)
-TELEPORT_DOOMS:add_action('(\'末日二 :: 复仇者', function()
+TELEPORT_DOOMS:add_action('末日二 :: 复仇者', function()
 	if not localplayer then
 		return nil
 	end
@@ -2167,17 +2123,11 @@ do
 	end)
 end
 ------- ADVANCED FEATURES CAYO
--- [unuseable]需要用户输入
--- PERICO_HOST_CUT:add_action("自定义分红", function(perico_host)
---	 local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
---	 if r == 1 then
---		 return HANDLER_CONTINUE
---	 end
---	 if r == 2 then
---		 return HANDLER_POP
---	 end
---	 globals.set_int(1973525 + 823 + 56 + 1, tonumber(s))
--- end)
+PERICO_HOST_CUT:add_int_range("自定义分红",1,0,200,function()
+	return globals.get_int(1973525 + 823 + 56 + 1)
+end,function(s)
+	globals.set_int(1973525 + 823 + 56 + 1, s)
+end)
 PERICO_HOST_CUT:add_action('0 %', function()
 	globals.set_int(1973525 + 823 + 56 + 1, 0)
 end)
@@ -2197,17 +2147,11 @@ PERICO_HOST_CUT:add_action('150 %', function()
 	globals.set_int(1973525 + 823 + 56 + 1, 150)
 end)
 -- PLAYER 2 CUT MANAGER
--- [unuseable]需要用户输入
--- PERICO_P2_CUT:add_action("自定义分红", function(perico2)
---	 local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
---	 if r == 1 then
---		 return HANDLER_CONTINUE
---	 end
---	 if r == 2 then
---		 return HANDLER_POP
---	 end
---	 globals.set_int(1973525 + 823 + 56 + 2, tonumber(s))
--- end)
+PERICO_P2_CUT:add_int_range("自定义分红",1,0,200,function()
+	return globals.get_int(1973525 + 823 + 56 + 2)
+end,function(s)
+	globals.set_int(1973525 + 823 + 56 + 2, s)
+end)
 PERICO_P2_CUT:add_action('0 %', function()
 	globals.set_int(1973525 + 823 + 56 + 2, 0)
 end)
@@ -2227,17 +2171,11 @@ PERICO_P2_CUT:add_action('150 %', function()
 	globals.set_int(1973525 + 823 + 56 + 2, 150)
 end)
 -- PLAYER 3 CUT MANAGER
--- [unuseable]需要用户输入
--- PERICO_P3_CUT:add_action("自定义分红", function(perico3)
---	 local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
---	 if r == 1 then
---		 return HANDLER_CONTINUE
---	 end
---	 if r == 2 then
---		 return HANDLER_POP
---	 end
---	 globals.set_int(1973525 + 823 + 56 + 3, tonumber(s))
--- end)
+PERICO_P3_CUT:add_int_range("自定义分红",1,0,200,function()
+	return globals.get_int(1973525 + 823 + 56 + 3)
+end,function(s)
+	globals.set_int(1973525 + 823 + 56 + 3, s)
+end)
 PERICO_P3_CUT:add_action('0 %', function()
 	globals.set_int(1973525 + 823 + 56 + 3, 0)
 end)
@@ -2257,17 +2195,11 @@ PERICO_P3_CUT:add_action('150 %', function()
 	globals.set_int(1973525 + 823 + 56 + 3, 150)
 end)
 -- PLAYER 4 CUT MANAGER
--- [unuseable]需要用户输入
--- PERICO_P4_CUT:add_action("自定义分红", function(perico4)
---	 local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
---	 if r == 1 then
---		 return HANDLER_CONTINUE
---	 end
---	 if r == 2 then
---		 return HANDLER_POP
---	 end
---	 globals.set_int(1973525 + 823 + 56 + 4, tonumber(s))
--- end)
+PERICO_P4_CUT:add_int_range("自定义分红",1,0,200,function()
+	return globals.get_int(1973525 + 823 + 56 + 4)
+end,function(s)
+	globals.set_int(1973525 + 823 + 56 + 4, s)
+end)
 PERICO_P4_CUT:add_action('0 %', function()
 	globals.set_int(1973525 + 823 + 56 + 4, 0)
 end)
@@ -2301,25 +2233,6 @@ end)
 CAYO_BAG:add_action('无限背包大小', function()
 	globals.set_int(262145 + 29395, 9999999)
 end)
--- [unuseable]该功能需要网络事件和对实体的控制，遂阉割掉
--- PERICO_ADV:add_action("移除排水管道格栅", function()
---	 for k, DOORs in pairs(object.get_all_objects()) do
---		 local ENT_ENTRY = entity.get_entity_model_hash(DOORs)
---		 local prop_chem_grill_bit = 2997331308
---		 if ENT_ENTRY == prop_chem_grill_bit then
---			 network.request_control_of_entity(DOORs)
---			 local timer = utils.time_ms() + 500
---			 while not network.has_control_of_entity(DOORs) and timer > utils.time_ms() do
---				 sleep(3)
---			 end
---			 if network.has_control_of_entity(DOORs) then
---				 -- entity.set_entity_as_mission_entity(DOORs, true, true)
---				 entity.set_entity_as_no_longer_needed(DOORs)
---				 entity.delete_entity(DOORs)
---			 end
---		 end
---	 end
--- end)
 -------------------------
 do
 	local CP_VEH_KA = { { 'H4_MISSIONS', 65283 } }
@@ -2473,58 +2386,32 @@ do
 		end
 	end)
 end
--- [unuseable]需要用户输入
--- local CAH_2ND_TARGET_MDY = CAYO_SECONDARY:add_submenu("修改次要目标价值")
--- local valueToSet = CAH_2ND_TARGET_MDY:add_action("修改现金价值", function()
---	 local Choose, ME = input.get("输入数字", "", 1000, 3)
---	 if Choose == 1 then
---		 return HANDLER_CONTINUE
---	 end
---	 if Choose == 2 then
---		 return HANDLER_POP
---	 end
---	 stats.set_int(PlayerMP .. "_H4LOOT_CASH_V", tonumber(ME), true)
--- end)
--- local valueToSet = CAH_2ND_TARGET_MDY:add_action("修改大麻价值", function()
---	 local Choose, ME = input.get("输入数字", "", 1000, 3)
---	 if Choose == 1 then
---		 return HANDLER_CONTINUE
---	 end
---	 if Choose == 2 then
---		 return HANDLER_POP
---	 end
---	 stats.set_int(PlayerMP .. "_H4LOOT_WEED_V", tonumber(ME), true)
--- end)
--- local valueToSet = CAH_2ND_TARGET_MDY:add_action("修改可卡因价值", function()
---	 local Choose, ME = input.get("输入数字", "", 1000, 3)
---	 if Choose == 1 then
---		 return HANDLER_CONTINUE
---	 end
---	 if Choose == 2 then
---		 return HANDLER_POP
---	 end
---	 stats.set_int(PlayerMP .. "_H4LOOT_COKE_V", tonumber(ME), true)
--- end)
--- local valueToSet = CAH_2ND_TARGET_MDY:add_action("修改黄金价值", function()
---	 local Choose, ME = input.get("输入数字", "", 1000, 3)
---	 if Choose == 1 then
---		 return HANDLER_CONTINUE
---	 end
---	 if Choose == 2 then
---		 return HANDLER_POP
---	 end
---	 stats.set_int(PlayerMP .. "_H4LOOT_GOLD_V", tonumber(ME), true)
--- end)
--- local valueToSet = CAH_2ND_TARGET_MDY:add_action("修改画价值", function()
---	 local Choose, ME = input.get("输入数字", "", 1000, 3)
---	 if Choose == 1 then
---		 return HANDLER_CONTINUE
---	 end
---	 if Choose == 2 then
---		 return HANDLER_POP
---	 end
---	 stats.set_int(PlayerMP .. "_H4LOOT_PAINT_V", tonumber(ME), true)
--- end)
+local CAH_2ND_TARGET_MDY = CAYO_SECONDARY:add_submenu("修改次要目标价值")
+CAH_2ND_TARGET_MDY:add_int_range("修改现金价值",1,0,1000,function()
+	return globals.get_int(PlayerMP .. "_H4LOOT_CASH_V")
+end,function(s)
+	globals.set_int(PlayerMP .. "_H4LOOT_CASH_V", s)
+end)
+CAH_2ND_TARGET_MDY:add_int_range("修改大麻价值",1,0,1000,function()
+	return globals.get_int(PlayerMP .. "_H4LOOT_WEED_V")
+end,function(s)
+	globals.set_int(PlayerMP .. "_H4LOOT_WEED_V", s)
+end)
+CAH_2ND_TARGET_MDY:add_int_range("修改可卡因价值",1,0,1000,function()
+	return globals.get_int(PlayerMP .. "_H4LOOT_COKE_V")
+end,function(s)
+	globals.set_int(PlayerMP .. "_H4LOOT_COKE_V", s)
+end)
+CAH_2ND_TARGET_MDY:add_int_range("修改黄金价值",1,0,1000,function()
+	return globals.get_int(PlayerMP .. "_H4LOOT_GOLD_V")
+end,function(s)
+	globals.set_int(PlayerMP .. "_H4LOOT_GOLD_V", s)
+end)
+CAH_2ND_TARGET_MDY:add_int_range("修改画价值",1,0,1000,function()
+	return globals.get_int(PlayerMP .. "_H4LOOT_PAINT_V")
+end,function(s)
+	globals.set_int(PlayerMP .. "_H4LOOT_PAINT_V", s)
+end)
 local CAYO_COMPOUND = CAYO_SECONDARY:add_submenu('豪宅内次要目标')
 do
 	local Compound_LT_MIX = { { 'H4LOOT_CASH_C', 2 }, { 'H4LOOT_CASH_V', 474431 }, { 'H4LOOT_WEED_C', 17 }, { 'H4LOOT_WEED_V', 759090 }, { 'H4LOOT_COKE_C', 132 }, { 'H4LOOT_COKE_V', 948863 }, { 'H4LOOT_GOLD_C', 104 }, { 'H4LOOT_GOLD_V', 1265151 }, { 'H4LOOT_PAINT', 127 }, { 'H4LOOT_PAINT_V', 948863 }, { 'H4LOOT_CASH_C_SCOPED', 2 }, { 'H4LOOT_WEED_C_SCOPED', 17 }, { 'H4LOOT_COKE_C_SCOPED', 132 }, { 'H4LOOT_GOLD_C_SCOPED', 104 }, { 'H4LOOT_PAINT_SCOPED', 127 } }
@@ -2901,17 +2788,11 @@ end
 local CAH_PLAYER_CUT = CAH_ADVCED:add_submenu('玩家分红')
 do
 	local CAH_NON_HOSTCUT = CAH_PLAYER_CUT:add_submenu('你的分红 (不是房主是使用)')
-	-- [unuseable]需要用户输入
-	-- CAH_NON_HOSTCUT:add_action("自定义分红", function(cahnon)
-	--	 local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
-	--	 if r == 1 then
-	--		 return HANDLER_CONTINUE
-	--	 end
-	--	 if r == 2 then
-	--		 return HANDLER_POP
-	--	 end
-	--	 globals.set_int(2715551 + 6546, tonumber(s))
-	-- end)
+	CAH_NON_HOSTCUT:add_int_range("自定义分红",1,0,200,function()
+		return globals.get_int(2715551 + 6546)
+	end,function(s)
+		globals.set_int(2715551 + 6546, s)
+	end)
 	CAH_NON_HOSTCUT:add_action('0 %', function()
 		globals.set_int(2715551 + 6546, 0)
 	end)
@@ -2936,17 +2817,11 @@ do
 end
 do
 	local CAH_PLAYER_HOST = CAH_PLAYER_CUT:add_submenu('你的分红 (作为房主时使用)')
-	-- [unuseable]需要用户输入
-	-- CAH_PLAYER_HOST:add_action("自定义分红", function(cahhost)
-	--	 local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
-	--	 if r == 1 then
-	--		 return HANDLER_CONTINUE
-	--	 end
-	--	 if r == 2 then
-	--		 return HANDLER_POP
-	--	 end
-	--	 globals.set_int(1966739 + 2326, tonumber(s))
-	-- end)
+	CAH_PLAYER_HOST:add_int_range("自定义分红",1,0,200,function()
+		return globals.get_int(1966739 + 2326)
+	end,function(s)
+		globals.set_int(1966739 + 2326, s)
+	end)
 	CAH_PLAYER_HOST:add_action('0 %', function()
 		globals.set_int(1966739 + 2326, 0)
 	end)
@@ -2969,17 +2844,11 @@ do
 		globals.set_int(1966739 + 2326, 150)
 	end)
 	local CAH_PLAYER_TWO = CAH_PLAYER_CUT:add_submenu('玩家 2 分红')
-	-- [unuseable]需要用户输入
-	-- CAH_PLAYER_TWO:add_action("自定义分红", function(cah2)
-	--	 local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
-	--	 if r == 1 then
-	--		 return HANDLER_CONTINUE
-	--	 end
-	--	 if r == 2 then
-	--		 return HANDLER_POP
-	--	 end
-	--	 globals.set_int(1966739 + 2326 + 1, tonumber(s))
-	-- end)
+	CAH_PLAYER_TWO:add_int_range("自定义分红",1,0,200,function()
+		return globals.get_int(1966739 + 2326 + 1)
+	end,function(s)
+		globals.set_int(1966739 + 2326 + 1, s)
+	end)
 	CAH_PLAYER_TWO:add_action('0 %', function()
 		globals.set_int(1966739 + 2326 + 1, 0)
 	end)
@@ -2999,17 +2868,11 @@ do
 		globals.set_int(1966739 + 2326 + 1, 150)
 	end)
 	local CAH_PLAYER_THREE = CAH_PLAYER_CUT:add_submenu('玩家 3 分红')
-	-- [unuseable]需要用户输入
-	-- CAH_PLAYER_THREE:add_action("自定义分红", function(cah3)
-	--	 local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
-	--	 if r == 1 then
-	--		 return HANDLER_CONTINUE
-	--	 end
-	--	 if r == 2 then
-	--		 return HANDLER_POP
-	--	 end
-	--	 globals.set_int(1966739 + 2326 + 2, tonumber(s))
-	-- end)
+	CAH_PLAYER_THREE:add_int_range("自定义分红",1,0,200,function()
+		return globals.get_int(1966739 + 2326 + 2)
+	end,function(s)
+		globals.set_int(1966739 + 2326 + 2, s)
+	end)
 	CAH_PLAYER_THREE:add_action('0 %', function()
 		globals.set_int(1966739 + 2326 + 2, 0)
 	end)
@@ -3029,17 +2892,11 @@ do
 		globals.set_int(1966739 + 2326 + 2, 150)
 	end)
 	local CAH_PLAYER_FOUR = CAH_PLAYER_CUT:add_submenu('玩家 4 分红')
-	-- [unuseable]需要用户输入
-	-- CAH_PLAYER_FOUR:add_action("自定义分红", function(cah4)
-	--	 local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
-	--	 if r == 1 then
-	--		 return HANDLER_CONTINUE
-	--	 end
-	--	 if r == 2 then
-	--		 return HANDLER_POP
-	--	 end
-	--	 globals.set_int(1966739 + 2326 + 3, tonumber(s))
-	-- end)
+	CAH_PLAYER_FOUR:add_int_range("自定义分红",1,0,200,function()
+		return globals.get_int(1966739 + 2326 + 3)
+	end,function(s)
+		globals.set_int(1966739 + 2326 + 3, s)
+	end)
 	CAH_PLAYER_FOUR:add_action('0 %', function()
 		globals.set_int(1966739 + 2326 + 3, 0)
 	end)
@@ -3596,17 +3453,11 @@ do
 end
 do
 	local DDHEIST_HOST_MANAGER = DDHEIST_PLYR_MANAGER:add_submenu('玩家 1 分红')
-	-- [unuseable]需要用户输入
-	-- DDHEIST_HOST_MANAGER:add_action("自定义分红", function(domhost)
-	-- 	local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
-	-- 	if r == 1 then
-	-- 		return HANDLER_CONTINUE
-	-- 	end
-	-- 	if r == 2 then
-	-- 		return HANDLER_POP
-	-- 	end
-	-- 	globals.set_int(1962763 + 812 + 50 + 1, tonumber(s))
-	-- end)
+	DDHEIST_HOST_MANAGER:add_int_range("自定义分红",1,0,200,function()
+		return globals.get_int(1962763 + 812 + 50 + 1)
+	end,function(s)
+		globals.set_int(1962763 + 812 + 50 + 1, s)
+	end)
 	DDHEIST_HOST_MANAGER:add_action('0%', function()
 		globals.set_int(1962763 + 812 + 50 + 1, 0)
 	end)
@@ -3631,17 +3482,11 @@ do
 end
 do
 	local DDHEIST_PLAYER2_MANAGER = DDHEIST_PLYR_MANAGER:add_submenu('玩家 2 分红')
-	-- [unuseable]需要用户输入
-	-- DDHEIST_PLAYER2_MANAGER:add_action("自定义分红", function(dom2)
-	-- 	local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
-	-- 	if r == 1 then
-	-- 		return HANDLER_CONTINUE
-	-- 	end
-	-- 	if r == 2 then
-	-- 		return HANDLER_POP
-	-- 	end
-	-- 	globals.set_int(1962763 + 812 + 50 + 2, tonumber(s))
-	-- end)
+	DDHEIST_PLAYER2_MANAGER:add_int_range("自定义分红",1,0,200,function()
+		return globals.get_int(1962763 + 812 + 50 + 2)
+	end,function(s)
+		globals.set_int(1962763 + 812 + 50 + 2, s)
+	end)
 	DDHEIST_PLAYER2_MANAGER:add_action('0%', function()
 		globals.set_int(1962763 + 812 + 50 + 2, 0)
 	end)
@@ -3669,17 +3514,11 @@ do
 end
 do
 	local DDHEIST_PLAYER3_MANAGER = DDHEIST_PLYR_MANAGER:add_submenu('玩家 3 分红')
-	-- [unuseable]需要用户输入
-	-- DDHEIST_PLAYER3_MANAGER:add_action("自定义分红", function(dom3)
-	-- 	local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
-	-- 	if r == 1 then
-	-- 		return HANDLER_CONTINUE
-	-- 	end
-	-- 	if r == 2 then
-	-- 		return HANDLER_POP
-	-- 	end
-	-- 	globals.set_int(1962763 + 812 + 50 + 3, tonumber(s))
-	-- end)
+	DDHEIST_PLAYER3_MANAGER:add_int_range("自定义分红",1,0,200,function()
+		return globals.get_int(1962763 + 812 + 50 + 3)
+	end,function(s)
+		globals.set_int(1962763 + 812 + 50 + 3, s)
+	end)
 	DDHEIST_PLAYER3_MANAGER:add_action('0%', function()
 		globals.set_int(1962763 + 812 + 50 + 3, 0)
 	end)
@@ -3707,17 +3546,11 @@ do
 end
 do
 	local DDHEIST_PLAYER4_MANAGER = DDHEIST_PLYR_MANAGER:add_submenu('玩家 4 分红')
-	-- [unuseable]需要用户输入
-	-- DDHEIST_PLAYER4_MANAGER:add_action("自定义分红", function(dom4)
-	-- 	local r, s = input.get("It is not recommended to use such high values", "", 1000, 3)
-	-- 	if r == 1 then
-	-- 		return HANDLER_CONTINUE
-	-- 	end
-	-- 	if r == 2 then
-	-- 		return HANDLER_POP
-	-- 	end
-	-- 	globals.set_int(1962763 + 812 + 50 + 4, tonumber(s))
-	-- end)
+	DDHEIST_PLAYER4_MANAGER:add_int_range("自定义分红",1,0,200,function()
+		return globals.get_int(1962763 + 812 + 50 + 4)
+	end,function(s)
+		globals.set_int(1962763 + 812 + 50 + 4, s)
+	end)
 	DDHEIST_PLAYER4_MANAGER:add_action('0%', function()
 		globals.set_int(1962763 + 812 + 50 + 4, 0)
 	end)
@@ -3787,17 +3620,11 @@ do
 end
 -------- CLASSIC HEIST
 do
-	-- [unuseable]需要用户输入
-	-- CLASSIC_CUT:add_action('自定义分红', function(classic)
-	-- 	local r, s = input.get('It is not recommended to use such high values', '', 1000, 3)
-	-- 	if r == 1 then
-	-- 		return HANDLER_CONTINUE
-	-- 	end
-	-- 	if r == 2 then
-	-- 		return HANDLER_POP
-	-- 	end
-	-- 	globals.set_int(1934636 + 3008 + 1, tonumber(s))
-	-- end)
+	CLASSIC_CUT:add_int_range("自定义分红",1,0,200,function()
+		return globals.get_int(1934636 + 3008 + 1)
+	end,function(s)
+		globals.set_int(1934636 + 3008 + 1, s)
+	end)
 	CLASSIC_CUT:add_action('0 %', function()
 		globals.set_int(1934636 + 3008 + 1, 0)
 	end)
@@ -4144,7 +3971,11 @@ end
 TOOLS:add_action('允许非公开战局任务', function()
 	globals.set_int(2714635 + 744, 0) -- NETWORK::NETWORK_SESSION_GET_PRIVATE_SLOTS
 end)
-MINI_GAME_TOOL:add_action('VOLTlab (关闭防空系统)', function()
+---- Cayo mini-game
+menu.add_feature("佩里科岛 : 指纹复制器", "action", MINI_GAME_TOOL.id, function()
+    script.set_local_i(gameplay.get_hash_key("fm_mission_controller_2020"), 23177, 5)
+end)
+MINI_GAME_TOOL:add_action('佩里科岛 : VOLTlab (关闭防空系统)', function()
 	if not localplayer then
 		return nil
 	end
@@ -4154,25 +3985,31 @@ MINI_GAME_TOOL:add_action('VOLTlab (关闭防空系统)', function()
 	ResultScan = script('fm_mission_controller_2020'):get_int(1777)
 	script('fm_mission_controller_2020'):set_int(1776, ResultScan)
 end)
-MINI_GAME_TOOL:add_action('快速等离子切割器', function()
+MINI_GAME_TOOL:add_action('佩里科岛 : 等离子切割机', function()
 	script('fm_mission_controller_2020'):set_float(28269 + 3, 999)
 end)
 ----- Cah mini-game
-MINI_GAME_TOOL:add_action('赌场指纹', function()
+MINI_GAME_TOOL:add_action('赌场 : 指纹复制器', function()
 	script('fm_mission_controller'):set_int(52899, 5) -- ref: struct<756> Local_52899 = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 end)
-MINI_GAME_TOOL:add_action('赌场门禁', function()
+MINI_GAME_TOOL:add_action('赌场 : 门禁', function()
 	script('fm_mission_controller'):set_int(53961, 5)
 end)
-MINI_GAME_TOOL:add_action('赌场保险箱', function() -- ref: int func_10084(int iParam0)
+MINI_GAME_TOOL:add_action('赌场 : 金库门', function() -- ref: int func_10084(int iParam0)
 	script('fm_mission_controller'):set_int(53729, 5) -- ref line 7834 : var uLocal_53729 = 0;
 	local Value = script('fm_mission_controller'):get_int(10068 + 37)
 	script('fm_mission_controller'):set_int(10068 + 7, Value)
 end)
+MINI_GAME_TOOL:add_action("赌场 : 指纹 (游戏厅练习)", function() -- am_mp_arc_cab_manager
+	script("am_mp_arc_cab_manager"):set_int(2829, 5)
+end)
+MINI_GAME_TOOL:add_action("赌场 : 门禁 (游戏厅练习)", function() -- am_mp_arc_cab_manager
+	script("am_mp_arc_cab_manager"):set_int(3826, 5)
+end)
 ---- Doomsday mini-game
-MINI_GAME_TOOL:add_action('末日三 : 激光切割', function() -- fm_mission_controller
+MINI_GAME_TOOL:add_action('末日三 : 激光破解', function() -- fm_mission_controller
 	script('fm_mission_controller'):set_int(1326 + 134, 3)
 end)
-MINI_GAME_TOOL:add_action('末日一前置 : 服务器节点', function()
+MINI_GAME_TOOL:add_action('末日一前置 : 服务器破解', function()
 	script('fm_mission_controller'):set_int(1598, 2)
 end)
