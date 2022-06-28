@@ -550,6 +550,22 @@ UKN_KBBL_TELE:add_action('Kenny\'s Backyard Boogie - 地点 4', function()
 	localplayer:set_position(vector3(-2162.770, 1115.913, -24.371))
 end)
 -- Recovery Function
+local rploop_time = 10
+local rploop_level = 1
+Recovery_Function:add_int_range('通缉 RP 循环 (时间)', 10, 10, 600, function()
+	return rploop_time
+end, function(ME)
+	rploop_time = ME
+	if not localplayer then
+		return nil
+	end
+	for i = 1, rploop_time * 5, 1 do
+		localplayer:set_wanted_level(rploop_level)
+		sleep(0.1)
+		localplayer:clear_wanted_level()
+		sleep(0.1)
+	end
+end)
 Recovery_Function:add_action('附近 Ped 掉落 ($2000)', function()
 	local position = localplayer:get_position()
 	position.z = position.z + 10
@@ -607,6 +623,11 @@ Recovery_Function:add_action('天基炮退款 $75w', function()
 	globals.set_int(1964179, 2)
 	sleep(5)
 	globals.set_int(1964179, 0)
+end)
+Recovery_Function:add_int_range('出售个人载具', 1000000, 0, 1000000000, function()
+	return globals.get_int(101030)
+end, function(ME)
+	globals.set_int(101030, ME)
 end)
 Recovery_Function:add_action('清除被杀记录', function()
 	stat_set_int('ARCHENEMY_KILLS', true, 0)
