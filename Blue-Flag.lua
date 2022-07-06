@@ -7,7 +7,7 @@
 -- Github: https://github.com/Galaxy-Studio-Code/Blue-Flag-Lua
 -- init
 require_game_build(2628)
-local LUA_VER = '1.1.6'
+local LUA_VER = '1.1.8'
 local bfmenu = menu.add_submenu('Blue-Flag\'s Lua')
 local Player_Function = bfmenu:add_submenu('玩家功能')
 local Weapon_Function = bfmenu:add_submenu('武器功能')
@@ -373,7 +373,7 @@ NIGHTCLUB_TELE:add_action('夜总会保险柜', function()
 	if not localplayer then
 		return nil
 	end
-	localplayer:set_position(vector3(-1615.6827392578, -3015.6813964844, -75.205070495605))
+	localplayer:set_position(vector3(-1615.682, -3015.681, -75.205))
 end)
 local HU_JING_TELE = Teleport_Function:add_submenu('虎鲸')
 HU_JING_TELE:add_action('驾驶座位', function()
@@ -473,56 +473,56 @@ UKN_HELPSRKL:add_action('线索 1 - 血手印', function()
 	if not localplayer then
 		return nil
 	end
-	localplayer:set_position(vector3(-678.9984, 5797.6851, 17.3309))
+	localplayer:set_position(vector3(-678.998, 5797.685, 17.330))
 end)
 UKN_HELPSRKL:add_action('线索 2 - 砍刀', function()
 	if not localplayer then
 		return nil
 	end
-	localplayer:set_position(vector3(1901.4042, 4911.5479, 48.6951))
+	localplayer:set_position(vector3(1901.404, 4911.547, 48.695))
 end)
 UKN_HELPSRKL:add_action('线索 3 - 断手', function()
 	if not localplayer then
 		return nil
 	end
-	localplayer:set_position(vector3(1111.7750, 3142.0457, 38.4241))
+	localplayer:set_position(vector3(1111.775, 3142.045, 38.424))
 end)
 UKN_HELPSRKL:add_action('线索 4 -信件', function()
 	if not localplayer then
 		return nil
 	end
-	localplayer:set_position(vector3(-136.5509, 1912.8038, 197.2982))
+	localplayer:set_position(vector3(-136.550, 1912.803, 197.298))
 end)
 local UKN_HELPSRKLC = UKN_HELPSRKL:add_submenu('线索 5 - 黑色面包车')
 UKN_HELPSRKLC:add_action('线索5 - 地点 1', function()
 	if not localplayer then
 		return nil
 	end
-	localplayer:set_position(vector3(2576.0391, 1251.7494, 43.6099))
+	localplayer:set_position(vector3(2576.039, 1251.749, 43.609))
 end)
 UKN_HELPSRKLC:add_action('线索5 - 地点 2', function()
 	if not localplayer then
 		return nil
 	end
-	localplayer:set_position(vector3(2903.4150, 3644.0413, 43.8774))
+	localplayer:set_position(vector3(2903.415, 3644.041, 43.877))
 end)
 UKN_HELPSRKLC:add_action('线索5 - 地点 3', function()
 	if not localplayer then
 		return nil
 	end
-	localplayer:set_position(vector3(2432.3904, 5846.0757, 58.8891))
+	localplayer:set_position(vector3(2432.390, 5846.075, 58.889))
 end)
 UKN_HELPSRKLC:add_action('线索5 - 地点 4', function()
 	if not localplayer then
 		return nil
 	end
-	localplayer:set_position(vector3(-1567.880, 4424.6104, 7.2154))
+	localplayer:set_position(vector3(-1567.880, 4424.610, 7.215))
 end)
 UKN_HELPSRKLC:add_action('线索5 - 地点 5', function()
 	if not localplayer then
 		return nil
 	end
-	localplayer:set_position(vector3(-1715.793, 2618.7686, 2.9409))
+	localplayer:set_position(vector3(-1715.793, 2618.768, 2.940))
 end)
 local UKN_KBBL_TELE = Teleport_Function:add_submenu('Kenny\'s Backyard Boogie 专辑')
 UKN_KBBL_TELE:add_action('Kenny\'s Backyard Boogie - 地点 1', function()
@@ -562,7 +562,7 @@ end, function(ME)
 	for i = 1, rploop_time * 5, 1 do
 		localplayer:set_wanted_level(rploop_level)
 		sleep(0.1)
-		localplayer:clear_wanted_level()
+		menu.clear_wanted_level()
 		sleep(0.1)
 	end
 end)
@@ -719,6 +719,7 @@ local CASINO_HEIST = Heist_Control:add_submenu('名钻赌场抢劫')
 local CASINO_PRESETS = CASINO_HEIST:add_submenu('预设 (进入分红界面后也须点击一次)')
 local CAH_DIA_TARGET = CASINO_PRESETS:add_submenu('钻石 $350w 1-4 人')
 local CAH_GOLD_TARGET = CASINO_PRESETS:add_submenu('黄金 $350w 1-4 人')
+local TELEPORT_CAH = CASINO_HEIST:add_submenu('传送地点')
 local CAH_ADVCED = CASINO_HEIST:add_submenu('高级功能')
 local CASINO_BOARD1 = CASINO_HEIST:add_submenu('抢劫计划板 (第一块)')
 local BOARD1_APPROACH = CASINO_BOARD1:add_submenu('选择抢劫方式和难度')
@@ -734,7 +735,6 @@ local TELEPORT_DOOMS = DOOMS_HEIST:add_submenu('传送地点')
 --
 local CLASSIC_HEISTS = Heist_Control:add_submenu('公寓老抢劫 (进入分红界面后也须点击一次)')
 local CLASSIC_CUT = CLASSIC_HEISTS:add_submenu('你的分红 (作为房主时使用)')
-local CLASSIC_M_GAME = CLASSIC_HEISTS:add_submenu('小游戏破解')
 --
 local TH_CONTRACT = Heist_Control:add_submenu('事务所合约 (进入分红界面后也须点击一次)')
 local LS_ROBBERY = Heist_Control:add_submenu('改装铺合约 (进入分红界面后也须点击一次)')
@@ -985,6 +985,12 @@ TELEPORT_QL:add_action('排水管道 :: 入口 (二次检查点)', function()
 		return nil
 	end
 	localplayer:set_position(vector3(5054.630, -5771.519, -4.807))
+end)
+TELEPORT_QL:add_action('豪宅 :: 正门入口', function()
+	if not localplayer then
+		return nil
+	end
+	localplayer:set_position(vector3(4974.982, -5703.857, 18.889))
 end)
 TELEPORT_QL:add_action('主要目标 :: 房间', function()
 	if not localplayer then
@@ -1363,19 +1369,19 @@ TELEPORT_DOOMS:add_action('设施 :: 抢劫计划室', function()
 	if not localplayer then
 		return nil
 	end
-	localplayer:set_position(vector3(343.97885131836, 4864.76953125, -60.004898071289))
+	localplayer:set_position(vector3(343.978, 4864.769, -60.005))
 end)
 TELEPORT_DOOMS:add_action('末日一 :: IAA基地', function()
 	if not localplayer then
 		return nil
 	end
-	localplayer:set_position(vector3(2051.454102, 2937.856201, 46.412567))
+	localplayer:set_position(vector3(2051.454, 2937.856, 46.412))
 end)
 TELEPORT_DOOMS:add_action('末日一 :: 作战室', function()
 	if not localplayer then
 		return nil
 	end
-	localplayer:set_position(vector3(2066.660645, 2991.692383, -67.501999))
+	localplayer:set_position(vector3(2066.660, 2991.692, -67.501))
 end)
 TELEPORT_DOOMS:add_action('末日二 :: 拍照屏幕', function()
 	if not localplayer then
@@ -1393,9 +1399,43 @@ TELEPORT_DOOMS:add_action('末日二 :: 复仇者', function()
 	if not localplayer then
 		return nil
 	end
-	localplayer:set_position(vector3(-970.208191, 6216.608398, 2.252363))
+	localplayer:set_position(vector3(-970.208, 6216.608, 2.252))
+end)
+TELEPORT_DOOMS:add_action('末日三 :: 补给箱 (1)', function()
+	localplayer:set_position(vector3(454.658, 5952.746, -159.591))
 end)
 
+TELEPORT_DOOMS:add_action('末日三 :: 补给箱 (2)', function()
+	localplayer:set_position(vector3(442.482, 5919.619, -159.571))
+end)
+
+TELEPORT_DOOMS:add_action('末日三 :: 补给箱 (3)', function()
+	localplayer:set_position(vector3(281.838, 5913.496, -160.469))
+end)
+
+TELEPORT_DOOMS:add_action('末日三 :: 补给箱 (4)', function()
+	localplayer:set_position(vector3(377.123, 5942.216, -159.571))
+end)
+
+TELEPORT_DOOMS:add_action('末日三 :: 服务器 (1)', function()
+	localplayer:set_position(vector3(220.165, 6188.962, -155.720))
+end)
+
+TELEPORT_DOOMS:add_action('末日三 :: 服务器 (2)', function()
+	localplayer:set_position(vector3(275.303, 6133.691, -155.720))
+end)
+
+TELEPORT_DOOMS:add_action('末日三 :: 服务器 (3)', function()
+	localplayer:set_position(vector3(269.965, 6191.722, -155.720))
+end)
+
+TELEPORT_DOOMS:add_action('末日三 :: 服务器 (4)', function()
+	localplayer:set_position(vector3(215.845, 6138.861, -155.720))
+end)
+
+TELEPORT_DOOMS:add_action('末日三 :: 天基炮', function()
+	localplayer:set_position(vector3(244.156, 6145.571, -147.722))
+end)
 do
 	HE_about_info:add_action('By : Blue-Flag', function()
 	end)
@@ -1814,6 +1854,11 @@ CAYO_BAG:add_action('4 倍背包大小', function()
 end)
 CAYO_BAG:add_action('无限背包大小', function()
 	globals.set_int(262145 + 29395, 9999999)
+end)
+PERICO_ADV:add_int_range('修改总收入', 10000, 0, 12000000, function()
+	return script('fm_mission_controller_2020'):get_int(41449)
+end, function(value)
+	script('fm_mission_controller_2020'):set_int(41449, value)
 end)
 -------------------------
 do
@@ -2366,6 +2411,26 @@ do
 		end
 	end)
 end
+---- CASINO TELEPORT
+TELEPORT_CAH:add_action('员工大厅入口', function()
+	localplayer:set_position(vector3(981.846, 18.208, 79.997))
+end)
+
+TELEPORT_CAH:add_action('金库内', function()
+	localplayer:set_position(vector3(2512.942, -238.461, -71.750))
+end)
+
+TELEPORT_CAH:add_action('金库外', function()
+	localplayer:set_position(vector3(2498.506, -238.919, -71.751))
+end)
+
+TELEPORT_CAH:add_action('地下室双门禁卡', function()
+	localplayer:set_position(vector3(2469.627, -284.530, -71.709))
+end)
+
+TELEPORT_CAH:add_action('员工大厅出口', function()
+	localplayer:set_position(vector3(2547.230, -267.679, -59.736))
+end)
 ---- CASINO ADVANCED
 local CAH_PLAYER_CUT = CAH_ADVCED:add_submenu('玩家分红')
 do
@@ -2498,6 +2563,11 @@ do
 		globals.set_int(1966739 + 2326 + 3, 150)
 	end)
 end
+CAH_ADVCED:add_int_range('修改总收入', 10000, 0, 20000000, function()
+	return script('fm_mission_controller'):get_int(22337)
+end, function(value)
+	script('fm_mission_controller'):set_int(22337, value)
+end)
 --- CASINO DIFFICULTY
 do
 	local CH_Diff_Hard1 = { { 'H3_LAST_APPROACH', 0 }, { 'H3OPT_APPROACH', 1 }, { 'H3_HARD_APPROACH', 1 } }
@@ -3238,12 +3308,6 @@ do
 		globals.set_int(1934636 + 3008 + 1, 200)
 	end)
 end
-CLASSIC_M_GAME:add_action('全福银行 : 电路破解', function()
-	script('fm_mission_controller'):set_int(11707 + 24, 7)
-end)
-CLASSIC_M_GAME:add_action('太平洋 : 破解', function()
-	script('fm_mission_controller'):set_int(146, 7)
-end)
 do
 	local Apartment_AWD_B = { { 'MPPLY_AWD_COMPLET_HEIST_MEM', true }, { 'MPPLY_AWD_COMPLET_HEIST_1STPER', true }, { 'MPPLY_AWD_FLEECA_FIN', true }, { 'MPPLY_AWD_HST_ORDER', true }, { 'MPPLY_AWD_HST_SAME_TEAM', true }, { 'MPPLY_AWD_HST_ULT_CHAL', true }, { 'MPPLY_AWD_HUMANE_FIN', true }, { 'MPPLY_AWD_PACIFIC_FIN', true }, { 'MPPLY_AWD_PRISON_FIN', true }, { 'MPPLY_AWD_SERIESA_FIN', true }, { 'AWD_FINISH_HEIST_NO_DAMAGE', true }, { 'AWD_SPLIT_HEIST_TAKE_EVENLY', true }, { 'AWD_ALL_ROLES_HEIST', true }, { 'AWD_MATCHING_OUTFIT_HEIST', true }, { 'HEIST_PLANNING_DONE_PRINT', true }, { 'HEIST_PLANNING_DONE_HELP_0', true }, { 'HEIST_PLANNING_DONE_HELP_1', true }, { 'HEIST_PRE_PLAN_DONE_HELP_0', true }, { 'HEIST_CUTS_DONE_FINALE', true }, { 'HEIST_IS_TUTORIAL', false }, { 'HEIST_STRAND_INTRO_DONE', true }, { 'HEIST_CUTS_DONE_ORNATE', true }, { 'HEIST_CUTS_DONE_PRISON', true }, { 'HEIST_CUTS_DONE_BIOLAB', true }, { 'HEIST_CUTS_DONE_NARCOTIC', true }, { 'HEIST_CUTS_DONE_TUTORIAL', true }, { 'HEIST_AWARD_DONE_PREP', true }, { 'HEIST_AWARD_BOUGHT_IN', true } }
 	local Apartment_AWD_I = { { 'AWD_FINISH_HEISTS', 900 }, { 'MPPLY_WIN_GOLD_MEDAL_HEISTS', 900 }, { 'AWD_DO_HEIST_AS_MEMBER', 900 }, { 'AWD_DO_HEIST_AS_THE_LEADER', 900 }, { 'AWD_FINISH_HEIST_SETUP_JOB', 900 }, { 'AWD_FINISH_HEIST', 900 }, { 'HEIST_COMPLETION', 900 }, { 'HEISTS_ORGANISED', 900 }, { 'AWD_CONTROL_CROWDS', 900 }, { 'AWD_WIN_GOLD_MEDAL_HEISTS', 900 }, { 'AWD_COMPLETE_HEIST_NOT_DIE', 900 }, { 'HEIST_START', 900 }, { 'HEIST_END', 900 }, { 'CUTSCENE_MID_PRISON', 900 }, { 'CUTSCENE_MID_HUMANE', 900 }, { 'CUTSCENE_MID_NARC', 900 }, { 'CUTSCENE_MID_ORNATE', 900 }, { 'CR_FLEECA_PREP_1', 5000 }, { 'CR_FLEECA_PREP_2', 5000 }, { 'CR_FLEECA_FINALE', 5000 }, { 'CR_PRISON_PLANE', 5000 }, { 'CR_PRISON_BUS', 5000 }, { 'CR_PRISON_STATION', 5000 }, { 'CR_PRISON_UNFINISHED_BIZ', 5000 }, { 'CR_PRISON_FINALE', 5000 }, { 'CR_HUMANE_KEY_CODES', 5000 }, { 'CR_HUMANE_ARMORDILLOS', 5000 }, { 'CR_HUMANE_EMP', 5000 }, { 'CR_HUMANE_VALKYRIE', 5000 }, { 'CR_HUMANE_FINALE', 5000 }, { 'CR_NARC_COKE', 5000 }, { 'CR_NARC_TRASH_TRUCK', 5000 }, { 'CR_NARC_BIKERS', 5000 }, { 'CR_NARC_WEED', 5000 }, { 'CR_NARC_STEAL_METH', 5000 }, { 'CR_NARC_FINALE', 5000 }, { 'CR_PACIFIC_TRUCKS ', 5000 }, { 'CR_PACIFIC_WITSEC', 5000 }, { 'CR_PACIFIC_HACK', 5000 }, { 'CR_PACIFIC_BIKES', 5000 }, { 'CR_PACIFIC_CONVOY', 5000 }, { 'CR_PACIFIC_FINALE', 5000 }, { 'MPPLY_HEIST_ACH_TRACKER', -1 } }
@@ -3299,7 +3363,7 @@ LS_ROBBERY:add_action('修改收入为 100w', function()
 	globals.set_int(262145 + 30690, 1000000) -- reward when joining a contract
 	globals.set_float(262145 + 30687, 0) -- IA cut removal
 end)
-LS_ROBBERY:add_action('[2x] 修改收入为 100w', function()
+LS_ROBBERY:add_action('修改收入为 50w', function()
 	globals.set_int(262145 + 30691 + 0, 500000)
 	globals.set_int(262145 + 30691 + 1, 500000)
 	globals.set_int(262145 + 30691 + 2, 500000)
@@ -3431,6 +3495,18 @@ local CONTRACT_MANAGER = TH_CONTRACT:add_submenu('VIP 合约')
 local CONTRACT_MANAGER_ = CONTRACT_MANAGER:add_submenu('夜生活泄密')
 local CONTRACT_MANAGER__ = CONTRACT_MANAGER:add_submenu('上流社会泄密')
 local CONTRACT_MANAGER___ = CONTRACT_MANAGER:add_submenu('南中心区泄密')
+local TELEPORT_CONTRACT = CONTRACT_MANAGER:add_submenu('传送地点')
+TELEPORT_CONTRACT:add_action('贡斯最后出现地点', function()
+	localplayer:set_position(vector3(507.766, -605.932, 23.451))
+end)
+
+TELEPORT_CONTRACT:add_action('机库', function()
+	localplayer:set_position(vector3(-927.370, -2923.859, 12.644))
+end)
+
+TELEPORT_CONTRACT:add_action('贡斯', function()
+	localplayer:set_position(vector3(-933.519, -3010.231, 18.540))
+end)
 do
 	local LEAK_NIGHTCLUB = { { 'FIXER_GENERAL_BS', -1 }, { 'FIXER_COMPLETED_BS', -1 }, { 'FIXER_STORY_BS', 3 }, { 'FIXER_STORY_COOLDOWN', -1 } }
 	CONTRACT_MANAGER_:add_action('夜总会 (前置)', function()
@@ -3553,6 +3629,22 @@ end
 TOOLS:add_action('允许非公开战局任务', function()
 	globals.set_int(2714635 + 744, 0) -- NETWORK::NETWORK_SESSION_GET_PRIVATE_SLOTS
 end)
+TOOLS:add_action('无限团队生命数', function()
+	if script('fm_mission_controller'):is_active() then
+		script('fm_mission_controller'):set_int(26077 + 1322 + 1, 2147483646)
+	end
+	if script('fm_mission_controller_2020'):is_active() then
+		script('fm_mission_controller_2020'):set_int(43059 + 865 + 1, 2147483646)
+	end
+end)
+TOOLS:add_action('清除团队生命数', function()
+	if script('fm_mission_controller'):is_active() then
+		script('fm_mission_controller'):set_int(26077 + 1322 + 1, 0)
+	end
+	if script('fm_mission_controller_2020'):is_active() then
+		script('fm_mission_controller_2020'):set_int(43059 + 865 + 1, 0)
+	end
+end)
 ---- Cayo mini-game
 MINI_GAME_TOOL:add_action('佩里科岛 : 切割格栅', function()
 	script('fm_mission_controller_2020'):set_int(27036, 6)
@@ -3597,4 +3689,11 @@ MINI_GAME_TOOL:add_action('末日三 : 激光破解', function() -- fm_mission_c
 end)
 MINI_GAME_TOOL:add_action('末日一前置 : 服务器破解', function()
 	script('fm_mission_controller'):set_int(1598, 2)
+end)
+---- Classic mini-game
+MINI_GAME_TOOL:add_action('全福银行 : 电路破解', function()
+	script('fm_mission_controller'):set_int(11707 + 24, 7)
+end)
+MINI_GAME_TOOL:add_action('太平洋 : 破解', function()
+	script('fm_mission_controller'):set_int(146, 7)
 end)
