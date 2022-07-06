@@ -1402,38 +1402,65 @@ TELEPORT_DOOMS:add_action('末日二 :: 复仇者', function()
 	localplayer:set_position(vector3(-970.208, 6216.608, 2.252))
 end)
 TELEPORT_DOOMS:add_action('末日三 :: 补给箱 (1)', function()
+	if not localplayer then
+		return nil
+	end
 	localplayer:set_position(vector3(454.658, 5952.746, -159.591))
 end)
 
 TELEPORT_DOOMS:add_action('末日三 :: 补给箱 (2)', function()
+	if not localplayer then
+		return nil
+	end
 	localplayer:set_position(vector3(442.482, 5919.619, -159.571))
 end)
 
 TELEPORT_DOOMS:add_action('末日三 :: 补给箱 (3)', function()
+	if not localplayer then
+		return nil
+	end
 	localplayer:set_position(vector3(281.838, 5913.496, -160.469))
 end)
 
 TELEPORT_DOOMS:add_action('末日三 :: 补给箱 (4)', function()
+	if not localplayer then
+		return nil
+	end
 	localplayer:set_position(vector3(377.123, 5942.216, -159.571))
 end)
 
 TELEPORT_DOOMS:add_action('末日三 :: 服务器 (1)', function()
+	if not localplayer then
+		return nil
+	end
 	localplayer:set_position(vector3(220.165, 6188.962, -155.720))
 end)
 
 TELEPORT_DOOMS:add_action('末日三 :: 服务器 (2)', function()
+	if not localplayer then
+		return nil
+	end
 	localplayer:set_position(vector3(275.303, 6133.691, -155.720))
 end)
 
 TELEPORT_DOOMS:add_action('末日三 :: 服务器 (3)', function()
+	if not localplayer then
+		return nil
+	end
 	localplayer:set_position(vector3(269.965, 6191.722, -155.720))
 end)
 
 TELEPORT_DOOMS:add_action('末日三 :: 服务器 (4)', function()
+	if not localplayer then
+		return nil
+	end
 	localplayer:set_position(vector3(215.845, 6138.861, -155.720))
 end)
 
 TELEPORT_DOOMS:add_action('末日三 :: 天基炮', function()
+	if not localplayer then
+		return nil
+	end
 	localplayer:set_position(vector3(244.156, 6145.571, -147.722))
 end)
 do
@@ -2015,29 +2042,29 @@ do
 end
 local CAH_2ND_TARGET_MDY = CAYO_SECONDARY:add_submenu('修改次要目标价值')
 CAH_2ND_TARGET_MDY:add_int_range('修改现金价值', 1, 0, 1000, function()
-	return globals.get_int(PlayerMP .. '_H4LOOT_CASH_V')
+	return stats.get_int(PlayerMP .. '_H4LOOT_CASH_V')
 end, function(s)
-	globals.set_int(PlayerMP .. '_H4LOOT_CASH_V', s)
+	stats.set_int(PlayerMP .. '_H4LOOT_CASH_V', s)
 end)
 CAH_2ND_TARGET_MDY:add_int_range('修改大麻价值', 1, 0, 1000, function()
-	return globals.get_int(PlayerMP .. '_H4LOOT_WEED_V')
+	return stats.get_int(PlayerMP .. '_H4LOOT_WEED_V')
 end, function(s)
-	globals.set_int(PlayerMP .. '_H4LOOT_WEED_V', s)
+	stats.set_int(PlayerMP .. '_H4LOOT_WEED_V', s)
 end)
 CAH_2ND_TARGET_MDY:add_int_range('修改可卡因价值', 1, 0, 1000, function()
-	return globals.get_int(PlayerMP .. '_H4LOOT_COKE_V')
+	return stats.get_int(PlayerMP .. '_H4LOOT_COKE_V')
 end, function(s)
-	globals.set_int(PlayerMP .. '_H4LOOT_COKE_V', s)
+	stats.set_int(PlayerMP .. '_H4LOOT_COKE_V', s)
 end)
 CAH_2ND_TARGET_MDY:add_int_range('修改黄金价值', 1, 0, 1000, function()
-	return globals.get_int(PlayerMP .. '_H4LOOT_GOLD_V')
+	return stats.get_int(PlayerMP .. '_H4LOOT_GOLD_V')
 end, function(s)
-	globals.set_int(PlayerMP .. '_H4LOOT_GOLD_V', s)
+	stats.set_int(PlayerMP .. '_H4LOOT_GOLD_V', s)
 end)
 CAH_2ND_TARGET_MDY:add_int_range('修改画价值', 1, 0, 1000, function()
-	return globals.get_int(PlayerMP .. '_H4LOOT_PAINT_V')
+	return stats.get_int(PlayerMP .. '_H4LOOT_PAINT_V')
 end, function(s)
-	globals.set_int(PlayerMP .. '_H4LOOT_PAINT_V', s)
+	stats.set_int(PlayerMP .. '_H4LOOT_PAINT_V', s)
 end)
 local CAYO_COMPOUND = CAYO_SECONDARY:add_submenu('豪宅内次要目标')
 do
@@ -2413,22 +2440,37 @@ do
 end
 ---- CASINO TELEPORT
 TELEPORT_CAH:add_action('员工大厅入口', function()
+	if not localplayer then
+		return nil
+	end
 	localplayer:set_position(vector3(981.846, 18.208, 79.997))
 end)
 
 TELEPORT_CAH:add_action('金库内', function()
+	if not localplayer then
+		return nil
+	end
 	localplayer:set_position(vector3(2512.942, -238.461, -71.750))
 end)
 
 TELEPORT_CAH:add_action('金库外', function()
+	if not localplayer then
+		return nil
+	end
 	localplayer:set_position(vector3(2498.506, -238.919, -71.751))
 end)
 
-TELEPORT_CAH:add_action('地下室双门禁卡', function()
+TELEPORT_CAH:add_action('地下室门禁', function()
+	if not localplayer then
+		return nil
+	end
 	localplayer:set_position(vector3(2469.627, -284.530, -71.709))
 end)
 
 TELEPORT_CAH:add_action('员工大厅出口', function()
+	if not localplayer then
+		return nil
+	end
 	localplayer:set_position(vector3(2547.230, -267.679, -59.736))
 end)
 ---- CASINO ADVANCED
@@ -3497,14 +3539,23 @@ local CONTRACT_MANAGER__ = CONTRACT_MANAGER:add_submenu('上流社会泄密')
 local CONTRACT_MANAGER___ = CONTRACT_MANAGER:add_submenu('南中心区泄密')
 local TELEPORT_CONTRACT = CONTRACT_MANAGER:add_submenu('传送地点')
 TELEPORT_CONTRACT:add_action('贡斯最后出现地点', function()
+	if not localplayer then
+		return nil
+	end
 	localplayer:set_position(vector3(507.766, -605.932, 23.451))
 end)
 
-TELEPORT_CONTRACT:add_action('机库', function()
+TELEPORT_CONTRACT:add_action('机库入口', function()
+	if not localplayer then
+		return nil
+	end
 	localplayer:set_position(vector3(-927.370, -2923.859, 12.644))
 end)
 
-TELEPORT_CONTRACT:add_action('贡斯', function()
+TELEPORT_CONTRACT:add_action('机库内贡斯位置', function()
+	if not localplayer then
+		return nil
+	end
 	localplayer:set_position(vector3(-933.519, -3010.231, 18.540))
 end)
 do
