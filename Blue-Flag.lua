@@ -7,7 +7,7 @@
 -- Github: https://github.com/Galaxy-Studio-Code/Blue-Flag-Lua
 -- init
 require_game_build(2628)
-local LUA_VER = '1.1.8'
+local LUA_VER = '1.1.9'
 local bfmenu = menu.add_submenu('Blue-Flag\'s Lua')
 local Player_Function = bfmenu:add_submenu('玩家功能')
 local Weapon_Function = bfmenu:add_submenu('武器功能')
@@ -429,6 +429,11 @@ LSC_DLC_TELE:add_action('车友会入口', function()
 	if not localplayer then
 		return nil
 	end
+	if not localplayer:is_in_vehicle() then
+		localplayer:set_position(vector3(4905.050, -6339.578, -89.830))
+	else
+		localplayer:get_current_vehicle():set_position(vector3(4905.050, -6339.578, -89.830))
+	end
 	localplayer:set_position(vector3(782.597, -1867.812, 29.253))
 end)
 LSC_DLC_TELE:add_action('车友会内部', function()
@@ -679,6 +684,212 @@ SCENE_CUT:add_action('跳过过场动画', function()
 	menu.end_cutscene()
 end)
 -- Heist Control
+local FAST_HEIST = Heist_Control:add_submenu('快速任务')
+local FAST_PERICO = FAST_HEIST:add_submenu('佩里科岛')
+FAST_HEIST:add_action('虎鲸 :: 内部面板 [请先呼叫虎鲸]', function()
+	if not localplayer then
+		return nil
+	end
+	localplayer:set_position(vector3(1561.224, 386.659, -49.685))
+end)
+FAST_HEIST:add_action('虎鲸 :: 主甲板 [请先呼叫虎鲸]', function()
+	if not localplayer then
+		return nil
+	end
+	localplayer:set_position(vector3(1563.218, 406.030, -49.667))
+end)
+local FAST_PERICO_PRESET = FAST_PERICO:add_submenu('快速预设 (进入分红界面后也须点击一次)')
+local FAST_PERICO_PRESET_ANY = { { 'PROSTITUTES_FREQUENTE', 100 }, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
+{ 'H4CNF_BS_GEN', 262143 }, { 'H4CNF_BS_ENTR', 63 }, { 'H4CNF_BS_ABIL', 63 }, { 'H4CNF_WEP_DISRP', 3 }, { 'H4CNF_ARM_DISRP', 3 }, { 'H4CNF_HEL_DISRP', 3 }, { 'H4CNF_BOLTCUT', 4424 }, { 'H4CNF_UNIFORM', 5256 }, { 'H4CNF_GRAPPEL', 5156 }, { 'H4CNF_APPROACH', -1 }, { 'H4LOOT_CASH_I', 0 }, { 'H4LOOT_CASH_C', 0 }, { 'H4LOOT_WEED_I', 0 }, { 'H4LOOT_WEED_C', 0 }, { 'H4LOOT_COKE_I', 0 }, { 'H4LOOT_COKE_C', 0 }, { 'H4LOOT_GOLD_I', 0 }, { 'H4LOOT_GOLD_C', 0 }, { 'H4LOOT_PAINT', 0 }, { 'H4LOOT_CASH_V', 0 }, { 'H4LOOT_COKE_V', 0 }, { 'H4LOOT_GOLD_V', 0 }, { 'H4LOOT_PAINT_V', 0 }, { 'H4LOOT_WEED_V', 0 }, { 'H4LOOT_CASH_I_SCOPED', 0 }, { 'H4LOOT_CASH_C_SCOPED', 0 }, { 'H4LOOT_WEED_I_SCOPED', 0 }, { 'H4LOOT_WEED_C_SCOPED', 0 }, { 'H4LOOT_COKE_I_SCOPED', 0 }, { 'H4LOOT_COKE_C_SCOPED', 0 }, { 'H4LOOT_GOLD_I_SCOPED', 0 }, { 'H4LOOT_GOLD_C_SCOPED', 0 }, { 'H4LOOT_PAINT_SCOPED', 0 }, { 'H4CNF_TARGET', 5 }, { 'H4CNF_WEAPONS', 5 }, { 'H4_MISSIONS', -1 }, { 'H4_PROGRESS', 126823 } }
+FAST_PERICO_PRESET:add_action('1-4 人 $255w', function()
+	for i = 1, #FAST_PERICO_PRESET_ANY do
+		stat_set_int(FAST_PERICO_PRESET_ANY[i][1], true, FAST_PERICO_PRESET_ANY[i][2])
+	end
+	globals.set_int(1973525 + 823 + 56 + 1, 152) -- original version 1710289 + 823 + 56 + 1
+	globals.set_int(1973525 + 823 + 56 + 2, 152) -- original version 1710289 + 823 + 56 + 2
+	globals.set_int(1973525 + 823 + 56 + 3, 152) -- original version 1710289 + 823 + 56 + 3
+	globals.set_int(1973525 + 823 + 56 + 4, 152) -- original version 1710289 + 823 + 56 + 4
+	globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
+	globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
+	-- globals.set_int(262145 + 29621,2455000)
+end)
+local FAST_PERICO_PRESET_SOLO_TARGET_3 = { { 'PROSTITUTES_FREQUENTE', 100 }, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
+{ 'H4CNF_TARGET', 3 }, { 'H4LOOT_CASH_I', 63 }, { 'H4LOOT_CASH_I_SCOPED', 63 }, { 'H4LOOT_CASH_C', 0 }, { 'H4LOOT_CASH_C_SCOPED', 0 }, { 'H4LOOT_COKE_I', 16769024 }, { 'H4LOOT_COKE_I_SCOPED', 16769024 }, { 'H4LOOT_COKE_C', 22 }, { 'H4LOOT_COKE_C_SCOPED', 22 }, { 'H4LOOT_GOLD_I', 0 }, { 'H4LOOT_GOLD_I_SCOPED', 0 }, { 'H4LOOT_GOLD_C', 168 }, { 'H4LOOT_GOLD_C_SCOPED', 168 }, { 'H4LOOT_WEED_I', 8128 }, { 'H4LOOT_WEED_I_SCOPED', 8128 }, { 'H4LOOT_WEED_C', 65 }, { 'H4LOOT_WEED_C_SCOPED', 65 }, { 'H4LOOT_PAINT', 127 }, { 'H4LOOT_PAINT_SCOPED', 127 }, { 'H4LOOT_CASH_V', 366931 }, { 'H4LOOT_COKE_V', 733863 }, { 'H4LOOT_GOLD_V', 978484 }, { 'H4LOOT_PAINT_V', 733863 }, { 'H4LOOT_WEED_V', 550397 }, --
+{ 'H4_PROGRESS', 126823 }, { 'H4CNF_BS_GEN', 262143 }, { 'H4CNF_BS_ENTR', 63 }, { 'H4CNF_BS_ABIL', 63 }, { 'H4CNF_WEP_DISRP', 3 }, { 'H4CNF_ARM_DISRP', 3 }, { 'H4CNF_HEL_DISRP', 3 }, { 'H4CNF_APPROACH', -1 } }
+local USER_CAN_MDFY_FAST_PERICO_PRESET_SOLO_T3 = { { 'PROSTITUTES_FREQUENTE', 100 }, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
+{ 'H4CNF_BOLTCUT', 4424 }, { 'H4CNF_UNIFORM', 5256 }, { 'H4CNF_GRAPPEL', 5156 }, { 'H4_MISSIONS', -1 }, { 'H4CNF_WEAPONS', 4 }, { 'H4CNF_TROJAN', 5 } }
+FAST_PERICO_PRESET:add_action('单人 $255w + 10w', function()
+	for i = 1, #FAST_PERICO_PRESET_SOLO_TARGET_3 do
+		stat_set_int(FAST_PERICO_PRESET_SOLO_TARGET_3[i][1], true, FAST_PERICO_PRESET_SOLO_TARGET_3[i][2])
+	end
+	for i = 2, #USER_CAN_MDFY_FAST_PERICO_PRESET_SOLO_T3 do
+		stat_set_int(USER_CAN_MDFY_FAST_PERICO_PRESET_SOLO_T3[i][1], true, USER_CAN_MDFY_FAST_PERICO_PRESET_SOLO_T3[i][2])
+	end
+	globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
+	globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
+	globals.set_int(262145 + 29395, 1800) -- bag protection
+	globals.set_int(1973525 + 823 + 56 + 1, 100) -- cut original version 1710289 + 823 + 56 + 1
+end)
+local FAST_PERICO_PRESET_2_TARGET_3 = { { 'PROSTITUTES_FREQUENTE', 100 }, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
+{ 'H4CNF_TARGET', 3 }, { 'H4LOOT_CASH_I', 63 }, { 'H4LOOT_CASH_I_SCOPED', 63 }, { 'H4LOOT_CASH_C', 0 }, { 'H4LOOT_CASH_C_SCOPED', 0 }, { 'H4LOOT_COKE_I', 16769024 }, { 'H4LOOT_COKE_I_SCOPED', 16769024 }, { 'H4LOOT_COKE_C', 22 }, { 'H4LOOT_COKE_C_SCOPED', 22 }, { 'H4LOOT_GOLD_I', 0 }, { 'H4LOOT_GOLD_I_SCOPED', 0 }, { 'H4LOOT_GOLD_C', 168 }, { 'H4LOOT_GOLD_C_SCOPED', 168 }, { 'H4LOOT_WEED_I', 8128 }, { 'H4LOOT_WEED_I_SCOPED', 8128 }, { 'H4LOOT_WEED_C', 65 }, { 'H4LOOT_WEED_C_SCOPED', 65 }, { 'H4LOOT_PAINT', 127 }, { 'H4LOOT_PAINT_SCOPED', 127 }, { 'H4LOOT_CASH_V', 545681 }, { 'H4LOOT_COKE_V', 1091363 }, { 'H4LOOT_GOLD_V', 1455150 }, { 'H4LOOT_PAINT_V', 1091363 }, { 'H4LOOT_WEED_V', 818522 }, { 'H4_PROGRESS', 126823 }, { 'H4CNF_BS_GEN', 262143 }, { 'H4CNF_BS_ENTR', 63 }, { 'H4CNF_BS_ABIL', 63 }, { 'H4CNF_WEP_DISRP', 3 }, { 'H4CNF_ARM_DISRP', 3 }, { 'H4CNF_HEL_DISRP', 3 }, { 'H4CNF_APPROACH', -1 } }
+local FAST_PERICO_PRESET_2_TARGET_3_A = { { 'PROSTITUTES_FREQUENTE', 100 }, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
+{ 'H4CNF_BOLTCUT', 4424 }, { 'H4CNF_UNIFORM', 5256 }, { 'H4CNF_GRAPPEL', 5156 }, { 'H4_MISSIONS', -1 }, { 'H4CNF_WEAPONS', 4 }, { 'H4CNF_TROJAN', 5 } }
+FAST_PERICO_PRESET:add_action('双人 $255w + 10w', function()
+	for i = 1, #FAST_PERICO_PRESET_2_TARGET_3_A do
+		stat_set_int(FAST_PERICO_PRESET_2_TARGET_3_A[i][1], true, FAST_PERICO_PRESET_2_TARGET_3_A[i][2])
+	end
+	for i = 1, #FAST_PERICO_PRESET_2_TARGET_3 do
+		stat_set_int(FAST_PERICO_PRESET_2_TARGET_3[i][1], true, FAST_PERICO_PRESET_2_TARGET_3[i][2])
+	end
+	globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
+	globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
+	globals.set_int(262145 + 29395, 1800) -- bag protection
+	globals.set_int(1973525 + 823 + 56 + 1, 50)
+	globals.set_int(1973525 + 823 + 56 + 2, 50)
+end)
+local FAST_PERICO_PRESET_3P_TARGET_3 = { { 'PROSTITUTES_FREQUENTE', 100 }, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
+{ 'H4CNF_TARGET', 3 }, { 'H4LOOT_CASH_I', 63 }, { 'H4LOOT_CASH_I_SCOPED', 63 }, { 'H4LOOT_CASH_C', 0 }, { 'H4LOOT_CASH_C_SCOPED', 0 }, { 'H4LOOT_COKE_I', 16769024 }, { 'H4LOOT_COKE_I_SCOPED', 16769024 }, { 'H4LOOT_COKE_C', 22 }, { 'H4LOOT_COKE_C_SCOPED', 22 }, { 'H4LOOT_GOLD_I', 0 }, { 'H4LOOT_GOLD_I_SCOPED', 0 }, { 'H4LOOT_GOLD_C', 168 }, { 'H4LOOT_GOLD_C_SCOPED', 168 }, { 'H4LOOT_WEED_I', 8128 }, { 'H4LOOT_WEED_I_SCOPED', 8128 }, { 'H4LOOT_WEED_C', 65 }, { 'H4LOOT_WEED_C_SCOPED', 65 }, { 'H4LOOT_PAINT', 127 }, { 'H4LOOT_PAINT_SCOPED', 127 }, { 'H4LOOT_CASH_V', 570768 }, { 'H4LOOT_COKE_V', 1141536 }, { 'H4LOOT_GOLD_V', 1522048 }, { 'H4LOOT_PAINT_V', 1141536 }, { 'H4LOOT_WEED_V', 856152 }, --
+{ 'H4_PROGRESS', 126823 }, { 'H4CNF_BS_GEN', 262143 }, { 'H4CNF_BS_ENTR', 63 }, { 'H4CNF_BS_ABIL', 63 }, { 'H4CNF_WEP_DISRP', 3 }, { 'H4CNF_ARM_DISRP', 3 }, { 'H4CNF_HEL_DISRP', 3 }, { 'H4CNF_APPROACH', -1 } }
+local FAST_PERICO_PRESET_3P_TARGET_3_A = { { 'PROSTITUTES_FREQUENTE', 100 }, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
+{ 'H4CNF_BOLTCUT', 4424 }, { 'H4CNF_UNIFORM', 5256 }, { 'H4CNF_GRAPPEL', 5156 }, { 'H4_MISSIONS', -1 }, { 'H4CNF_WEAPONS', 4 }, { 'H4CNF_TROJAN', 5 } }
+FAST_PERICO_PRESET:add_action('三人 $255w + 10w', function()
+	for i = 1, #FAST_PERICO_PRESET_3P_TARGET_3_A do
+		stat_set_int(FAST_PERICO_PRESET_3P_TARGET_3_A[i][1], true, FAST_PERICO_PRESET_3P_TARGET_3_A[i][2])
+	end
+	for i = 2, #FAST_PERICO_PRESET_3P_TARGET_3 do
+		stat_set_int(FAST_PERICO_PRESET_3P_TARGET_3[i][1], true, FAST_PERICO_PRESET_3P_TARGET_3[i][2])
+	end
+	globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
+	globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
+	globals.set_int(262145 + 29395, 1800) -- bag protection
+	globals.set_int(1973525 + 823 + 56 + 1, 35)
+	globals.set_int(1973525 + 823 + 56 + 2, 35)
+	globals.set_int(1973525 + 823 + 56 + 3, 35)
+end)
+local FAST_PERICO_PRESET_4P_TARGET_3 = { { 'PROSTITUTES_FREQUENTE', 100 }, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
+{ 'H4CNF_TARGET', 3 }, { 'H4LOOT_CASH_I', 63 }, { 'H4LOOT_CASH_I_SCOPED', 63 }, { 'H4LOOT_CASH_C', 0 }, { 'H4LOOT_CASH_C_SCOPED', 0 }, { 'H4LOOT_COKE_I', 16769024 }, { 'H4LOOT_COKE_I_SCOPED', 16769024 }, { 'H4LOOT_COKE_C', 22 }, { 'H4LOOT_COKE_C_SCOPED', 22 }, { 'H4LOOT_GOLD_I', 0 }, { 'H4LOOT_GOLD_I_SCOPED', 0 }, { 'H4LOOT_GOLD_C', 168 }, { 'H4LOOT_GOLD_C_SCOPED', 168 }, { 'H4LOOT_WEED_I', 8128 }, { 'H4LOOT_WEED_I_SCOPED', 8128 }, { 'H4LOOT_WEED_C', 65 }, { 'H4LOOT_WEED_C_SCOPED', 65 }, { 'H4LOOT_PAINT', 127 }, { 'H4LOOT_PAINT_SCOPED', 127 }, { 'H4LOOT_CASH_V', 635056 }, { 'H4LOOT_COKE_V', 1270113 }, { 'H4LOOT_GOLD_V', 1693484 }, { 'H4LOOT_PAINT_V', 1270113 }, { 'H4LOOT_WEED_V', 952584 }, --
+{ 'H4_PROGRESS', 126823 }, { 'H4CNF_BS_GEN', 262143 }, { 'H4CNF_BS_ENTR', 63 }, { 'H4CNF_BS_ABIL', 63 }, { 'H4CNF_WEP_DISRP', 3 }, { 'H4CNF_ARM_DISRP', 3 }, { 'H4CNF_HEL_DISRP', 3 }, { 'H4CNF_APPROACH', -1 } }
+local FAST_PERICO_PRESET_4P_TARGET_3_A = { { 'PROSTITUTES_FREQUENTE', 100 }, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
+{ 'H4CNF_BOLTCUT', 4424 }, { 'H4CNF_UNIFORM', 5256 }, { 'H4CNF_GRAPPEL', 5156 }, { 'H4_MISSIONS', -1 }, { 'H4CNF_WEAPONS', 4 }, { 'H4CNF_TROJAN', 5 } }
+FAST_PERICO_PRESET:add_action('四人 $255w + 10w', function()
+	for i = 1, #FAST_PERICO_PRESET_4P_TARGET_3_A do
+		stat_set_int(FAST_PERICO_PRESET_4P_TARGET_3_A[i][1], true, FAST_PERICO_PRESET_4P_TARGET_3_A[i][2])
+	end
+	for i = 1, #FAST_PERICO_PRESET_4P_TARGET_3 do
+		stat_set_int(FAST_PERICO_PRESET_4P_TARGET_3[i][1], true, FAST_PERICO_PRESET_4P_TARGET_3[i][2])
+	end
+	globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
+	globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
+	globals.set_int(262145 + 29395, 1800) -- bag protection
+	globals.set_int(1973525 + 823 + 56 + 1, 25) -- player 1
+	globals.set_int(1973525 + 823 + 56 + 2, 25) -- player 2
+	globals.set_int(1973525 + 823 + 56 + 3, 25) -- player 3
+	globals.set_int(1973525 + 823 + 56 + 4, 25) -- player 4
+end)
+FAST_PERICO:add_action('水下行走', function()
+end)
+FAST_PERICO:add_action('排水管道 :: 入口 (切割格栅处)', function()
+	if not localplayer then
+		return nil
+	end
+	localplayer:set_position(vector3(5044.726, -5816.164, -11.213))
+end)
+FAST_PERICO:add_action('佩里科岛 : 切割格栅', function()
+	script('fm_mission_controller_2020'):set_int(27036, 6)
+end)
+FAST_PERICO:add_action('移除 CCTV', function()
+	menu.remove_cctvs()
+end)
+FAST_PERICO:add_action('杀死敌人', function()
+	menu.kill_all_enemies()
+end)
+FAST_PERICO:add_action('主要目标 :: 房间', function()
+	if not localplayer then
+		return nil
+	end
+	localplayer:set_position(vector3(5007.895, -5755.581, 15.484))
+end)
+FAST_PERICO:add_action('佩里科岛 : 等离子切割机', function()
+	script('fm_mission_controller_2020'):set_float(28269 + 3, 999)
+end)
+FAST_PERICO:add_action('次要目标 :: 房间', function()
+	if not localplayer then
+		return nil
+	end
+	localplayer:set_position(vector3(5003.467, -5749.352, 14.840))
+end)
+FAST_PERICO:add_action('豪宅 :: 大门出口', function()
+	if not localplayer then
+		return nil
+	end
+	localplayer:set_position(vector3(4992.854, -5718.537, 19.880))
+end)
+FAST_PERICO:add_action('海洋 :: 安全位置', function()
+	if not localplayer then
+		return nil
+	end
+	if not localplayer:is_in_vehicle() then
+		localplayer:set_position(vector3(4905.050, -6339.578, -89.830))
+	else
+		localplayer:get_current_vehicle():set_position(vector3(4905.050, -6339.578, -89.830))
+	end
+end)
+FAST_CAH = FAST_HEIST:add_submenu('名钻赌场抢劫')
+local FAST_CAH_RunOnce = { { 'H3_COMPLETEDPOSIX', -1 }, { 'H3OPT_MASKS', 9 }, { 'H3OPT_WEAPS', 1 }, { 'H3OPT_VEHS', 3 } }
+local FAST_CAH_BIGCON_GOLD_PRESET = { { 'CAS_HEIST_FLOW', -1 }, { 'H3_LAST_APPROACH', 0 }, { 'H3OPT_APPROACH', 2 }, { 'H3_HARD_APPROACH', 0 }, { 'H3OPT_TARGET', 1 }, { 'H3OPT_POI', 1023 }, { 'H3OPT_ACCESSPOINTS', 2047 }, { 'H3OPT_CREWWEAP', 4 }, { 'H3OPT_CREWDRIVER', 3 }, { 'H3OPT_CREWHACKER', 4 }, { 'H3OPT_DISRUPTSHIP', 3 }, { 'H3OPT_BODYARMORLVL', -1 }, { 'H3OPT_KEYLEVELS', 2 }, { 'H3OPT_BITSET1', 159 }, { 'H3OPT_BITSET0', 524118 } }
+FAST_CAH:add_action('兵不厌诈 (黄金,请选择低级买家)', function()
+	for i = 1, #FAST_CAH_RunOnce do
+		stat_set_int(FAST_CAH_RunOnce[i][1], true, FAST_CAH_RunOnce[i][2])
+	end
+	for i = 1, #FAST_CAH_BIGCON_GOLD_PRESET do
+		stat_set_int(FAST_CAH_BIGCON_GOLD_PRESET[i][1], true, FAST_CAH_BIGCON_GOLD_PRESET[i][2])
+	end
+	globals.set_int(1966739 + 2326, 60) -- [Gold] 60% Low | 57 Medium | High 54
+	globals.set_int(1966739 + 2326 + 1, 177) -- [Gold] 178% Low | 169 Medium | 161 High
+	globals.set_int(1966739 + 2326 + 2, 177)
+	globals.set_int(1966739 + 2326 + 3, 177)
+	globals.set_int(262145 + 28471, 1410065408) -- Gold
+end)
+FAST_CAH:add_action('员工大厅入口', function()
+	if not localplayer then
+		return nil
+	end
+	if not localplayer:is_in_vehicle() then
+		localplayer:set_position(vector3(981.846, 18.208, 79.997))
+	else
+		localplayer:get_current_vehicle():set_position(vector3(981.846, 18.208, 79.997))
+	end
+end)
+FAST_CAH:add_action('地下室门禁', function()
+	if not localplayer then
+		return nil
+	end
+	localplayer:set_position(vector3(2469.627, -284.530, -71.709))
+end)
+FAST_CAH:add_action('金库外', function()
+	if not localplayer then
+		return nil
+	end
+	localplayer:set_position(vector3(2498.506, -238.919, -71.751))
+end)
+FAST_CAH:add_action('金库内', function()
+	if not localplayer then
+		return nil
+	end
+	localplayer:set_position(vector3(2512.942, -238.461, -71.750))
+end)
+FAST_CAH:add_action('员工大厅出口', function()
+	if not localplayer then
+		return nil
+	end
+	localplayer:set_position(vector3(2547.230, -267.679, -59.736))
+end)
+FAST_CAH:add_action('移除 CCTV', function()
+	menu.remove_cctvs()
+end)
+FAST_CAH:add_action('杀死敌人', function()
+	menu.kill_all_enemies()
+end)
 -- Edit from 2Take1 Heist-Control-v2 lua by jhowkNx
 local PERICO_HEIST = Heist_Control:add_submenu('佩里科岛')
 local CAYO_AUTO_PRST = PERICO_HEIST:add_submenu('预设 (进入分红界面后也须点击一次)')
@@ -687,7 +898,7 @@ local AUTOMATED_SOLO = NON_EVENT:add_submenu('单人 $240w')
 local AUTOMATED_2P = NON_EVENT:add_submenu('双人 $240w')
 local AUTOMATED_3P = NON_EVENT:add_submenu('三人 $240w')
 local AUTOMATED_4P = NON_EVENT:add_submenu('四人 $240w')
-local QUICK_PRST = NON_EVENT:add_submenu('1-4人 $250w')
+local QUICK_PRST = NON_EVENT:add_submenu('1-4 人 $250w')
 local WEEKLY_PRESET = CAYO_AUTO_PRST:add_submenu('活动周预设 $410w')
 local WEEKLY_SOLO = WEEKLY_PRESET:add_submenu('单人 $410w')
 local WEEKLY_F2 = WEEKLY_PRESET:add_submenu('双人 $410w')
@@ -894,8 +1105,6 @@ HI_Complete:add_action('查询完成的佩里克岛抢劫次数', function()
 	end)
 end)
 local EDIT_HI = HI_a:add_submenu('编辑器')
-EDIT_HI:add_action('该功能暂时不可用', function()
-end)
 EDIT_HI:add_int_range('修改佩里克岛抢劫次数', 1, 0, 9999999, function()
 	return stats.get_int(PlayerMP .. '_H4_PLAYTHROUGH_STATUS')
 end, function(ME)
@@ -1407,56 +1616,48 @@ TELEPORT_DOOMS:add_action('末日三 :: 补给箱 (1)', function()
 	end
 	localplayer:set_position(vector3(454.658, 5952.746, -159.591))
 end)
-
 TELEPORT_DOOMS:add_action('末日三 :: 补给箱 (2)', function()
 	if not localplayer then
 		return nil
 	end
 	localplayer:set_position(vector3(442.482, 5919.619, -159.571))
 end)
-
 TELEPORT_DOOMS:add_action('末日三 :: 补给箱 (3)', function()
 	if not localplayer then
 		return nil
 	end
 	localplayer:set_position(vector3(281.838, 5913.496, -160.469))
 end)
-
 TELEPORT_DOOMS:add_action('末日三 :: 补给箱 (4)', function()
 	if not localplayer then
 		return nil
 	end
 	localplayer:set_position(vector3(377.123, 5942.216, -159.571))
 end)
-
 TELEPORT_DOOMS:add_action('末日三 :: 服务器 (1)', function()
 	if not localplayer then
 		return nil
 	end
 	localplayer:set_position(vector3(220.165, 6188.962, -155.720))
 end)
-
 TELEPORT_DOOMS:add_action('末日三 :: 服务器 (2)', function()
 	if not localplayer then
 		return nil
 	end
 	localplayer:set_position(vector3(275.303, 6133.691, -155.720))
 end)
-
 TELEPORT_DOOMS:add_action('末日三 :: 服务器 (3)', function()
 	if not localplayer then
 		return nil
 	end
 	localplayer:set_position(vector3(269.965, 6191.722, -155.720))
 end)
-
 TELEPORT_DOOMS:add_action('末日三 :: 服务器 (4)', function()
 	if not localplayer then
 		return nil
 	end
 	localplayer:set_position(vector3(215.845, 6138.861, -155.720))
 end)
-
 TELEPORT_DOOMS:add_action('末日三 :: 天基炮', function()
 	if not localplayer then
 		return nil
@@ -2041,27 +2242,27 @@ do
 	end)
 end
 local CAH_2ND_TARGET_MDY = CAYO_SECONDARY:add_submenu('修改次要目标价值')
-CAH_2ND_TARGET_MDY:add_int_range('修改现金价值', 1, 0, 1000, function()
+CAH_2ND_TARGET_MDY:add_int_range('修改现金价值', 10000, 0, 2000000, function()
 	return stats.get_int(PlayerMP .. '_H4LOOT_CASH_V')
 end, function(s)
 	stats.set_int(PlayerMP .. '_H4LOOT_CASH_V', s)
 end)
-CAH_2ND_TARGET_MDY:add_int_range('修改大麻价值', 1, 0, 1000, function()
+CAH_2ND_TARGET_MDY:add_int_range('修改大麻价值', 10000, 0, 2000000, function()
 	return stats.get_int(PlayerMP .. '_H4LOOT_WEED_V')
 end, function(s)
 	stats.set_int(PlayerMP .. '_H4LOOT_WEED_V', s)
 end)
-CAH_2ND_TARGET_MDY:add_int_range('修改可卡因价值', 1, 0, 1000, function()
+CAH_2ND_TARGET_MDY:add_int_range('修改可卡因价值', 10000, 0, 2000000, function()
 	return stats.get_int(PlayerMP .. '_H4LOOT_COKE_V')
 end, function(s)
 	stats.set_int(PlayerMP .. '_H4LOOT_COKE_V', s)
 end)
-CAH_2ND_TARGET_MDY:add_int_range('修改黄金价值', 1, 0, 1000, function()
+CAH_2ND_TARGET_MDY:add_int_range('修改黄金价值', 10000, 0, 2000000, function()
 	return stats.get_int(PlayerMP .. '_H4LOOT_GOLD_V')
 end, function(s)
 	stats.set_int(PlayerMP .. '_H4LOOT_GOLD_V', s)
 end)
-CAH_2ND_TARGET_MDY:add_int_range('修改画价值', 1, 0, 1000, function()
+CAH_2ND_TARGET_MDY:add_int_range('修改画价值', 10000, 0, 2000000, function()
 	return stats.get_int(PlayerMP .. '_H4LOOT_PAINT_V')
 end, function(s)
 	stats.set_int(PlayerMP .. '_H4LOOT_PAINT_V', s)
@@ -2443,30 +2644,30 @@ TELEPORT_CAH:add_action('员工大厅入口', function()
 	if not localplayer then
 		return nil
 	end
-	localplayer:set_position(vector3(981.846, 18.208, 79.997))
+	if not localplayer:is_in_vehicle() then
+		localplayer:set_position(vector3(981.846, 18.208, 79.997))
+	else
+		localplayer:get_current_vehicle():set_position(vector3(981.846, 18.208, 79.997))
+	end
 end)
-
 TELEPORT_CAH:add_action('金库内', function()
 	if not localplayer then
 		return nil
 	end
 	localplayer:set_position(vector3(2512.942, -238.461, -71.750))
 end)
-
 TELEPORT_CAH:add_action('金库外', function()
 	if not localplayer then
 		return nil
 	end
 	localplayer:set_position(vector3(2498.506, -238.919, -71.751))
 end)
-
 TELEPORT_CAH:add_action('地下室门禁', function()
 	if not localplayer then
 		return nil
 	end
 	localplayer:set_position(vector3(2469.627, -284.530, -71.709))
 end)
-
 TELEPORT_CAH:add_action('员工大厅出口', function()
 	if not localplayer then
 		return nil
@@ -3544,14 +3745,12 @@ TELEPORT_CONTRACT:add_action('贡斯最后出现地点', function()
 	end
 	localplayer:set_position(vector3(507.766, -605.932, 23.451))
 end)
-
 TELEPORT_CONTRACT:add_action('机库入口', function()
 	if not localplayer then
 		return nil
 	end
 	localplayer:set_position(vector3(-927.370, -2923.859, 12.644))
 end)
-
 TELEPORT_CONTRACT:add_action('机库内贡斯位置', function()
 	if not localplayer then
 		return nil
