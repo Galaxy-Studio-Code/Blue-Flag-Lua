@@ -1684,7 +1684,7 @@ do
 	end)
 	About_info:add_action('Version : ' .. LUA_VER, function()
 	end)
-	About_info:add_action('遇到 bug 请联系作者', function()
+	About_info:add_action('遇到 bug 请联系作者, 欢迎私信', function()
 	end)
 	About_info:add_action('Discord:@Blue-Flag#5246', function()
 	end)
