@@ -7,7 +7,7 @@
 -- Github: https://github.com/Galaxy-Studio-Code/Blue-Flag-Lua
 -- init
 require_game_build(2628)
-local LUA_VER = '1.2.0'
+local LUA_VER = '1.2.1'
 local bfmenu = menu.add_submenu('Blue-Flag\'s Lua')
 local Player_Function = bfmenu:add_submenu('玩家功能')
 local Weapon_Function = bfmenu:add_submenu('武器功能')
@@ -129,6 +129,38 @@ Player_Function:add_action('补满零食', function()
 		stat_set_int(items[i][1], true, items[i][2])
 	end
 end)
+do
+	local FAST_RUN_RELOAD = { { 'CHAR_ABILITY_1_UNLCK', -1 }, { 'CHAR_ABILITY_2_UNLCK', -1 }, { 'CHAR_ABILITY_3_UNLCK', -1 }, { 'CHAR_FM_ABILITY_1_UNLCK', -1 }, { 'CHAR_FM_ABILITY_2_UNLCK', -1 }, { 'CHAR_FM_ABILITY_3_UNLCK', -1 } }
+	Player_Function:add_action('解锁快速奔跑和换弹', function()
+		for i = 1, #FAST_RUN_RELOAD do
+			stat_set_int(FAST_RUN_RELOAD[i][1], true, FAST_RUN_RELOAD[i][2])
+		end
+		globals.set_int(1575012, 1)
+		globals.set_int(1574589, 1)
+		sleep(0.2)
+		globals.set_int(1574589, 0)
+	end)
+end
+do
+	local FAST_RUN_RELOAD_RESET = { { 'CHAR_ABILITY_1_UNLCK', 0 }, { 'CHAR_ABILITY_2_UNLCK', 0 }, { 'CHAR_ABILITY_3_UNLCK', 0 }, { 'CHAR_FM_ABILITY_1_UNLCK', 0 }, { 'CHAR_FM_ABILITY_2_UNLCK', 0 }, { 'CHAR_FM_ABILITY_3_UNLCK', 0 } }
+	Player_Function:add_action('重置解锁快速奔跑和换弹', function()
+		for i = 1, #FAST_RUN_RELOAD_RESET do
+			stat_set_int(FAST_RUN_RELOAD_RESET[i][1], true, FAST_RUN_RELOAD_RESET[i][2])
+		end
+		globals.set_int(1575012, 1)
+		globals.set_int(1574589, 1)
+		sleep(0.2)
+		globals.set_int(1574589, 0)
+	end)
+end
+do
+	local MAX_STAT = { { 'SCRIPT_INCREASE_DRIV', 100 }, { 'SCRIPT_INCREASE_FLY', 100 }, { 'SCRIPT_INCREASE_LUNG', 100 }, { 'SCRIPT_INCREASE_SHO', 100 }, { 'SCRIPT_INCREASE_STAM', 100 }, { 'SCRIPT_INCREASE_STL', 100 }, { 'SCRIPT_INCREASE_STRN', 100 } }
+	Player_Function:add_action('解锁最大属性', function()
+		for i = 1, #MAX_STAT do
+			stat_set_int(MAX_STAT[i][1], true, MAX_STAT[i][2])
+		end
+	end)
+end
 -- Kiddion's example
 Player_Function:add_toggle('缩小玩家', function()
 	if not localplayer then
@@ -232,6 +264,21 @@ end, function(value)
 	end
 	current_vehicle:set_max_speed(value)
 end)
+do
+	local toggled6 = false;
+	Vehicle_Function:add_toggle('移除虎鲸导弹冷却并增加射程', function()
+		return toggled6
+	end, function(e)
+		toggled6 = not toggled6
+		if e then
+			globals.set_int(262145 + 29837, 0)
+			globals.set_int(262145 + 29838, 99999)
+		else
+			globals.set_int(262145 + 29837, 60000)
+			globals.set_int(262145 + 29838, 4000)
+		end
+	end)
+end
 -- World Function
 World_Function:add_action('允许非公开战局任务', function()
 	globals.set_int(2714635 + 744, 0) -- NETWORK::NETWORK_SESSION_GET_PRIVATE_SLOTS
@@ -621,10 +668,40 @@ Recovery_Function:add_action('生成 Ped 掉落 ($2000)', function()
 	globals.set_uint(4528329 + 1 + (globals.get_int(2783345) * 85) + 66 + 2, 2)
 	sleep(1)
 end)
+Recovery_Function:add_int_range('Set Rank (Correction)', 1, 0, 8000, function()
+	local currentRP = stats.get_int(PlayerMP .. '_CHAR_SET_RP_GIFT_ADMIN')
+	if currentRP <= 0 then
+		currentRP = globals.get_int(1655638 + CharID)
+	end
+	local rpLevel = 0
+	for i = 0, 8000 do
+		if currentRP < globals.get_int(294355 + i) then
+			break
+		else
+			rpLevel = i
+		end
+	end
+	return rpLevel
+end, function(value)
+	local newRP = globals.get_int(294355 + value) + 100
+	stats.set_int(PlayerMP .. 'CHAR_SET_RP_GIFT_ADMIN', newRP)
+	sleep(2)
+	globals.set_int(1575012, 1)
+	globals.set_int(1575012, 1)
+	globals.set_int(1574589, 1)
+	sleep(0.2)
+	globals.set_int(1574589, 0)
+end)
 Recovery_Function:add_action('移除交易进行中错误', function()
 	if globals.get_int(4529836) == 20 or globals.get_int(4529836) == 4 then
 		globals.set_int(4529830, 0)
 	end
+end)
+Recovery_Function:add_action('车友会奖品载具', function()
+	stat_set_bool('CARMEET_PV_CHLLGE_CMPLT', true, true)
+end)
+Recovery_Function:add_action('最大夜总会人气', function()
+	stat_set_int('CLUB_POPULARITY', true, 1000)
 end)
 Recovery_Function:add_action('填满夜总会保险箱', function()
 	globals.set_int(262145 + 22853, 133377)
@@ -720,7 +797,7 @@ end
 do
 	local FAST_PERICO_PRESET_SOLO_TARGET_3 = { { 'PROSTITUTES_FREQUENTE', 100 }, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
 	{ 'H4CNF_TARGET', 3 }, { 'H4LOOT_CASH_I', 63 }, { 'H4LOOT_CASH_I_SCOPED', 63 }, { 'H4LOOT_CASH_C', 0 }, { 'H4LOOT_CASH_C_SCOPED', 0 }, { 'H4LOOT_COKE_I', 16769024 }, { 'H4LOOT_COKE_I_SCOPED', 16769024 }, { 'H4LOOT_COKE_C', 22 }, { 'H4LOOT_COKE_C_SCOPED', 22 }, { 'H4LOOT_GOLD_I', 0 }, { 'H4LOOT_GOLD_I_SCOPED', 0 }, { 'H4LOOT_GOLD_C', 168 }, { 'H4LOOT_GOLD_C_SCOPED', 168 }, { 'H4LOOT_WEED_I', 8128 }, { 'H4LOOT_WEED_I_SCOPED', 8128 }, { 'H4LOOT_WEED_C', 65 }, { 'H4LOOT_WEED_C_SCOPED', 65 }, { 'H4LOOT_PAINT', 127 }, { 'H4LOOT_PAINT_SCOPED', 127 }, { 'H4LOOT_CASH_V', 366931 }, { 'H4LOOT_COKE_V', 733863 }, { 'H4LOOT_GOLD_V', 978484 }, { 'H4LOOT_PAINT_V', 733863 }, { 'H4LOOT_WEED_V', 550397 }, --
-	{ 'H4_PROGRESS', 126823 }, { 'H4CNF_BS_GEN', 262143 }, { 'H4CNF_BS_ENTR', 63 }, { 'H4CNF_BS_ABIL', 63 }, { 'H4CNF_WEP_DISRP', 3 }, { 'H4CNF_ARM_DISRP', 3 }, { 'H4CNF_HEL_DISRP', 3 }, { 'H4CNF_APPROACH', -1 } }
+	{ 'H4_PROGRESS', 131055 }, { 'H4CNF_BS_GEN', 262143 }, { 'H4CNF_BS_ENTR', 63 }, { 'H4CNF_BS_ABIL', 63 }, { 'H4CNF_WEP_DISRP', 3 }, { 'H4CNF_ARM_DISRP', 3 }, { 'H4CNF_HEL_DISRP', 3 }, { 'H4CNF_APPROACH', -1 } }
 	local USER_CAN_MDFY_FAST_PERICO_PRESET_SOLO_T3 = { { 'PROSTITUTES_FREQUENTE', 100 }, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
 	{ 'H4CNF_BOLTCUT', 4424 }, { 'H4CNF_UNIFORM', 5256 }, { 'H4CNF_GRAPPEL', 5156 }, { 'H4_MISSIONS', -1 }, { 'H4CNF_WEAPONS', 4 }, { 'H4CNF_TROJAN', 5 } }
 	FAST_PERICO_PRESET:add_action('单人 $255w + 10w', function()
@@ -738,7 +815,7 @@ do
 end
 do
 	local FAST_PERICO_PRESET_2_TARGET_3 = { { 'PROSTITUTES_FREQUENTE', 100 }, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
-	{ 'H4CNF_TARGET', 3 }, { 'H4LOOT_CASH_I', 63 }, { 'H4LOOT_CASH_I_SCOPED', 63 }, { 'H4LOOT_CASH_C', 0 }, { 'H4LOOT_CASH_C_SCOPED', 0 }, { 'H4LOOT_COKE_I', 16769024 }, { 'H4LOOT_COKE_I_SCOPED', 16769024 }, { 'H4LOOT_COKE_C', 22 }, { 'H4LOOT_COKE_C_SCOPED', 22 }, { 'H4LOOT_GOLD_I', 0 }, { 'H4LOOT_GOLD_I_SCOPED', 0 }, { 'H4LOOT_GOLD_C', 168 }, { 'H4LOOT_GOLD_C_SCOPED', 168 }, { 'H4LOOT_WEED_I', 8128 }, { 'H4LOOT_WEED_I_SCOPED', 8128 }, { 'H4LOOT_WEED_C', 65 }, { 'H4LOOT_WEED_C_SCOPED', 65 }, { 'H4LOOT_PAINT', 127 }, { 'H4LOOT_PAINT_SCOPED', 127 }, { 'H4LOOT_CASH_V', 545681 }, { 'H4LOOT_COKE_V', 1091363 }, { 'H4LOOT_GOLD_V', 1455150 }, { 'H4LOOT_PAINT_V', 1091363 }, { 'H4LOOT_WEED_V', 818522 }, { 'H4_PROGRESS', 126823 }, { 'H4CNF_BS_GEN', 262143 }, { 'H4CNF_BS_ENTR', 63 }, { 'H4CNF_BS_ABIL', 63 }, { 'H4CNF_WEP_DISRP', 3 }, { 'H4CNF_ARM_DISRP', 3 }, { 'H4CNF_HEL_DISRP', 3 }, { 'H4CNF_APPROACH', -1 } }
+	{ 'H4CNF_TARGET', 3 }, { 'H4LOOT_CASH_I', 63 }, { 'H4LOOT_CASH_I_SCOPED', 63 }, { 'H4LOOT_CASH_C', 0 }, { 'H4LOOT_CASH_C_SCOPED', 0 }, { 'H4LOOT_COKE_I', 16769024 }, { 'H4LOOT_COKE_I_SCOPED', 16769024 }, { 'H4LOOT_COKE_C', 22 }, { 'H4LOOT_COKE_C_SCOPED', 22 }, { 'H4LOOT_GOLD_I', 0 }, { 'H4LOOT_GOLD_I_SCOPED', 0 }, { 'H4LOOT_GOLD_C', 168 }, { 'H4LOOT_GOLD_C_SCOPED', 168 }, { 'H4LOOT_WEED_I', 8128 }, { 'H4LOOT_WEED_I_SCOPED', 8128 }, { 'H4LOOT_WEED_C', 65 }, { 'H4LOOT_WEED_C_SCOPED', 65 }, { 'H4LOOT_PAINT', 127 }, { 'H4LOOT_PAINT_SCOPED', 127 }, { 'H4LOOT_CASH_V', 545681 }, { 'H4LOOT_COKE_V', 1091363 }, { 'H4LOOT_GOLD_V', 1455150 }, { 'H4LOOT_PAINT_V', 1091363 }, { 'H4LOOT_WEED_V', 818522 }, { 'H4_PROGRESS', 131055 }, { 'H4CNF_BS_GEN', 262143 }, { 'H4CNF_BS_ENTR', 63 }, { 'H4CNF_BS_ABIL', 63 }, { 'H4CNF_WEP_DISRP', 3 }, { 'H4CNF_ARM_DISRP', 3 }, { 'H4CNF_HEL_DISRP', 3 }, { 'H4CNF_APPROACH', -1 } }
 	local FAST_PERICO_PRESET_2_TARGET_3_A = { { 'PROSTITUTES_FREQUENTE', 100 }, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
 	{ 'H4CNF_BOLTCUT', 4424 }, { 'H4CNF_UNIFORM', 5256 }, { 'H4CNF_GRAPPEL', 5156 }, { 'H4_MISSIONS', -1 }, { 'H4CNF_WEAPONS', 4 }, { 'H4CNF_TROJAN', 5 } }
 	FAST_PERICO_PRESET:add_action('双人 $255w + 10w', function()
@@ -758,7 +835,7 @@ end
 do
 	local FAST_PERICO_PRESET_3P_TARGET_3 = { { 'PROSTITUTES_FREQUENTE', 100 }, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
 	{ 'H4CNF_TARGET', 3 }, { 'H4LOOT_CASH_I', 63 }, { 'H4LOOT_CASH_I_SCOPED', 63 }, { 'H4LOOT_CASH_C', 0 }, { 'H4LOOT_CASH_C_SCOPED', 0 }, { 'H4LOOT_COKE_I', 16769024 }, { 'H4LOOT_COKE_I_SCOPED', 16769024 }, { 'H4LOOT_COKE_C', 22 }, { 'H4LOOT_COKE_C_SCOPED', 22 }, { 'H4LOOT_GOLD_I', 0 }, { 'H4LOOT_GOLD_I_SCOPED', 0 }, { 'H4LOOT_GOLD_C', 168 }, { 'H4LOOT_GOLD_C_SCOPED', 168 }, { 'H4LOOT_WEED_I', 8128 }, { 'H4LOOT_WEED_I_SCOPED', 8128 }, { 'H4LOOT_WEED_C', 65 }, { 'H4LOOT_WEED_C_SCOPED', 65 }, { 'H4LOOT_PAINT', 127 }, { 'H4LOOT_PAINT_SCOPED', 127 }, { 'H4LOOT_CASH_V', 570768 }, { 'H4LOOT_COKE_V', 1141536 }, { 'H4LOOT_GOLD_V', 1522048 }, { 'H4LOOT_PAINT_V', 1141536 }, { 'H4LOOT_WEED_V', 856152 }, --
-	{ 'H4_PROGRESS', 126823 }, { 'H4CNF_BS_GEN', 262143 }, { 'H4CNF_BS_ENTR', 63 }, { 'H4CNF_BS_ABIL', 63 }, { 'H4CNF_WEP_DISRP', 3 }, { 'H4CNF_ARM_DISRP', 3 }, { 'H4CNF_HEL_DISRP', 3 }, { 'H4CNF_APPROACH', -1 } }
+	{ 'H4_PROGRESS', 131055 }, { 'H4CNF_BS_GEN', 262143 }, { 'H4CNF_BS_ENTR', 63 }, { 'H4CNF_BS_ABIL', 63 }, { 'H4CNF_WEP_DISRP', 3 }, { 'H4CNF_ARM_DISRP', 3 }, { 'H4CNF_HEL_DISRP', 3 }, { 'H4CNF_APPROACH', -1 } }
 	local FAST_PERICO_PRESET_3P_TARGET_3_A = { { 'PROSTITUTES_FREQUENTE', 100 }, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
 	{ 'H4CNF_BOLTCUT', 4424 }, { 'H4CNF_UNIFORM', 5256 }, { 'H4CNF_GRAPPEL', 5156 }, { 'H4_MISSIONS', -1 }, { 'H4CNF_WEAPONS', 4 }, { 'H4CNF_TROJAN', 5 } }
 	FAST_PERICO_PRESET:add_action('三人 $255w + 10w', function()
@@ -779,7 +856,7 @@ end
 do
 	local FAST_PERICO_PRESET_4P_TARGET_3 = { { 'PROSTITUTES_FREQUENTE', 100 }, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
 	{ 'H4CNF_TARGET', 3 }, { 'H4LOOT_CASH_I', 63 }, { 'H4LOOT_CASH_I_SCOPED', 63 }, { 'H4LOOT_CASH_C', 0 }, { 'H4LOOT_CASH_C_SCOPED', 0 }, { 'H4LOOT_COKE_I', 16769024 }, { 'H4LOOT_COKE_I_SCOPED', 16769024 }, { 'H4LOOT_COKE_C', 22 }, { 'H4LOOT_COKE_C_SCOPED', 22 }, { 'H4LOOT_GOLD_I', 0 }, { 'H4LOOT_GOLD_I_SCOPED', 0 }, { 'H4LOOT_GOLD_C', 168 }, { 'H4LOOT_GOLD_C_SCOPED', 168 }, { 'H4LOOT_WEED_I', 8128 }, { 'H4LOOT_WEED_I_SCOPED', 8128 }, { 'H4LOOT_WEED_C', 65 }, { 'H4LOOT_WEED_C_SCOPED', 65 }, { 'H4LOOT_PAINT', 127 }, { 'H4LOOT_PAINT_SCOPED', 127 }, { 'H4LOOT_CASH_V', 635056 }, { 'H4LOOT_COKE_V', 1270113 }, { 'H4LOOT_GOLD_V', 1693484 }, { 'H4LOOT_PAINT_V', 1270113 }, { 'H4LOOT_WEED_V', 952584 }, --
-	{ 'H4_PROGRESS', 126823 }, { 'H4CNF_BS_GEN', 262143 }, { 'H4CNF_BS_ENTR', 63 }, { 'H4CNF_BS_ABIL', 63 }, { 'H4CNF_WEP_DISRP', 3 }, { 'H4CNF_ARM_DISRP', 3 }, { 'H4CNF_HEL_DISRP', 3 }, { 'H4CNF_APPROACH', -1 } }
+	{ 'H4_PROGRESS', 131055 }, { 'H4CNF_BS_GEN', 262143 }, { 'H4CNF_BS_ENTR', 63 }, { 'H4CNF_BS_ABIL', 63 }, { 'H4CNF_WEP_DISRP', 3 }, { 'H4CNF_ARM_DISRP', 3 }, { 'H4CNF_HEL_DISRP', 3 }, { 'H4CNF_APPROACH', -1 } }
 	local FAST_PERICO_PRESET_4P_TARGET_3_A = { { 'PROSTITUTES_FREQUENTE', 100 }, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
 	{ 'H4CNF_BOLTCUT', 4424 }, { 'H4CNF_UNIFORM', 5256 }, { 'H4CNF_GRAPPEL', 5156 }, { 'H4_MISSIONS', -1 }, { 'H4CNF_WEAPONS', 4 }, { 'H4CNF_TROJAN', 5 } }
 	FAST_PERICO_PRESET:add_action('四人 $255w + 10w', function()
@@ -3528,6 +3605,58 @@ do
 		end
 	end)
 end
+do
+	local DOOMS_CRIM_MASTER_2_I = { { 'MPPLY_GANGOPS_LOYALTY2', 268435455 }, { 'MPPLY_GANGOPS_CRIMMASMD2', 268435455 } }
+	local DOOMS_CRIM_MASTER_2_B = { { 'MPPLY_AWD_GANGOPS_LOYALTY2', false }, { 'MPPLY_AWD_GANGOPS_CRIMMASMD2', false } }
+	CLASSIC_HEISTS:add_action('忠诚伙伴 2 + 犯罪之神 2', function()
+		for i = 1, #DOOMS_CRIM_MASTER_2_B do
+			stat_set_bool(DOOMS_CRIM_MASTER_2_B[i][1], false, DOOMS_CRIM_MASTER_2_B[i][2])
+		end
+		for i = 1, #DOOMS_CRIM_MASTER_2_I do
+			stat_set_int(DOOMS_CRIM_MASTER_2_I[i][1], false, DOOMS_CRIM_MASTER_2_I[i][2])
+		end
+	end)
+end
+do
+	local DOOMS_CRIM_MASTER_3_I = { { 'MPPLY_GANGOPS_LOYALTY3', 268435455 }, { 'MPPLY_GANGOPS_CRIMMASMD3', 268435455 } }
+	local DOOMS_CRIM_MASTER_3_B = { { 'MPPLY_AWD_GANGOPS_LOYALTY3', false }, { 'MPPLY_AWD_GANGOPS_CRIMMASMD3', false } }
+	CLASSIC_HEISTS:add_action('忠诚伙伴 3 + 犯罪之神 3', function()
+		for i = 1, #DOOMS_CRIM_MASTER_3_B do
+			stat_set_bool(DOOMS_CRIM_MASTER_3_B[i][1], false, DOOMS_CRIM_MASTER_3_B[i][2])
+		end
+		for i = 1, #DOOMS_CRIM_MASTER_3_I do
+			stat_set_int(DOOMS_CRIM_MASTER_3_I[i][1], false, DOOMS_CRIM_MASTER_3_I[i][2])
+		end
+	end)
+end
+do
+	local DOOMS_CRIM_MASTER_4_I = { { 'MPPLY_GANGOPS_LOYALTY', 268435455 }, { 'MPPLY_GANGOPS_CRIMMASMD', 268435455 } }
+	local DOOMS_CRIM_MASTER_4_B = { { 'MPPLY_AWD_GANGOPS_LOYALTY', false }, { 'MPPLY_AWD_GANGOPS_CRIMMASMD', false } }
+	CLASSIC_HEISTS:add_action('忠诚伙伴 4 + 犯罪之神 4', function()
+		for i = 1, #DOOMS_CRIM_MASTER_4_B do
+			stat_set_bool(DOOMS_CRIM_MASTER_4_B[i][1], false, DOOMS_CRIM_MASTER_4_B[i][2])
+		end
+		for i = 1, #DOOMS_CRIM_MASTER_4_I do
+			stat_set_int(DOOMS_CRIM_MASTER_4_I[i][1], false, DOOMS_CRIM_MASTER_4_I[i][2])
+		end
+	end)
+end
+do
+	local DOOMS_ALLINOLDER_I = { { 'MPPLY_GANGOPS_ALLINORDER', 268435455 }, { 'MPPLY_GANGOPS_SUPPORT', 268435455 } }
+	local DOOMS_ALLINOLDER_B = { { 'MPPLY_AWD_GANGOPS_ALLINORDER', false }, { 'MPPLY_AWD_GANGOPS_SUPPORT', false } }
+	CLASSIC_HEISTS:add_action('按部就班 2 + 配角也疯狂 2', function()
+		for i = 1, #DOOMS_ALLINOLDER_B do
+			stat_set_bool(DOOMS_ALLINOLDER_B[i][1], false, DOOMS_ALLINOLDER_B[i][2])
+		end
+		for i = 1, #DOOMS_ALLINOLDER_I do
+			stat_set_int(DOOMS_ALLINOLDER_I[i][1], false, DOOMS_ALLINOLDER_I[i][2])
+		end
+	end)
+	CLASSIC_HEISTS:add_action('提示: 点击后开启末日三 : 末日将至', function()
+	end)
+	CLASSIC_HEISTS:add_action('开启任务前、后、第二场景、结算前都要点击', function()
+	end)
+end
 -------- CLASSIC HEIST
 do
 	CLASSIC_CUT:add_int_range('自定义分红', 1, 0, 200, function()
@@ -3607,6 +3736,22 @@ end)
 CLASSIC_HEISTS:add_action('[2x] 全福银行 500w (作为房主时使用)', function()
 	globals.set_int(1934636 + 3008 + 1, 1750)
 end)
+do
+	local APAR_CRIM_MASTER_I = { { 'MPPLY_HEISTFLOWORDERPROGRESS', 134217727 }, { 'MPPLY_HEISTTEAMPROGRESSBITSET', 134217727 }, { 'MPPLY_HEISTNODEATHPROGREITSET', 134217727 } }
+	local APAR_CRIM_MASTER_B = { { 'MPPLY_AWD_HST_ORDER', false }, { 'MPPLY_AWD_HST_SAME_TEAM', false }, { 'MPPLY_AWD_HST_ULT_CHAL', false } }
+	CLASSIC_HEISTS:add_action('按部就班 + 忠诚伙伴 + 犯罪之神', function()
+		for i = 1, #APAR_CRIM_MASTER_B do
+			stat_set_bool(APAR_CRIM_MASTER_B[i][1], false, APAR_CRIM_MASTER_B[i][2])
+		end
+		for i = 1, #APAR_CRIM_MASTER_I do
+			stat_set_int(APAR_CRIM_MASTER_I[i][1], false, APAR_CRIM_MASTER_I[i][2])
+		end
+	end)
+	CLASSIC_HEISTS:add_action('提示: 点击后开启太平洋银行抢劫', function()
+	end)
+	CLASSIC_HEISTS:add_action('开启任务前、后、结算前都要点击', function()
+	end)
+end
 ------------- LS CONTRACTS
 LS_ROBBERY:add_action('修改收入为 100w', function()
 	globals.set_int(262145 + 30691 + 0, 1000000)
