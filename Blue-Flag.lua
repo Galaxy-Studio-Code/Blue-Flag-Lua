@@ -754,6 +754,7 @@ Recovery_Function:add_action('移除收支差', function()
 	a = a + globals.get_int(1853131 + 1 + (selectedplayer * 888) + 205 + 56)
 	local b = stats.get_int('MPPLY_TOTAL_EVC')
 	local m = a - b
+	print(m)
 	stats.set_int(PlayerMP .. '_MONEY_EARN_JOBSHARED', stats.get_int(PlayerMP .. '_MONEY_EARN_JOBSHARED') + m)
 	stats.set_int('MPPLY_TOTAL_EVC', stats.get_int('MPPLY_TOTAL_EVC') + m)
 end)
@@ -776,6 +777,27 @@ FAST_PERICO:add_action('虎鲸 :: 主甲板 [请先呼叫虎鲸]', function()
 		return nil
 	end
 	localplayer:set_position(vector3(1563.218, 406.030, -49.667))
+end)
+local FAST_PERICO_QUICK_FINISH = FAST_PERICO:add_submenu('10秒完成佩里科岛')
+do
+	local FAST_PERICO_PRESET_ANY = { { 'PROSTITUTES_FREQUENTE', 100 }, -- I know horny boy, this has nothing to do with Cayo, but it is just a protection to avoid bugs
+	{ 'H4CNF_BS_GEN', 262143 }, { 'H4CNF_BS_ENTR', 63 }, { 'H4CNF_BS_ABIL', 63 }, { 'H4CNF_WEP_DISRP', 3 }, { 'H4CNF_ARM_DISRP', 3 }, { 'H4CNF_HEL_DISRP', 3 }, { 'H4CNF_BOLTCUT', 4424 }, { 'H4CNF_UNIFORM', 5256 }, { 'H4CNF_GRAPPEL', 5156 }, { 'H4CNF_APPROACH', -1 }, { 'H4LOOT_CASH_I', 0 }, { 'H4LOOT_CASH_C', 0 }, { 'H4LOOT_WEED_I', 0 }, { 'H4LOOT_WEED_C', 0 }, { 'H4LOOT_COKE_I', 0 }, { 'H4LOOT_COKE_C', 0 }, { 'H4LOOT_GOLD_I', 0 }, { 'H4LOOT_GOLD_C', 0 }, { 'H4LOOT_PAINT', 0 }, { 'H4LOOT_CASH_V', 0 }, { 'H4LOOT_COKE_V', 0 }, { 'H4LOOT_GOLD_V', 0 }, { 'H4LOOT_PAINT_V', 0 }, { 'H4LOOT_WEED_V', 0 }, { 'H4LOOT_CASH_I_SCOPED', 0 }, { 'H4LOOT_CASH_C_SCOPED', 0 }, { 'H4LOOT_WEED_I_SCOPED', 0 }, { 'H4LOOT_WEED_C_SCOPED', 0 }, { 'H4LOOT_COKE_I_SCOPED', 0 }, { 'H4LOOT_COKE_C_SCOPED', 0 }, { 'H4LOOT_GOLD_I_SCOPED', 0 }, { 'H4LOOT_GOLD_C_SCOPED', 0 }, { 'H4LOOT_PAINT_SCOPED', 0 }, { 'H4CNF_TARGET', 5 }, { 'H4CNF_WEAPONS', 5 }, { 'H4_MISSIONS', -1 }, { 'H4_PROGRESS', 126823 } }
+	FAST_PERICO_QUICK_FINISH:add_action('1-4 人预设 $255w', function()
+		for i = 1, #FAST_PERICO_PRESET_ANY do
+			stat_set_int(FAST_PERICO_PRESET_ANY[i][1], true, FAST_PERICO_PRESET_ANY[i][2])
+		end
+		globals.set_int(1973525 + 823 + 56 + 1, 152) -- original version 1710289 + 823 + 56 + 1
+		globals.set_int(1973525 + 823 + 56 + 2, 152) -- original version 1710289 + 823 + 56 + 2
+		globals.set_int(1973525 + 823 + 56 + 3, 152) -- original version 1710289 + 823 + 56 + 3
+		globals.set_int(1973525 + 823 + 56 + 4, 152) -- original version 1710289 + 823 + 56 + 4
+		globals.set_float(262145 + 29641, -0.1) -- pavel cut protection
+		globals.set_float(262145 + 29642, -0.02) -- fency fee cut protection
+		-- globals.set_int(262145 + 29621,2455000)
+	end)
+end
+FAST_PERICO_QUICK_FINISH:add_action('立即结算佩里科岛抢劫', function()
+	script('fm_mission_controller_2020'):set_int(36883, script('fm_mission_controller_2020'):get_int(36883) | 983040)
+	script('fm_mission_controller_2020'):set_int(38257, script('fm_mission_controller_2020'):get_int(38257) | 50)
 end)
 local FAST_PERICO_PRESET = FAST_PERICO:add_submenu('快速预设 (进入分红界面后也须点击一次)')
 do
@@ -2179,6 +2201,10 @@ PERICO_ADV:add_int_range('修改总收入', 10000, 0, 12000000, function()
 	return script('fm_mission_controller_2020'):get_int(41449)
 end, function(value)
 	script('fm_mission_controller_2020'):set_int(41449, value)
+end)
+PERICO_ADV:add_action('立即结算佩里科岛抢劫', function()
+	script('fm_mission_controller_2020'):set_int(36883, heist_script:get_int(36883) | 983040)
+	script('fm_mission_controller_2020'):set_int(38257, heist_script:get_int(38257) | 50)
 end)
 -------------------------
 do
@@ -3998,6 +4024,10 @@ do
 	end)
 end
 --
+TH_CONTRACT:add_action('立即结算别惹德瑞', function()
+	script('fm_mission_controller_2020'):set_int(36882, 9)
+	script('fm_mission_controller_2020'):set_int(45154, 17)
+end)
 TH_CONTRACT:add_action('修改终章收入 240w', function()
 	globals.set_int(262145 + 31389, 2400000)
 end)
